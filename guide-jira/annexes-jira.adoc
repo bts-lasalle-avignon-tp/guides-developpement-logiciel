@@ -1,0 +1,489 @@
+= Annexes Jira/Bitbucket/GitHub
+:author: Thierry Vaira
+:email: tvaira@free.fr
+:revnumber: v0.2
+:revdate: 23/08/2021
+:revremark:
+:sectnums:
+:toc: left
+:toclevels: 4
+:toc-title: Sommaire
+:description: Annexes Jira/Bitbucket/GitHub
+:keywords: jira bitbucket github
+:imagesdir: ./images/
+:source-highlighter: highlightjs
+:highlightjs-theme: rainbow
+:stem:
+
+////
+:highlightjs-theme: xcode
+:highlightjs-theme: androidstudio
+:highlightjs-theme: googlecode
+:highlightjs-theme: github
+:highlightjs-theme: foundation
+:highlightjs-theme: idea
+:highlightjs-theme: rainbow
+:highlightjs-theme: vs
+:highlightjs-theme: sunburst
+:highlightjs-theme: tomorrow
+:highlightjs-theme: railscasts
+:highlightjs-theme: zenburn
+////
+
+ifdef::backend-html5[]
+++++
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+++++
+:html:
+endif::[]
+
+:icons: font
+
+:home: http://tvaira.free.fr/
+
+ifdef::backend-pdf[]
+{author} - <{email}> - version {revnumber} - {revdate} - {home}[tvaira.free.fr]
+endif::[]
+
+== Jira
+
+https://www.atlassian.com/software/jira[Jira] est maintenant un système de gestion de projets développé par **Atlassian**.
+
+image:jira-logo.png[]
+
+=== Création d'un projet
+
+Se connecter (ou créer un compte) :
+
+image:jira-compte-debut.png[]
+
+Puis démarrer la création d'un nouveau projet :
+
+image:jira-creer-projet-1.png[]
+
+On choisit le modèle **Kanban** :
+
+image:jira-creer-projet-2a.png[]
+
+image:jira-creer-projet-2b.png[]
+
+Puis le type de projet :
+
+image:jira-creer-projet-3.png[]
+
+On précise le nom du projet (et sa clé) :
+
+image:jira-creer-projet-4.png[]
+
+On connecte le projet à https://bitbucket.org/[Bitbucket] (et éventuellement https://www.atlassian.com/fr/software/confluence[Confluence]) :
+
+image:jira-creer-projet-5.png[]
+
+[NOTE]
+====
+Il est possible d'intégrer xref:ancre-integration-github[GitHub] (ou GitLab) à la place de Bitbucket.
+====
+
+image:jira-creer-projet-6.png[]
+
+=== Accès à un projet Kanban
+
+La barre latérale :
+
+image:jira-creer-projet-barre-laterale.png[]
+
+La vue du tableau :
+
+image:jira-creer-projet-tableau-kanban.png[]
+
+Les informations sur le projet :
+
+image:jira-creer-projet-informations.png[]
+
+Les différents types de tickets :
+
+image:jira-creer-projet-types-tickets.png[]
+
+Le _workflow_ par défaut :
+
+image:jira-creer-projet-workflow-defaut.png[]
+
+Il est possible d'automatiser le flux :
+
+image:jira-tvaira-automation-1.png[]
+
+image:jira-tvaira-automation-2.png[]
+
+=== Intégration
+
+Jira est capable de se connecter à des outils de développement compatibles pour offrir des fonctionnalités intéressantes.
+
+On utilisera soit :
+
+- *Bitbucket Cloud*
+
+image:jira-creer-projet-code-bitbucket.png[]
+
+- *GitHub*
+
+image:jira-creer-projet-code-github.png[]
+
+.Smart Commits
+****
+Il est possible d'utiliser des messages de « commit intelligent » (_Smart Commits_) pour faire le lien avec Jira à l'aide de commandes spéciales dans vos messages de validation :
+
+- commenter (`#comment <commentaires>`)
+- enregistrer les informations de suivi du temps (`#time 1w 2d 4h 30m`)
+- faire passer les tickets à n'importe quel statut (par exemple « Résolu ») défini dans le flux de travail du projet Jira (`#close`)
+
+Au minimum, il faut inclure la clé du ticket au début du message de _commit_ pour faire lien avec Jira (Exemple : `git commit -m "JRA-123 <commit message>"`).
+
+Liens :
+
+- https://support.atlassian.com/jira-cloud-administration/docs/enable-smart-commits/
+- https://support.atlassian.com/jira-software-cloud/docs/process-issues-with-smart-commits/
+****
+
+== Bitbucket Cloud
+
+https://bitbucket.org/[Bitbucket] est un service web d'hébergement et de gestion de développement logiciel utilisant le logiciel de gestion de versions https://git-scm.com/[Git]. Bitbucket est gratuit pour les particuliers et les petites équipes comptant jusqu'à 5 utilisateurs, avec des référentiels publics et privés illimités.
+
+image:bitbucket-logo.png[]
+
+L'accès initial à Bitbucket :
+
+image:jira-creer-projet-bitbucket.png[]
+
+//image:jira-creer-projet-bitbucket-details.png[]
+
+//Configuration
+
+On clone le dépôt :
+
+----
+$ git clone https://btssn-avignon-admin@bitbucket.org/btssn-avignon/miniprojet1-team1.git
+Clonage dans 'miniprojet1-team1'...
+Password for 'https://btssn-avignon-admin@bitbucket.org': 
+warning: Vous semblez avoir cloné un dépôt vide.
+
+$ cd miniprojet1-team1/
+
+$ git status
+Sur la branche master
+
+Aucun commit
+
+rien à valider (créez/copiez des fichiers et utilisez "git add" pour les suivre)
+
+$ git remote -v
+origin	https://btssn-avignon-admin@bitbucket.org/btssn-avignon/miniprojet1-team1.git (fetch)
+origin	https://btssn-avignon-admin@bitbucket.org/btssn-avignon/miniprojet1-team1.git (push)
+
+$ git push -u origin master
+----
+
+[TIP]
+====
+Si le dépôt local existe déjà, on peut le relier au dépôt distant :
+
+----
+$ git remote add origin https://btssn-avignon-admin@bitbucket.org/btssn-avignon/miniprojet1-team1.git
+----
+
+Si besoin, on renomme la branche `master` en `main` (l'option `-M` est un raccourci pour les options `--move` et `--force`) :
+
+----
+$ git branch -M main
+----
+====
+
+On peut configurer Git localement :
+
+----
+$ git config --local user.name "vaira"
+$ git config --local user.email "vaira@lasalle84.org"
+
+$ cat .git/config
+...
+----
+
+On peut installer les extensions `git-flow` :
+
+----
+$ sudo apt install git-flow
+
+$ git flow help
+usage: git flow <subcommand>
+
+Available subcommands are:
+   init      Initialize a new git repo with support for the branching model.
+   feature   Manage your feature branches.
+   bugfix    Manage your bugfix branches.
+   release   Manage your release branches.
+   hotfix    Manage your hotfix branches.
+   support   Manage your support branches.
+   version   Shows version information.
+   config    Manage your git-flow configuration.
+   log       Show log deviating from base branch.
+
+Try 'git flow <subcommand> help' for details.
+----
+
+On initialise le dépôt avec la prise en charge du modèle de branchement *Gitflow* :
+
+----
+$ git flow init
+No branches exist yet. Base branches must be created now.
+Branch name for production releases: [master] 
+Branch name for "next release" development: [develop] 
+
+How to name your supporting branch prefixes?
+Feature branches? [feature/] 
+Bugfix branches? [bugfix/] 
+Release branches? [release/] 
+Hotfix branches? [hotfix/] 
+Support branches? [support/] 
+Version tag prefix? [] 
+Hooks and filters directory? [$HOME/jira/miniprojet1-team1/.git/hooks]
+
+$ git push -u origin develop
+Décompte des objets: 2, fait.
+Écriture des objets: 100% (2/2), 160 bytes | 160.00 KiB/s, fait.
+Total 2 (delta 0), reused 0 (delta 0)
+To https://bitbucket.org/btssn-avignon/miniprojet1-team1.git
+ * [new branch]      develop -> develop
+
+$ git ls-remote
+From https://btssn-avignon-admin@bitbucket.org/btssn-avignon/miniprojet1-team1.git
+ddc49adcf578dea85148ff5aa146033b6162e8a6	HEAD
+ddc49adcf578dea85148ff5aa146033b6162e8a6	refs/heads/develop
+ddc49adcf578dea85148ff5aa146033b6162e8a6	refs/heads/master
+----
+
+Dans les détails du projet, on définit la branche principale (ici `master`) :
+
+image:bitbucket-details-projet.png[]
+
+image:bitbucket-branch-master.png[]
+
+Dans les modèles de branches, on définit la branche de développement (ici `develop`) :
+
+//image:bitbucket-modeles-branches.png[]
+
+image:bitbucket-branch-develop.png[]
+
+On obtient :
+
+image:bitbucket-branches-flow.png[]
+
+[[ancre-integration-github]]
+== GitHub
+
+image:github-logo.png[]
+
+Liens :
+
+- https://support.atlassian.com/jira-cloud-administration/docs/integrate-with-github/
+- https://github.com/atlassian/github-for-jira
+
+image:jira-tvaira-integrer-github-1.png[]
+
+image:jira-tvaira-integrer-github-2.png[]
+
+image:jira-tvaira-integrer-github-3.png[]
+
+image:jira-tvaira-integrer-github-4.png[]
+
+image:jira-tvaira-integrer-github-5.png[]
+
+image:jira-tvaira-integrer-github-6.png[]
+
+image:jira-tvaira-integrer-github-7.png[]
+
+image:jira-tvaira-integrer-github-8.png[]
+
+On obtient :
+
+image:jira-tvaira-gerer-apps.png[]
+
+Configuration :
+
+image:jira-creer-projet-github-configuration.png[]
+
+image:jira-creer-projet-code-github-depot.png[]
+
+image:jira-creer-projet-code-github-flow.png[]
+
+On clone le dépôt :
+
+----
+$ git clone git@github.com:btssn-lasalle84/mp1-team0.git
+
+$ cd mp1-team0/
+
+$ echo "# mp1-team0" >> README.md
+$ git add README.md
+$ git commit -m "Ajout README.md"
+
+$ git branch -M main
+
+$ git push -u origin main
+----
+
+On installe des extensions `git-flow` :
+
+----
+$ sudo apt install git-flow
+----
+
+On initialise le dépôt Git avec la prise en charge du modèle de branchement Gitflow :
+
+----
+$ git flow init
+
+Which branch should be used for bringing forth production releases?
+   - main
+Branch name for production releases: [main] 
+Branch name for "next release" development: [develop] 
+
+How to name your supporting branch prefixes?
+Feature branches? [feature/] 
+Bugfix branches? [bugfix/] 
+Release branches? [release/] 
+Hotfix branches? [hotfix/] 
+Support branches? [support/] 
+Version tag prefix? [] 
+Hooks and filters directory? [/home/tv/Documents/jira/mp1-team0/.git/hooks] 
+
+$ git push -u origin develop
+Total 0 (delta 0), reused 0 (delta 0)
+remote: 
+remote: Create a pull request for 'develop' on GitHub by visiting:
+remote:      https://github.com/btssn-lasalle84/mp1-team0/pull/new/develop
+remote: 
+To github.com:btssn-lasalle84/mp1-team0.git
+ * [new branch]      develop -> develop
+La branche 'develop' est paramétrée pour suivre la branche distante 'develop' depuis 'origin'.
+----
+
+== Visual Studio Code
+
+https://code.visualstudio.com/[Visual Studio Code] (un des IDE les plus utilisés actuellement) intégre la gestion du contrôle de source (SCM) et inclut par défaut la prise en charge de Git.
+
+Installation de https://code.visualstudio.com/[Visual Studio Code] :
+
+- https://code.visualstudio.com/Download[Download]
+- https://code.visualstudio.com/docs/setup/linux[Setup]
+- https://code.visualstudio.com/docs[Getting Started]
+
+image:vscode-tp.png[]
+
+Liens :
+
+- https://code.visualstudio.com/docs/editor/versioncontrol
+- https://code.visualstudio.com/docs/editor/github
+
+Le contrôle de source (SCM) :
+
+image:vscode-scm.png[]
+
+Il existe de nombreuses extensions pour faciliter l'utilisation de Git dont https://marketplace.visualstudio.com/items?itemName=donjayamanne.git-extension-pack[Git Extension Pack] qui comprend :
+
+- https://marketplace.visualstudio.com/items?itemName=donjayamanne.githistory[Git History]
+- https://marketplace.visualstudio.com/items?itemName=alefragnani.project-manager[Project Manager]
+- https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens[GitLens]
+- https://marketplace.visualstudio.com/items?itemName=codezombiech.gitignore[gitignore]
+- https://marketplace.visualstudio.com/items?itemName=ziyasal.vscode-open-in-github[Open in GitHub / Bitbucket / VisualStudio.com]
+
+Et quelques autres :
+
+- https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph[Git Graph]
+- https://marketplace.visualstudio.com/items?itemName=felipecaputo.git-project-manager[Git Project Manager]
+- https://marketplace.visualstudio.com/items?itemName=waderyan.gitblame[Git Blame]
+
+Et pour gitflow :
+
+- https://marketplace.visualstudio.com/items?itemName=ardisaurus.gitflow-actions-sidebar[Gitflow Actions Sidebar]
+- https://marketplace.visualstudio.com/items?itemName=vector-of-bool.gitflow[gitflow]
+
+image:vscode-extension-gitflow.png[]
+
+Et pour Jira/Bitbucket :
+
+- https://marketplace.visualstudio.com/items?itemName=atlassian.atlascode[Jira and Bitbucket (Atlassian Labs)]
+
+image:vscode-extension-jira-bitbucket.png[]
+
+image:vscode-extension-jira-settings.png[]
+
+== Les outils graphiques
+
+Il existe de nombreuses interfaces graphiques permettant de gérer des projets Git.
+
+En standard :
+
+- une interface web avec https://git-scm.com/book/fr/v2/Git-sur-le-serveur-GitWeb[GitWeb]
+- une interface de visualisation détaillée et graphique avec `gitk`
+
+Il existe également de nombreuses autres applications :
+
+- https://github.com/tibirna/qgit[qgit] propose des outils supplémentaires par rapport à `gitk` ;
+- https://github.com/GNOME/giggle[Giggle] : une interface en GTK+ ;
+- http://gitextensions.github.io/[GitExtensions] : un client Git graphique pour Windows (C) ;
+- https://tortoisegit.org/[TortoiseGit] : logiciel libre pour Windows reprenant les éléments d'interface de `TortoiseSVN` (un classique) ;
+- ...
+- https://www.sourcetreeapp.com/[SourceTree] : un logiciel propriétaire gratuit pour Windows (C) et macOS (C) édité par Atlassian ;
+
+image:SourceTree.png[]
+
+- https://www.collab.net/downloads/giteye[GitEye] : un client graphique pour Windows (C), macOS  (C) et Linux
+
+----
+$ cd ~/Téléchargements/
+$ wget -c https://www.collab.net/sites/default/files/downloads/GitEye-2.2.0-linux.x86_64.zip
+
+$ mkdir /tmp/GitEye
+$ unzip -d /tmp/GitEye ~/Téléchargements/GitEye-2.2.0-linux.x86_64.zip
+
+$ sudo chown -R root:root /tmp/GitEye
+$ sudo mv /tmp/GitEye /opt/GitEye
+$ sudo ln -s /opt/GitEye/GitEye /usr/local/bin/GitEye
+$ GitEye
+----
+
+image:GitEye.png[]
+
+== Ressources
+
+https://fr.wikipedia.org/wiki/Git[Git] :
+
+- https://git-scm.com/[Git]
+- http://book.git-scm.com/docs[Manuel de référence]
+- http://git-scm.com/book/fr/v2[Livre Pro Git en français]
+- https://alexgirard.com/git-book/[Livre Git Community Book en français]
+
+https://github.com/[GitHub] :
+
+- https://guides.github.com/introduction/git-handbook/[Git Handbook sur Github]
+- https://docs.github.com/en/github/collaborating-with-pull-requests[Collaborating with pull requests]
+
+https://www.atlassian.com/[Atlassian] :
+
+- https://www.atlassian.com/software/jira/guides[Les guides Jira]
+- https://www.atlassian.com/fr/software/jira/guides/use-cases/what-is-jira-used-for[À quoi sert Jira ?]
+- https://www.atlassian.com/fr/agile/tutorials[Découvrez Agile grâce à Jira]
+- https://www.atlassian.com/fr/git/tutorials[Tutoriels]
+- https://www.atlassian.com/fr/git/tutorials/comparing-workflows[Comparaison des workflow git]
+- https://support.atlassian.com/jira-software-cloud/docs/process-issues-with-smart-commits/[Smart Commits]
+- https://support.atlassian.com/jira-cloud-administration/docs/integrate-with-github/[Integrate with GitHub]
+- https://github.com/atlassian/github-for-jira[GitHub for Jira]
+
+***
+
+ifdef::backend-html5[]
+Site : {home}[tvaira.free.fr]
+endif::[]
+
+ifdef::backend-pdf[]
+{author} - <{email}> - version {revnumber} - {revdate} - {home}[tvaira.free.fr]
+endif::[]

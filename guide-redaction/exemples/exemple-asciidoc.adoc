@@ -1,0 +1,211 @@
+= AsciiDoc et Asciidoctor : Exemple en C++
+:author: Thierry Vaira
+:email: tvaira@free.fr
+:revnumber: v0.2
+:revdate: 21/12/2020
+:revremark: Version avec un thème rainbow pour le code source
+:sectnums:
+:toc: left
+:toclevels: 4
+:toc-title: Sommaire
+:description: Exemple en C++
+:keywords: AsciiDoc Asciidoctor C++
+:imagesdir: ./images/
+:sourcedir: ./src/
+:source-highlighter: highlightjs
+:highlightjs-theme: rainbow
+
+////
+:highlightjs-theme: xcode
+:highlightjs-theme: androidstudio
+:highlightjs-theme: googlecode
+:highlightjs-theme: github
+:highlightjs-theme: foundation
+:highlightjs-theme: idea
+:highlightjs-theme: rainbow
+:highlightjs-theme: vs
+:highlightjs-theme: sunburst
+:highlightjs-theme: tomorrow
+:highlightjs-theme: railscasts
+:highlightjs-theme: zenburn
+////
+
+////
+Thierry Vaira <tvaira@free.fr> 2020
+Version 0.2, 21/12/2020
+////
+
+////
+$ sudo gem install coderay
+Pour :
+:source-highlighter: coderay
+
+$ sudo gem install pygments.rb
+Pour :
+:source-highlighter: pygments
+
+$ pygmentize -L styles
+////
+
+ifdef::backend-html5[]
+++++
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+++++
+:html:
+endif::[]
+
+ifndef::html[]
+:source-highlighter: pygments
+:pygments-style: xcode
+endif::[] 
+
+:icons: font
+
+:home: http://tvaira.free.fr/
+
+== Asciidoc
+
+https://fr.wikipedia.org/wiki/AsciiDoc[*AsciiDoc*] est un langage de balisage léger proche du langage https://fr.wikipedia.org/wiki/Markdown[_Markdown_], proposant une richesse sémantique plus importante.
+
+Syntaxe : http://asciidoctor.org/docs/asciidoc-syntax-quick-reference/
+
+.Markdown vs Asciidoc
+[NOTE]
+====
+Comme Markdown, les fichiers `.adoc` (extension par défaut pour des fichiers Asciidoc) utilisent une syntaxe simple à écrire et à lire. Voici un comparatif entre les deux formats : http://asciidoctor.org/docs/user-manual/#compared-to-markdown
+====
+
+Lien : https://asciidoc.org/
+
+== Exemple C++
+
+Comme Markdown, le format AsciiDoc est très apprécié et utilisé par les développeurs pour rédiger notamment des documentations. 
+
+L'link:./exemple-asciidoc.adoc[exemple] ci-dessous montre une utilisation d'AsciiDoc dans le cadre d'un développement en *C++*. Le fichier en Asciidoc : link:./exemple-asciidoc.adoc[exemple-asciidoc.adoc]
+
+Une syntaxe est directement dédiée pour intégrer du code source : https://asciidoctor.org/docs/asciidoc-syntax-quick-reference/#source-code
+
+=== Création d'une classe
+
+====
+Déclaration d'une classe `Point` en C++
+====
+
+[NOTE]
+====
+Le code C++ peut être directement intégré dans le fichier AsciiDoc.
+====
+
+////
+Le code C++ peut être directement intégré dans le fichier AsciiDoc
+Avec les numéros de ligne :
+[source,cpp,linenums]
+////
+
+[source,cpp]
+.Point.h
+----
+class Point 
+{
+   private:
+      double x;
+      double y;
+      
+   public:
+      Point(); // <1>
+      Point(double x, double y);
+
+      // Accesseurs
+      double getX() const;
+      void setX(double x);
+      double getY() const;
+      void setY(double y);
+      // Service(s)
+      void affiche() const;
+};
+----
+
+<1> Constructeur par défaut
+
+////
+[horizontal]
+////
+Constructeur par défaut:: Le constructeur qui est appelé lorsqu'aucun paramètre est fourni lors de l'instanciation.
+
+====
+Définition d'une classe `Point` en C++
+====
+
+[NOTE]
+====
+Le code peut être directement intégré à partir d'un fichier C++.
+====
+
+////
+Le code peut être directement intégré à partir d'un fichier C++
+////
+
+[source,cpp]
+.Point.cpp
+----
+include::{sourcedir}Point.cpp[]
+----
+
+=== Instanciation
+
+[NOTE]
+====
+En utilisant des _tags_, il est possible d'intégrer des fragments de code. Voir l'utilisation des _tags_ dans le fichier source link:./src/testPoint.cpp[testPoint.cpp].
+====
+
+Exemple d'utilisation de la classe `Point` :
+
+////
+En utilisant des tags, il est possible d'intégrer des fragments de code
+////
+
+.Constructeur par défaut
+[source,cpp]
+----
+include::{sourcedir}testPoint.cpp[tag=snippet-constructeur-default,indent=0]
+----
+
+.Constructeur d'initialisation
+[source,cpp]
+----
+include::{sourcedir}testPoint.cpp[tag=snippet-constructeur-initialisation,indent=0]
+----
+
+.Accesseurs et mutateurs (_getter/setter_)
+[source,cpp]
+----
+include::{sourcedir}testPoint.cpp[tag=snippet-accesseurs,indent=0]
+----
+
+.Tableau d'objets
+[source,cpp]
+----
+include::{sourcedir}testPoint.cpp[tag=snippet-tableau-objets,indent=0]
+----
+
+.Les services d'une classe
+[source,cpp]
+----
+include::{sourcedir}testPoint.cpp[tag=snippet-services,indent=0]
+----
+
+.Allocation dynamique d'objet
+[source,cpp]
+----
+include::{sourcedir}testPoint.cpp[tag=snippet-allocation-dynamique,indent=0]
+----
+
+ifdef::backend-html5[]
+La version PDF de ce document produite avec `asciidoctor-pdf` : link:./exemple-asciidoc.pdf[exemple-asciidoc.pdf].
+
+La version Asciidoc de ce document : link:./exemple-asciidoc.adoc[exemple-asciidoc.adoc].
+endif::[]
+
+***
+
+Site : {home}[tvaira.free.fr]

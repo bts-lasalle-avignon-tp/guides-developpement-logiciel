@@ -1,0 +1,3817 @@
+= Guide d'utilisation de git
+:author: Thierry Vaira
+:email: tvaira@free.fr
+:revnumber: v0.2
+:revdate: 23/08/2021
+:revremark:
+:sectnums:
+:toc: left
+:toclevels: 4
+:toc-title: Sommaire
+:description: Utilisation de git
+:keywords: git github
+:imagesdir: ./images/
+:source-highlighter: highlightjs
+:highlightjs-theme: rainbow
+:stem:
+
+////
+:highlightjs-theme: xcode
+:highlightjs-theme: androidstudio
+:highlightjs-theme: googlecode
+:highlightjs-theme: github
+:highlightjs-theme: foundation
+:highlightjs-theme: idea
+:highlightjs-theme: rainbow
+:highlightjs-theme: vs
+:highlightjs-theme: sunburst
+:highlightjs-theme: tomorrow
+:highlightjs-theme: railscasts
+:highlightjs-theme: zenburn
+////
+
+ifdef::backend-html5[]
+++++
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+++++
+:html:
+endif::[]
+
+:icons: font
+
+:home: http://tvaira.free.fr/
+
+ifdef::backend-pdf[]
+{author} - <{email}> - version {revnumber} - {revdate} - {home}[tvaira.free.fr]
+endif::[]
+
+Objectif : Utiliser git en ligne de commande et avec GitHub.
+
+== Présentation
+
+https://fr.wikipedia.org/wiki/Git[Git] est un logiciel de *gestion de versions décentralisé* (DVCS). C'est un logiciel libre créé par *Linus Torvalds* en 2005. Il s'agit maintenant du logiciel de gestion de versions le plus populaire devant https://fr.wikipedia.org/wiki/Apache_Subversion[Subversion] (`svn`) qu'il a remplacé avantageusement.
+
+//.Le logo Git
+image:git-logo.png[title="Le logo Git"]
+
+Site officiel : https://git-scm.com/
+
+== Ressources
+
+- http://book.git-scm.com/docs[Manuel de référence]
+- http://git-scm.com/book/fr/v2[Livre Pro Git en français]
+- https://alexgirard.com/git-book/[Livre Git Community Book en français]
+- https://fr.wikibooks.org/wiki/Git[Wikilivre Git en français]
+- https://fr.wikipedia.org/wiki/Git[Wikipedia Git]
+- https://guides.github.com/introduction/git-handbook/[Git Handbook sur Github]
+
+== Gestion de versions (VCS)
+
+La https://fr.wikipedia.org/wiki/Gestion_de_versions[gestion de version] (_Version Control_ ou _Revision Control_) consiste à gérer l'ensemble des versions d'un ou plusieurs fichiers (généralement en texte).
+
+[NOTE]
+====
+On préfère parfois le terme « révision » (une modification) afin de ne pas confondre la version d'un fichier et la version d'un logiciel, qui est une étape de distribution sous forme « finie » (_release_).
+====
+
+Un gestionnaire de version est donc un système (un outil logiciel) qui enregistre l’évolution d’un fichier (ou d’un ensemble de fichiers) au cours du temps dans un historique. Il permet de ramener un fichier à un état précédent, de ramener le projet complet à un état précédent, de visualiser les changements au cours du temps, de voir qui a modifié quelque chose et quand, et plus encore ...
+
+Les fichiers ainsi versionnés sont mis à dispositions sur un dépôt (_repository_). C'est un espace de stockage géré par un logiciel de gestion de versions.
+
+Essentiellement utilisée dans le développement logiciel, elle concerne surtout la gestion des codes source.
+
+[TIP]
+====
+https://github.com/steeve/france.code-civil[Le Code civil français sous Git] ! Lire l'https://www.nextinpact.com/article/17620/93698-interview-steeve-morin-nous-explique-pourquoi-il-a-mis-code-civil-dans-github[interview de Steeve Morin].
+====
+
+=== Notion de version
+
+Les différentes versions (ou révision) sont nécessairement liées à travers des modifications : une modification est un ensemble d'ajouts, de modifications, et de suppressions de données.
+
+La gestion de version repose sur deux mécanismes de base :
+
+- un calcul de la différence entre deux versions (https://fr.wikipedia.org/wiki/Diff[`diff`] / https://fr.wikipedia.org/wiki/Patch_(Unix)[`patch`])
+https://fr.wikipedia.org/wiki/Diff[`diff`]:: Compare des fichiers ligne à ligne
+https://fr.wikipedia.org/wiki/Patch_(Unix)[`patch`]:: Utilise la différence entre deux fichiers pour passer d'une version à l'autre.
+
+- un gestionnaire d'historique des `diff` pour conserver les modifications
+
+Exemple :
+
+.diff en action :
+----
+$ cat toto-1.txt
+toto :
+Hello wordl!
+
+$ cat toto-2.txt
+toto :
+Bonjour le monde !
+
+$ diff toto-1.txt toto-2.txt
+2c2
+< Hello wordl!
+---
+> Bonjour le monde !
+----
+
+.patch en action :
+----
+$ diff toto-1.txt toto-2.txt > toto.patch
+
+$ patch toto-1.txt toto.patch
+patching file toto-1.txt
+
+$ cat toto-1.txt
+toto :
+Bonjour le monde !
+----
+
+[NOTE]
+====
+La première ligne de la sortie de `diff` indique les numéros de ligne qui contiennent des différences et le type de modifications qui ont été apportées. Le `c` indique que le contenu a été remplacé, sinon `a` pour un ajout et `d` pour une suppression.
+
+Les caractères `>` et `<` dans la sortie pointent dans la direction du fichier dans lequel se trouve le contenu. Ainsi, pour la commande ci-dessus, le `<` fait référence aux lignes de `toto-1.txt` et `>` fait référence aux lignes de `toto-2.txt`.
+====
+
+Le principe est donc le suivant : on passera de la version N à la version N+1 en appliquant une modification M. Un logiciel de gestion de versions applique ou retire ces modifications une par une pour fournir la version du fichier voulue.
+
+=== VCS vs DVCS
+
+Un système de gestion de version ou *VCS* (_Version Control System_) :
+
+- maintient l'ensemble des versions d'un logiciel ;
+- conserve l'historique (les révisions successives) du projet dans un seul dépôt (_repository_) qui fait référence : possibilités de revenir en arrière, de voir les changements ;
+- facilite la collaboration entre les intervenants : chacun travaille avec son environnement, plusieurs personnes travaillent sur les mêmes
+fichiers simultanément ;
+- fournit des outils pour gérer le tout.
+
+Un *DVCS* (_Distributed Version Control_) offre les mêmes services qu'un VCS sur une *architecture décentralisée* (ou distribuée).
+
+ifdef::backend-html5[]
+image:git-vs-svn.png[]
+endif::[]
+
+ifdef::backend-pdf[]
+image::git-vs-svn.png[,480,,align="center"]
+endif::[]
+
+====
+La plupart des opérations de Git sont locales.
+====
+
+Lien : https://fr.wikipedia.org/wiki/Gestion_de_versions#Syst%C3%A8mes_centralis%C3%A9s_et_d%C3%A9centralis%C3%A9s[ Systèmes centralisés et décentralisés]
+
+=== Logiciels de gestion de versions
+
+- Logiciels libres : https://fr.wikipedia.org/wiki/Source_Code_Control_System[SCCS] -> https://fr.wikipedia.org/wiki/GNU_RCS[GNU RCS] (standard de fait) -> https://fr.wikipedia.org/wiki/Concurrent_versions_system[CVS] -> https://fr.wikipedia.org/wiki/Apache_Subversion[Subversion] (svn) -> https://fr.wikipedia.org/wiki/Git[Git]. Alternatives : https://fr.wikipedia.org/wiki/Bazaar_(logiciel)[Bazaar] ou https://fr.wikipedia.org/wiki/Mercurial[Mercurial].
+- Logiciels propriétaires : ClearCase (IBM(C)), Visual Source Safe et Team Foundation Server (Microsoft(C)), ...
+
+== Fonctionnement interne
+
+Git a été conçu comme un système de fichiers versionnés.
+
+[quote, Linus Torvalds (auteur du noyau Linux et de git)]
+____
+Par bien des aspects, vous pouvez considérer Git comme un simple système de fichiers.
+____
+
+Git possède deux structures de données : une base d'objets et un cache de répertoires.
+
+Il existe quatre types d'objets :
+
+- l'objet *blob* (_binary large object_), qui représente le contenu d'un fichier ;
+- l'objet *tree* (arbre), qui décrit une arborescence de fichiers. Il est constitué d'une liste d'objets de type _blobs_ et des informations qui leur sont associées, tel que le nom du fichier et les permissions. Il peut contenir récursivement d'autres _trees_ pour représenter les sous-répertoires ;
+- l'objet *commit* (résultat de l'opération du même nom signifiant « valider une transaction »), qui correspond à une arborescence de fichiers (_tree_) enrichie de métadonnées comme un message de description, le nom de l'auteur, etc. Il pointe également vers un ou plusieurs objets _commit_ parents pour former un graphe d'historiques ;
+- l'objet *tag* (étiquette) qui est une manière de nommer arbitrairement un _commit_ spécifique pour l'identifier plus facilement. Il est en général utilisé pour marquer certains _commits_, par exemple par un numéro ou un nom de version.
+
+La base des objets peut contenir n'importe quel type d'objets.
+
+Une couche intermédiaire, utilisant des index (les sommes de contrôle), établit un lien entre les objets de la base et l'arborescence des fichiers.
+
+Git indexe les fichiers d'après leur somme de contrôle calculée avec la https://fr.wikipedia.org/wiki/Fonction_de_hachage[fonction de hachage] https://fr.wikipedia.org/wiki/SHA-1[SHA-1] qui génère un « _hash_ » (une clé) de 160 bits.
+
+[NOTE]
+====
+Une empreinte SHA-1 est une chaîne de caractères composée de 40 caractères hexadécimaux (de '0' à '9' et de 'a' à 'f') calculée en fonction du contenu du fichier. Dans Git, c'est une signature unique qui sert de référence
+====
+
+.sha1sum en action :
+----
+$ sha1sum toto-1.txt
+b6c3339dcaa25beabff0af919a49e8c44d800dab  toto-1.txt
+
+$ echo "Fin" >> toto-1.txt
+
+$ sha1sum toto-1.txt
+0610e586db143df27558d98a5bd4c2c792b0bf28  toto-1.txt
+----
+
+[NOTE]
+====
+Dans Git, il est possible d'utiliser une empreinte SHA-1 courte (au moins 4 caractères) lorsqu'elle ne correspond pas à plusieurs _commits_. En règle générale, entre 8 et 10 caractères sont largement suffisants pour assurer l’unicité dans un projet. Par exemple, en février 2019, le noyau Linux avait de plus de 875 000 commits et presque sept millions d’objets dont les empreintes SHA sont uniques à partir des 12 premiers caractères.
+====
+
+Git enregistre chaque révision dans un fichier en tant qu'objet _blob_ unique.
+
+[NOTE]
+====
+En général, les objets _blobs_ sont stockés dans leur intégralité en utilisant la compression de la `zlib`.
+====
+
+Une différence majeure entre Git et les autres VCS (comme Subversion) réside dans l'historique. La plupart des autres systèmes gèrent une liste de modifications de fichiers (des différences). Git ne fait pas ça : il stocke un instantané (un _commit_) de la représentation de tous les fichiers du projet dans une structure hiérarchisée. Pour être efficace, si les fichiers n’ont pas changé, Git ne stocke pas le fichier à nouveau mais seulement une référence vers celui-ci.
+
+Exemple d'historique du « point de vue » de Git :
+
+image:git-exemple-historique-objets.png[title="Un historique du point de vue de Git"]
+
+== Les commandes
+
+Git est un ensemble de commandes indépendantes dont les principales sont :
+
+- `git init`​ crée un nouveau dépôt ;
+- `git clone​` clone un dépôt distant ;
+- `git add​` ajoute le contenu du répertoire de travail dans la zone d’index pour le prochain _commit_ ;
+- `git status​` montre les différents états des fichiers du répertoire de travail et de l’index ;
+- `git diff​` montre les différences ;
+- `git commit`​ enregistre dans la base de données (le dépôt) un nouvel instantané avec le contenu des fichiers qui ont été indexés puis fait pointer la branche courante dessus ;
+- `git branch​` liste les branches ou crée une nouvelle branche ;
+- `git checkout` permet de basculer de branche et d'en extraire le contenu dans le répertoire de travail ;
+- `git merge​` fusionne une branche dans une autre ;
+- `git log​` affiche la liste des _commits_ effectués sur une branche ;
+- `git fetch` récupère toutes les informations du dépôt distant et les stocke dans le dépôt local ;
+- `git push​` publie les nouvelles révisions sur le dépôt distant ;
+- `git pull​` récupère les dernières modifications distantes du projet et les fusionne dans la branche courante ;
+- `git tag` liste ou crée des _tags_ ;
+- `git stash​` stocke de côté un état non commité afin d'effectuer d'autres tâches.
+
+Liens :
+
+- https://training.github.com/downloads/fr/github-git-cheat-sheet/[AIDE MÉMOIRE GITHUB GIT] https://training.github.com/downloads/fr/github-git-cheat-sheet.pdf[PDF]
+- https://ndpsoftware.com/git-cheatsheet.html[Git CHEATSHEET]
+- https://www.julienkrier.fr/articles/git-cheat-sheet[Git Cheat Sheet]
+
+.Obtenir de l'aide :
+----
+$ git help
+$ git --help
+$ man git
+
+$ git help <commande>
+$ git <commande> --help
+$ man git-<commande>
+----
+
+== Premier pas
+
+.Objectif
+****
+Installer et configurer Git Sous GNU/Linux Ubuntu
+****
+
+=== Installation
+
+.Sous GNU/Linux Ubuntu :
+----
+$ sudo apt-get install git gitk
+
+$ git --version
+git version 2.17.1
+----
+
+[NOTE]
+====
+`gitk` est une interface graphique pour git. C'est un paquet optionnel !
+====
+
+Sous Mac OS X :
+
+Il y a plusieurs façons d'installer `git` sous Mac OS X, en voici une : https://sourceforge.net/projects/git-osx-installer/[git-osx-installer]
+
+Sous Windows :
+
+Le projet https://gitforwindows.org/[Git for Windows] fournit une procédure d'installation : https://github.com/git-for-windows/git/releases/latest
+
+=== Configuration
+
+.Configuration du compte :
+----
+$ git config --global user.name "<votre nom>"
+$ git config --global user.email "<votre email>"
+----
+
+.Choix de l'éditeur de texte :
+----
+$ git config --global core.editor vim
+----
+
+.Activation de la coloration :
+----
+$ git config --global color.diff auto
+$ git config --global color.status auto
+$ git config --global color.branch auto
+----
+
+etc ...
+
+[NOTE]
+====
+Le fichier de configuration `.gitconfig` est situé à la racine de votre répertoire personnel. Il peut exister un fichier `/etc/gitconfig` qui contient les valeurs pour tous les utilisateurs et tous les dépôts du système. Sinon la configuration sera complétée par le fichier `.git/config` du dépôt en cours d'utilisation. On peut alors utiliser la commande `git config --local`.
+====
+
+.Visualiser le fichier de configuration
+----
+$ cat $HOME/.gitconfig
+----
+
+[source,ini]
+----
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+[user]
+	name = tvaira
+	email = tvaira@free.fr
+----
+
+.Visualiser la configuration
+----
+$ git config --list
+
+$ git config user.name
+tvaira
+----
+
+Stockage des identifiants :
+
+Lien : https://git-scm.com/book/fr/v2/Utilitaires-Git-Stockage-des-identifiants
+
+Le mode « cache » conserve en mémoire les identifiants pendant un certain temps. Aucun mot de passe n’est stocké sur le disque et les identifiants sont oubliés après 15 minutes par défaut.
+
+----
+$ git config --global credential.helper cache
+----
+
+L’assistant `cache` accepte une option `--timeout <secondes>` qui modifie la période de maintien en mémoire (par défaut, 900, soit 15 minutes).
+
+.Exemple pour 8 heures :
+----
+$ git config --global credential.helper 'cache --timeout 28800'
+----
+
+== Les commandes de base
+
+.Objectif
+****
+Découvrir les commandes de base nécessaires pour utiliser avec Git en local :
+
+- configurer et initialiser un dépôt,
+- commencer et arrêter le suivi de version de fichiers,
+- indexer et valider des modifications.
+****
+
+On abordera aussi :
+
+- le paramétrage de Git pour ignorer certains fichiers,
+- revenir sur les erreurs rapidement et facilement,
+- parcourir l’historique du projet et voir les modifications entre deux validations.
+
+=== Introduction
+
+La fonction principale de Git est de suivre les différentes versions d'un projet. Un projet est un ensemble de fichiers.
+
+Le _commit_ est l'élément central de Git. Un _commit_ (ou instantané) représente un ensemble cohérent de modifications sur le projet.
+
+=== Initialiser un dépôt git
+
+.Création d'un répertoire :
+----
+$ mkdir tp-git-sequence-1
+mkdir: création du répertoire 'tp-git-sequence-1'
+
+$ cd ./tp-git-sequence-1
+----
+
+[NOTE]
+====
+Il est évidemment possible de commencer à partir d'un répertoire existant.
+====
+
+.Initialisation d'un dépôt git :
+----
+$ git init
+Dépôt Git vide initialisé dans $HOME/tp-git-sequence-1/.git/
+----
+
+Cela crée un nouveau sous-répertoire nommé `.git` qui contient tous les fichiers nécessaires au dépôt :
+
+----
+$ ls -al
+...
+drwxrwxr-x  7 tv tv 4096 juil. 28 10:58 .git
+
+$ tree -L 1 .git
+.git
+├── config        # configuration des préférences
+├── description   # description du projet
+├── HEAD          # pointeur vers la branche courante
+├── hooks         # pre/post actions hooks
+├── index         # l'index
+├── logs          # historique
+├── objects       # les objets (commits, trees, blobs, tags)
+└── refs          # pointeurs vers les branches
+...
+----
+
+[NOTE]
+====
+Pour l’instant, aucun fichier n’est encore versionné.
+====
+
+On distingue trois zones :
+
+- le répertoire de travail (_working directory_) : répertoire (ici `tp-git-sequence-1`) du système de fichiers qui contient une extraction unique d’une version du projet pour pouvoir travailler
+- l'index ou zone de transit (_staging area_) : un simple fichier (ici `.git/index`) qui stocke les informations concernant ce qui fera partie du prochain instantané (_commit_)
+- le dépôt local (_local repository_) : répertoire (ici `.git`) qui stocke tout l’historique des instantannés (_commits_) et les méta-données du projet
+
+ifdef::backend-html5[]
+image:git-zones.png[]
+endif::[]
+
+ifdef::backend-pdf[]
+image::git-zones.png[,480,200,align="center"]
+endif::[]
+
+[NOTE]
+====
+On peut considérer qu'il existe une quatrième zone nommée "remise" qui s'utilise avec la commande `git stash`.
+====
+
+=== Travailler avec git
+
+L’utilisation standard de Git se passe comme suit :
+
+- on édite des fichiers dans le répertoire de travail (_working directory_) ;
+- on indexe les fichiers modifiés, ce qui ajoute des instantanés de ces fichiers dans la zone d’index (_staging area_) ;
+- on valide les modifications, ce qui a pour effet de basculer les instantanés des fichiers de l’index dans le dépôt local (_local repository_).
+
+image:git-travail.png[]
+
+Lien : https://ndpsoftware.com/git-cheatsheet.html
+
+Les différents états d'un fichier :
+
+- non suivi ou non versionné (_untracked_) : aucun instantané existe pour ce fichier
+- non modifié (_unmodified_) : non modifié depuis le dernier instantané
+- modifié (_modified_) : modifié depuis le dernier instantané mais n’a pas été indexé
+- indexé (_staged_) : modifié et ajouté dans la zone d’index
+- validé : une version particulière d’un fichier
+
+image:git-fichier.png[]
+
+Pour obtenir l'état des fichiers du répertoire de travail (_working directory_), on utilise (très souvent) la commande `git status` :
+
+.git status en action :
+----
+$ git status --help
+$ git help status
+
+$ git status
+Sur la branche master
+
+Aucun commit
+
+rien à valider (créez/copiez des fichiers et utilisez "git add" pour les suivre)
+
+$ git status -s
+$ git status -b
+$ git status --long
+$ git status -v
+----
+
+[NOTE]
+====
+`master` (ou `main`) désigne la branche principale (cf. xref:ancre-branches[Travailler avec les branches]).
+====
+
+==== Ajouter un nouveau fichier
+
+.Création d'un fichier vide :
+----
+$ touch bienvenue.cpp
+
+$ git status -s
+?? bienvenue.cpp
+
+$ git status
+Sur la branche master
+
+Aucun commit
+
+Fichiers non suivis:
+  (utilisez "git add <fichier>..." pour inclure dans ce qui sera validé)
+
+        bienvenue.cpp
+
+aucune modification ajoutée à la validation mais des fichiers non suivis sont présents (utilisez "git add" pour les suivre)
+----
+
+Le fichier `bienvenue.cpp` est non suivi (_untracked_).
+
+`git add` est une commande multi-usage, elle peut être utilisée pour :
+
+- pour placer un fichier sous suivi de version,
+- pour indexer un fichier
+- ou pour d’autres actions telles que marquer comme résolus des conflits de fusion de fichiers.
+
+Sa signification s’approche plus de « ajouter ce contenu pour la prochaine validation » (_commit_).
+
+.Ajout d'un fichier dans l'index :
+----
+$ git add bienvenue.cpp
+
+$ git status -s
+A  bienvenue.cpp
+
+$ git status -v
+Sur la branche master
+
+Aucun commit
+
+Modifications qui seront validées :
+  (utilisez "git rm --cached <fichier>..." pour désindexer)
+
+        nouveau fichier : bienvenue.cpp
+
+diff --git a/bienvenue.cpp b/bienvenue.cpp
+new file mode 100644
+index 0000000..e69de29
+----
+
+Le fichier `bienvenue.cpp` est maintenant suivi et indexé (_staged_).
+
+.Validation des changements dans le dépôt :
+----
+$ git commit -m "Ajout du fichier bienvenue.cpp"
+[master (commit racine) bb344f4] Ajout du fichier bienvenue.cpp
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 bienvenue.cpp
+$ git status
+Sur la branche master
+rien à valider, la copie de travail est propre
+----
+
+Le fichier `bienvenue.cpp` est validé dans le dépôt local.
+
+==== Modifier un fichier
+
+.Édition du fichier :
+----
+$ vim bienvenue.cpp
+----
+
+[source,cpp]
+----
+// TODO Indiquer ce que fait le programme
+
+int main()
+{
+   // TODO Afficher un message de bienvenue
+
+   return 0;
+}
+----
+
+----
+$ git status -s
+ M bienvenue.cpp
+
+$ git status
+Sur la branche master
+Modifications qui ne seront pas validées :
+  (utilisez "git add <fichier>..." pour mettre à jour ce qui sera validé)
+  (utilisez "git checkout -- <fichier>..." pour annuler les modifications dans la copie de travail)
+
+        modifié :         bienvenue.cpp
+
+aucune modification n'a été ajoutée à la validation (utilisez "git add" ou "git commit -a")
+----
+
+Avant d'indexer le fichier modifié, il est plus prudent de vérifier son utilisation :
+
+.Fabrication de l'exécutable :
+----
+$ g++ -c bienvenue.cpp
+$ ls -l
+-rw-rw-r-- 1 tv tv  119 juil. 28 20:46 bienvenue.cpp
+-rw-rw-r-- 1 tv tv 1232 juil. 28 20:48 bienvenue.o
+
+$ g++ -o bienvenue bienvenue.o
+$ ls -l
+-rwxrwxr-x 1 tv tv 8168 juil. 28 20:48 bienvenue
+-rw-rw-r-- 1 tv tv  119 juil. 28 20:46 bienvenue.cpp
+-rw-rw-r-- 1 tv tv 1232 juil. 28 20:48 bienvenue.o
+
+$ ./bienvenue
+----
+
+On peut maintenant indexer le fichier :
+
+----
+$ git add bienvenue.cpp
+----
+
+----
+$ git status -s
+M  bienvenue.cpp
+?? bienvenue
+?? bienvenue.o
+
+$ git status -v
+Sur la branche master
+Modifications qui seront validées :
+  (utilisez "git reset HEAD <fichier>..." pour désindexer)
+
+        modifié :         bienvenue.cpp
+
+Fichiers non suivis:
+  (utilisez "git add <fichier>..." pour inclure dans ce qui sera validé)
+
+        bienvenue
+        bienvenue.o
+
+diff --git a/bienvenue.cpp b/bienvenue.cpp
+index e69de29..d315a70 100644
+--- a/bienvenue.cpp
++++ b/bienvenue.cpp
+@@ -0,0 +1,9 @@
++// TODO Indiquer ce que fait le programme
++
++int main()
++{
++   // TODO Afficher un message de bienvenue
++
++   return 0;
++}
++
+----
+
+[NOTE]
+====
+`HEAD` désigne le commit le plus récent de la branche courante.
+====
+
+Puis valider les modifications :
+
+----
+$ git commit -m "Création du programme principal"
+[master 973e4f7] Création du programme principal
+ 1 file changed, 9 insertions(+)
+----
+
+==== Ignorer des fichiers
+
+Il apparaît souvent que certains types de fichiers présents dans la copie de travail ne doivent pas être ajoutés au dépôt :
+
+----
+$ git status
+Sur la branche master
+Fichiers non suivis:
+  (utilisez "git add <fichier>..." pour inclure dans ce qui sera validé)
+
+        bienvenue
+        bienvenue.o
+
+aucune modification ajoutée à la validation mais des fichiers non suivis sont présents (utilisez "git add" pour les suivre)
+----
+
+Ici, ce sont les fichiers issus de la fabrication (exécutable, fichiers objets, ...).
+
+Pour simplement les ignorer dans git, il faut les ajouter dans un fichier spécial `.gitignore` :
+
+.Création d'un fichier .gitignore :
+----
+$ touch .gitignore
+$ echo '*.[oa]' >> .gitignore
+$ echo '*~' >> .gitignore
+----
+
+----
+$ git status
+Sur la branche master
+Fichiers non suivis:
+  (utilisez "git add <fichier>..." pour inclure dans ce qui sera validé)
+
+        .gitignore
+        bienvenue
+
+aucune modification ajoutée à la validation mais des fichiers non suivis sont présents (utilisez "git add" pour les suivre)
+$ echo 'bienvenue' >> .gitignore
+$ git status
+Sur la branche master
+Fichiers non suivis:
+  (utilisez "git add <fichier>..." pour inclure dans ce qui sera validé)
+
+        .gitignore
+
+aucune modification ajoutée à la validation mais des fichiers non suivis sont présents (utilisez "git add" pour les suivre)
+----
+
+On peut aussi l'ajouter au dépôt :
+
+----
+$ git add .gitignore
+$ git commit -m "Ajout du fichier .gitignore"
+[master af1dcc8] Ajout du fichier .gitignore
+ 1 file changed, 3 insertions(+)
+ create mode 100644 .gitignore
+----
+
+.Vérification :
+----
+$ git status
+Sur la branche master
+rien à valider, la copie de travail est propre
+
+$ git status --ignored
+Sur la branche master
+Fichiers ignorés:
+  (utilisez "git add -f <fichier>..." pour inclure dans ce qui sera validé)
+
+        bienvenue
+        bienvenue.o
+
+rien à valider, la copie de travail est propre
+
+$ ls bienvenue*
+bienvenue  bienvenue.cpp  bienvenue.o
+
+$ git check-ignore bienvenue*
+bienvenue
+bienvenue.o
+----
+
+Liens :
+
+- https://git-scm.com/docs/gitignore[gitignore]
+- https://github.com/github/gitignore[Une collection de modèles .gitignore]
+
+==== Visualiser des différences
+
+En complément de `git status`, on utilisera la commande `git diff` pour visualiser les lignes exactes qui ont été ajoutées, modifiées ou effacées :
+
+- qu’est-ce qui a été modifié mais pas encore indexé ?
+- quelle modification a été indexée et qui est prête pour la validation ?
+
+image:git-diff.png[]
+
+On modifie le programme principal :
+
+----
+$ vim bienvenue.cpp
+----
+
+[source,cpp]
+----
+// Affiche un message de bienvenue
+
+#include <iostream>
+
+int main()
+{
+   std::cout << "Bienvenue le monde !" << std::endl;
+
+   return 0;
+}
+----
+
+----
+$ g++ -c bienvenue.cpp
+$ g++ bienvenue.o -o bienvenue
+$ ./bienvenue
+Bienvenue le monde !
+----
+
+Le fichier est dans l'état modifié daans le répertoire de travail :
+
+----
+$ git status -s
+ M bienvenue.cpp
+----
+
+La commande `git diff` compare le contenu du répertoire de travail avec la zone d’index. Cela affiche les modifications réalisées mais non indexées :
+
+.Voir les différences avec l'index :
+----
+$ git diff
+diff --git a/bienvenue.cpp b/bienvenue.cpp
+index d315a70..e8d46fe 100644
+--- a/bienvenue.cpp
++++ b/bienvenue.cpp
+@@ -1,8 +1,10 @@
+-// TODO Indiquer ce que fait le programme
++// Affiche un message de bienvenue
++
++#include <iostream>
+ 
+ int main()
+ {
+-   // TODO Afficher un message de bienvenue
++   std::cout << "Bienvenue le monde !" << std::endl;
+ 
+    return 0;
+ }
+----
+
+On indexe le fichier :
+
+----
+$ git add bienvenue.cpp
+----
+
+Et :
+
+----
+$ git diff
+
+Aucune différence
+----
+
+La commande `git diff --staged` compare les fichiers indexés et le dernier instantané (_commit_). Cela affiche les modifications indexées qui feront partie de la prochaine validation :
+
+.Contenu de l'index :
+----
+$ git status
+Sur la branche master
+Modifications qui seront validées :
+  (utilisez "git reset HEAD <fichier>..." pour désindexer)
+
+        modifié :         bienvenue.cpp
+----
+
+.Voir les différences avec le dernier commit :
+----
+$ git diff --staged
+diff --git a/bienvenue.cpp b/bienvenue.cpp
+index d315a70..e8d46fe 100644
+--- a/bienvenue.cpp
++++ b/bienvenue.cpp
+@@ -1,8 +1,10 @@
+-// TODO Indiquer ce que fait le programme
++// Affiche un message de bienvenue
++
++#include <iostream>
+ 
+ int main()
+ {
+-   // TODO Afficher un message de bienvenue
++   std::cout << "Bienvenue le monde !" << std::endl;
+ 
+    return 0;
+ }
+----
+
+On valide :
+
+----
+$ git commit -m "Affiche un message de bienvenue"
+[master 4717082] Affiche un message de bienvenue
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+----
+
+Et :
+
+----
+$ git diff --staged
+
+Aucune différence
+
+$ git status
+Sur la branche master
+rien à valider, la copie de travail est propre
+
+$ cat bienvenue.cpp
+----
+
+[source,cpp]
+----
+// Affiche un message de bienvenue
+
+#include <iostream>
+
+int main()
+{
+   std::cout << "Bienvenue le monde !" << std::endl;
+
+   return 0;
+}
+----
+
+[NOTE]
+====
+`--staged` est un synonyme de `--cached`.
+====
+
+La commande `git diff <commit>` sert à visualiser les modifications présentes dans le répertoire de travail par rapport au `<commit>` indiqué. On peut aussi utiliser la référence `HEAD` pour le comparer au commit le plus récent.
+
+[NOTE]
+====
+`HEAD` est une référence symbolique pointant vers l'endroit où l'on se trouve dans l'historique. Si on fait un _commit_, `HEAD` se déplacera. `HEAD^` signifie le premier parent immédiat de la pointe de la branche actuelle. `HEAD^` est l'abréviation de `HEAD^1`. Pour un _commit_ avec un seul parent, `HEAD~` et `HEAD^` signifient la même chose. cf. xref:ancre-head-parents[Exemple de déplacement avec HEAD]
+====
+
+image:git-head.png[]
+
+Les développeurs utilisent aussi des outils graphiques ou externes pour visualiser les différences. Dans ce cas, il faut utiliser `git difftool` au lieu de `git diff`.
+
+Pour connaître les applications disponibles :
+
+----
+$ git difftool --tool-help
+'git difftool --tool=<tool>' may be set to one of the following:
+                araxis
+                kompare
+                meld
+                vimdiff
+                vimdiff2
+                vimdiff3
+
+...
+
+Some of the tools listed above only work in a windowed
+environment. If run in a terminal-only session, they will fail.
+----
+
+Exemples avec https://meldmerge.org/[Meld] :
+
+----
+$ git difftool -t meld --dir-diff
+$ git difftool -t meld --dir-diff 4717082 973e4f7
+----
+
+.Meld en action :
+image:difftool-meld-1.png[]
+
+image:difftool-meld-2.png[]
+
+La commande `git blame` annote les lignes de n’importe quel fichier avec des informations : le _commit_ du dernier changement avec son auteur et l'horodatage.
+
+----
+$ git blame bienvenue.cpp
+47170829 (tvaira 2021-07-28 21:30:16 +0200  1) // Affiche un message de bienvenue
+47170829 (tvaira 2021-07-28 21:30:16 +0200  2) 
+47170829 (tvaira 2021-07-28 21:30:16 +0200  3) #include <iostream>
+973e4f7d (tvaira 2021-07-28 20:55:12 +0200  4) 
+973e4f7d (tvaira 2021-07-28 20:55:12 +0200  5) int main()
+973e4f7d (tvaira 2021-07-28 20:55:12 +0200  6) {
+47170829 (tvaira 2021-07-28 21:30:16 +0200  7)    std::cout << "Bienvenue le monde !" << std::endl;
+973e4f7d (tvaira 2021-07-28 20:55:12 +0200  8) 
+973e4f7d (tvaira 2021-07-28 20:55:12 +0200  9)    return 0;
+973e4f7d (tvaira 2021-07-28 20:55:12 +0200 10) }
+973e4f7d (tvaira 2021-07-28 20:55:12 +0200 11)
+----
+
+==== Effacer des fichiers
+
+Pour effacer un fichier de Git, il faut l’effacer dans la zone d’index puis valider. La commande `git rm` réalise cette action
+mais efface aussi ce fichier de la copie de travail.
+
+Pour conserver le fichier dans la copie de travail, il faut utiliser l'option `--cached`.
+
+Il existe une mesure de sécurité pour empêcher un effacement accidentel lorsqu'un fichier a été modifié et indexé. Il est alors possible de forcer son élimination avec l’option `-f`.
+
+.Ajout d'un fichier :
+----
+$ touch README
+
+$ ls -l README
+-rw-rw-r-- 1 tv tv 0 juil. 31 11:49 README
+
+$ git add README
+
+$ git status
+Sur la branche master
+Modifications qui seront validées :
+  (utilisez "git reset HEAD <fichier>..." pour désindexer)
+
+	nouveau fichier : README
+----
+
+.Suppression forcée d'un fichier :
+----
+$ git rm README
+error: le fichier suivant a des changements indexés :
+    README
+(utilisez --cached pour garder le fichier, ou -f pour forcer la suppression)
+
+$ git rm README -f
+rm 'README'
+
+$ git status
+Sur la branche master
+rien à valider, la copie de travail est propre
+
+$ ls -l README
+ls: impossible d'accéder à 'README': Aucun fichier ou dossier de ce type
+----
+
+.Ajout d'un fichier :
+----
+$ touch README
+
+$ ls -l README
+-rw-rw-r-- 1 tv tv 0 juil. 31 11:52 README
+
+$ git add README
+
+$ git status
+Sur la branche master
+Modifications qui seront validées :
+  (utilisez "git reset HEAD <fichier>..." pour désindexer)
+
+	nouveau fichier : README
+----
+
+.Suppression d'un fichier de l'index :
+----
+$ git rm README --cached
+rm 'README'
+
+$ git status
+Sur la branche master
+Fichiers non suivis:
+  (utilisez "git add <fichier>..." pour inclure dans ce qui sera validé)
+
+        README
+
+aucune modification ajoutée à la validation mais des fichiers non suivis sont présents (utilisez "git add" pour les suivre)
+
+$ ls -l README
+-rw-rw-r-- 1 tv tv 0 juil. 31 11:52 README
+----
+
+.Ajout d'un fichier au dépôt :
+----
+$ git add README
+
+$ git commit -m "Ajout README"
+[master e60cc7e] Ajout README
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 README
+----
+
+.Suppresion d'un fichier du dépôt :
+----
+$ git rm README
+rm 'README'
+
+$ git status
+Sur la branche master
+Modifications qui seront validées :
+  (utilisez "git reset HEAD <fichier>..." pour désindexer)
+
+        supprimé :        README
+
+$ git commit -m "Suppression README"
+[master 357d005] Suppression README
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ delete mode 100644 README
+
+$ git status
+Sur la branche master
+rien à valider, la copie de travail est propre
+
+$ ls -l README
+ls: impossible d'accéder à 'README': Aucun fichier ou dossier de ce type
+----
+
+==== Nettoyer son répertoire de travail
+
+Par défaut, la commande `git clean` ne va supprimer que les fichiers non-suivis qui ne sont pas ignorés (cf. `.gitignore`).
+
+Les option intéressantes sont :
+
+- `-n` : ne supprime rien mais montre simplement ce qui serait fait.
+- `-f` : pour forcer la suppression
+- `-x` : supprime aussi les fichiers ignorés (`-X` supprime seulement les fichiers ignorés)
+- `-i` ou `--interactive` : utilise le mode interactif pour choisir ce qui sera fait
+
+.git clean en action :
+----
+$ touch hello
+
+$ git clean -n
+Supprimerait hello
+
+$ git clean
+fatal: clean.requireForce à true par défaut et ni -i, -n ou -f fourni ; refus de nettoyer
+
+$ git clean -f
+Suppression de hello
+----
+
+[NOTE]
+====
+Il est (souvent) impossible de récupérer le contenu des fichiers après un `git clean`. Une option plus sécurisée consisterait à "remiser" l'ensemble avec `git stash --all`. Lien : https://git-scm.com/docs/git-stash/fr
+====
+
+==== Déplacer/Renommer des fichiers
+
+La commande `git mv` permet de renommer un fichier. Cela évite de faire successivement les commandes `mv`, `git rm` et `git add`.
+
+.Ajout d'un fichier au dépôt :
+----
+$ touch README
+$ git add README
+$ git commit -m "Ajout README"
+[master f937b30] Ajout README
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 README
+----
+
+.Renommage d'un fichier du dépôt :
+----
+$ git mv README README.md
+
+$ git status
+Sur la branche master
+Modifications qui seront validées :
+  (utilisez "git reset HEAD <fichier>..." pour désindexer)
+
+        renommé :         README -> README.md
+
+$ git commit -m "Renommage README.md"
+[master 948859b] Renommage README.md
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ rename README => README.md (100%)
+
+$ ls -l README*
+-rw-rw-r-- 1 tv tv 0 juil. 31 11:59 README.md
+----
+
+----
+$ vim README.md
+----
+
+[source,Markdown]
+----
+# Bienvenue
+
+Programme C++ qui affiche "Bienvenue"
+----
+
+.Ajout d'un fichier modifié dans l'index :
+----
+$ git add README.md
+
+$ git status
+Sur la branche master
+Modifications qui seront validées :
+  (utilisez "git reset HEAD <fichier>..." pour désindexer)
+
+        modifié :         README.md
+----
+
+.Renommage d'un fichier dans l'index :
+----
+$ git mv README.md README
+
+$ git status
+Sur la branche master
+Modifications qui seront validées :
+  (utilisez "git reset HEAD <fichier>..." pour désindexer)
+
+        nouveau fichier : README
+        supprimé :        README.md
+
+$ git commit -m "Renommage README"
+[master bb6ef9f] Renommage README
+ 2 files changed, 4 insertions(+)
+ create mode 100644 README
+ delete mode 100644 README.md
+
+$ ls -l README*
+-rw-rw-r-- 1 tv tv 52 juil. 31 12:02 README
+
+$ cat README
+----
+
+[source,Markdown]
+----
+# Bienvenue
+
+Programme C++ qui affiche "Bienvenue"
+----
+
+==== Visualiser l'historique
+
+Après avoir créé plusieurs instatanés (_commits_), il est possible de consulter l'historique avec la commande `git log`. C'est une commande importante et puissante disposant de nombreuses options.
+
+Par défaut, `git log` affiche les _commits_ réalisés en ordre chronologique inversé. Cela signifie que les _commits_ les plus récents apparaissent en premier. Sinon, on utilisera l'option `--reverse`.
+
+Les options les plus utilisés sont :
+
+- `git log -<nombre>` Limiter le nombre de _commits_
+- `git log --oneline` Affiche chaque _commit_ sur une seule ligne
+- `git log -p` Affiche la différence complète de chaque _commit_
+- `git log --graph --decorate` Affiche l'historique sous forme de graphe
+- `git log --stat` Affiche l'historique avec des statistiques
+- `git log +++--+++ <fichier>` Affiche uniquement les _commits_ contenant le fichier spécifié
+- `git blame <fichier>` Affiche qui a modifié le fichier et quand
+- `git log <depuis>..<jusqu+++'+++à>` Affiche les validations qui se produisent entre deux commits en utilisant une référence comme un ID de validation, un nom de branche, `HEAD` ou tout autre type de référence de révision.
+
+[NOTE]
+====
+Il est possible d'appliquer des critères de recherche avec les options `--author`, `--grep` et `-S`. Voir aussi : `--since`, `--after`, `--until` et `--before`.
+====
+
+.Historique complet :
+----
+$ git log
+commit bb6ef9fbb54b4aa856bbd6effbc30601d38acffb (HEAD -> master)
+Author: tvaira <tvaira@free.fr>
+Date:   Sat Jul 31 12:05:07 2021 +0200
+
+    Renommage README
+
+commit 948859bdcac73aff903fa13fe340658dae6c4922
+Author: tvaira <tvaira@free.fr>
+Date:   Sat Jul 31 12:00:32 2021 +0200
+
+    Renommage README.md
+
+commit f937b306dfb405a77a26688bf8aecf0312d33799
+Author: tvaira <tvaira@free.fr>
+Date:   Sat Jul 31 11:59:57 2021 +0200
+
+    Ajout README
+
+commit 357d00546a9968556fafd680b1721b37d58bb70f
+Author: tvaira <tvaira@free.fr>
+Date:   Sat Jul 31 11:56:26 2021 +0200
+
+    Suppression README
+
+commit e60cc7eae4f55b7cb4c53c20827f904697308898
+Author: tvaira <tvaira@free.fr>
+Date:   Sat Jul 31 11:55:48 2021 +0200
+
+    Ajout README
+
+commit 47170829ef8654ec28f6d3b74d00b2a0baeaefa9
+Author: tvaira <tvaira@free.fr>
+Date:   Wed Jul 28 21:30:16 2021 +0200
+
+    Affiche un message de bienvenue
+
+commit af1dcc83807624005b76a1ca5d7e790ce6f1737a
+Author: tvaira <tvaira@free.fr>
+Date:   Wed Jul 28 21:03:28 2021 +0200
+
+    Ajout du fichier .gitignore
+
+commit 973e4f7d830313e4ac9b08a332db767cdf28941f
+Author: tvaira <tvaira@free.fr>
+Date:   Wed Jul 28 20:55:12 2021 +0200
+
+    Création du programme principal
+
+commit bb344f417dbbf7f6725b24b293af2909bad6a519
+Author: tvaira <tvaira@free.fr>
+Date:   Wed Jul 28 20:33:06 2021 +0200
+
+    Ajout du fichier bienvenue.cpp
+----
+
+.Les plus anciens en premier :
+----
+$ git log --reverse
+commit bb344f417dbbf7f6725b24b293af2909bad6a519
+Author: tvaira <tvaira@free.fr>
+Date:   Wed Jul 28 20:33:06 2021 +0200
+
+    Ajout du fichier bienvenue.cpp
+
+commit 973e4f7d830313e4ac9b08a332db767cdf28941f
+Author: tvaira <tvaira@free.fr>
+Date:   Wed Jul 28 20:55:12 2021 +0200
+
+    Création du programme principal
+...
+----
+
+.Avec les différences :
+----
+$ git log -p
+...
+
+commit 47170829ef8654ec28f6d3b74d00b2a0baeaefa9 (HEAD -> master)
+Author: tvaira <tvaira@free.fr>
+Date:   Wed Jul 28 21:30:16 2021 +0200
+
+    Affiche un message de bienvenue
+
+diff --git a/bienvenue.cpp b/bienvenue.cpp
+index d315a70..e8d46fe 100644
+--- a/bienvenue.cpp
++++ b/bienvenue.cpp
+@@ -1,8 +1,10 @@
+-// TODO Indiquer ce que fait le programme
++// Affiche un message de bienvenue
++
++#include <iostream>
+ 
+ int main()
+ {
+-   // TODO Afficher un message de bienvenue
++   std::cout << "Bienvenue le monde !" << std::endl;
+ 
+    return 0;
+ }
+
+...
+----
+
+.Affiche chaque commit sur une seule ligne :
+----
+$ git log --oneline
+bb6ef9f (HEAD -> master) Renommage README
+948859b Renommage README.md
+f937b30 Ajout README
+357d005 Suppression README
+e60cc7e Ajout README
+4717082 Affiche un message de bienvenue
+af1dcc8 Ajout du fichier .gitignore
+973e4f7 Création du programme principal
+bb344f4 Ajout du fichier bienvenue.cpp
+----
+
+.Affichage sous forme de graphe :
+----
+$ git log --graph --decorate --oneline --all
+...
+*   893d72e Merge branch 'guide-jira' into main
+|\  
+| * 9fd96d4 Ajout Kanban dans le guide Jira
+* |   b0d6162 Merge branch 'guide-git' into main
+|\ \  
+| * | 922de2c Modification image
+* | | 389c278 Modification taille logos
+* | |   17d229e Merge branch 'guide-git' into main
+|\ \ \  
+| |/ /  
+| * | b536332 Ajout de la note sur GitHub CLI
+* | |   abd487f Merge branch 'guide-jira' into main
+|\ \ \  
+| | |/  
+| |/|   
+| * | d595987 Rédaction initiale du guide Jira
+* | |   dd08641 Merge branch 'guide-git' into main
+|\ \ \  
+| | |/  
+| |/|   
+| * | 50e69e9 Ajout image vscode-tp
+* | |   2aeb7d9 Merge branch 'guide-git' into main
+|\ \ \  
+| |/ /  
+| | /   
+| |/    
+|/|     
+| * fa02e93 Le SCM de VS Code
+* | c088816 Ajout du dossier guide-jira
+...
+----
+
+.Affichage personnalisé :
+----
+$ git log --pretty=format:"%h - %an, %ar : %s"
+...
+----
+
+La commande `git blame` annote les lignes de n’importe quel fichier avec des informations : le commit du dernier changement avec son auteur et l'horodatage :
+
+----
+$ git blame bienvenue.cpp
+47170829 (tvaira 2021-07-28 21:30:16 +0200  1) // Affiche un message de bienvenue
+47170829 (tvaira 2021-07-28 21:30:16 +0200  2) 
+47170829 (tvaira 2021-07-28 21:30:16 +0200  3) #include <iostream>
+973e4f7d (tvaira 2021-07-28 20:55:12 +0200  4) 
+973e4f7d (tvaira 2021-07-28 20:55:12 +0200  5) int main()
+973e4f7d (tvaira 2021-07-28 20:55:12 +0200  6) {
+47170829 (tvaira 2021-07-28 21:30:16 +0200  7)    std::cout << "Bienvenue le monde !" << std::endl;
+973e4f7d (tvaira 2021-07-28 20:55:12 +0200  8) 
+973e4f7d (tvaira 2021-07-28 20:55:12 +0200  9)    return 0;
+973e4f7d (tvaira 2021-07-28 20:55:12 +0200 10) }
+973e4f7d (tvaira 2021-07-28 20:55:12 +0200 11)
+----
+
+==== Annuler des actions
+
+Il est possible de modifier le dernier _commit_ (plutôt de le remplacer complètement par un nouveau _commit_) avec la commande `git commit --amend`.
+
+----
+$ vim README
+----
+
+[source,markdown]
+----
+# Bienvenue
+
+Programme C++ qui affiche "Bienvenue le monde !"
+----
+
+----
+$ git add README
+
+$ git commit -m "Modification README.md"
+[master 25dbef1] Modification README.md
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+----
+
+.Modification du dernier commit :
+----
+$ git commit --amend
+Modification README
+
+# Veuillez saisir le message de validation pour vos modifications. Les lignes
+# commençant par '#' seront ignorées, et un message vide abandonne la validation.
+#
+# Date :       Tue Aug 10 11:41:26 2021 +0200
+#
+# Sur la branche master
+# Modifications qui seront validées :
+#       modifié :         README
+#
+
+[master e29d1f8] Modification README
+ Date: Tue Aug 10 11:41:26 2021 +0200
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+----
+
+.Vérification :
+----
+$ git log --oneline
+e29d1f8 (HEAD -> master) Modification README
+bb6ef9f Renommage README
+948859b Renommage README.md
+f937b30 Ajout README
+357d005 Suppression README
+e60cc7e Ajout README
+4717082 Affiche un message de bienvenue
+af1dcc8 Ajout du fichier .gitignore
+973e4f7 Création du programme principal
+bb344f4 Ajout du fichier bienvenue.cpp
+----
+
+On peut aussi annuler des modifications dans la zone d’index et la zone de travail :
+
+- `git reset HEAD <fichier>` pour désindexer un fichier
+- `git checkout +++--+++ <fichier>` pour annuler les modifications dans la copie de travail
+
+[WARNING]
+====
+`git reset` peut être une commande dangereuse, notamment avec l’option `--hard`. De manière générale, il est déconseillé de modifier l'historique dans le cas d'un travail collaboratif.
+La version 2.25.0 de Git a introduit une nouvelle commande : `git restore`. C’est fondamentalement une alternative à `git reset`.
+====
+
+[NOTE]
+====
+Pour annuler un commit, on peut l'inverser (_revert_) : `git revert` crée un _commit_ qui applique l’exact opposé des modifications introduites par le _commit_ ciblé.
+====
+
+==== Étiqueter des versions
+
+Git donne la possibilité d’étiqueter un certain état dans l’historique. On l'utilise pour marquer (_tag_) les états de publication comme des versions (1.0 par exemple).
+
+[NOTE]
+====
+Git utilise deux types principaux d’étiquettes : légères et annotées (avec l'option `-a`). Une étiquette légère est considérée comme un pointeur sur un commit spécifique. Par contre, les étiquettes annotées sont stockées en tant qu’objets à part entière dans la base de données de Git.
+====
+
+.Étiqueter une version :
+----
+$ git tag -a 1.0 -m 'La version 1.0'
+
+$ git tag
+1.0
+
+$ git show 1.0
+tag 1.0
+Tagger: tvaira <tvaira@free.fr>
+Date:   Wed Aug 11 15:40:13 2021 +0200
+
+La version 1.0
+...
+----
+
+[NOTE]
+====
+Il est possible d'étiqueter après coup. Pour cela, il faut spécifier le _commit_ en fin de commande : `git tag -a v1.2 <commit>`
+====
+
+==== Publier une version
+
+Pour publier une version, il est nécessaire de créer une archive à partir d'un instantané (généralement une étiquette de version).
+
+La commande dédiée à cette action est `git archive` :
+
+----
+# Exemple :
+# git archive --prefix=src-directory-name tag --format=zip > `git describe master`.zip
+
+$ git archive --prefix='tp-git-sequence-1-vaira/' 1.0 | gzip > tp-git-sequence-1-vaira.tar.gz
+$ git archive --prefix='tp-git-sequence-1-vaira/' 1.0 --format=zip > tp-git-sequence-1-vaira.zip
+----
+
+[IMPORTANT]
+====
+N'oubliez pas d'ajouter l'option `--prefix` (et de préciser votre nom comme indentifiant) avant de rendre une archive de TP !!!
+====
+
+[NOTE]
+====
+Il est possible de recopier le dépôt avec la commande : `cp -Rf tp-git-sequence-1 <destination>`. Git fournit aussi la commande `git clone`. Mais en pratique, on utilisera plutôt des dépôts hébergés (https://github.com/[GitHub], https://gitlab.com/[GitLab], https://bitbucket.org/[Bitbucket], ...).
+====
+
+==== Utiliser le mode interactif
+
+Git propose quelques scripts qui "guident" les opérations en ligne de commande avec l’option `-i` ou `--interactive`.
+
+Le mode interactif s'utilise principalement avec les commandes :
+
+- `git add --interactive` : pour choisir les fichiers ou les parties d’un fichier à incorporer à un _commit_
+- `git clean --interactive` : pour choisir les fichiers qui seront supprimés du répertoire de travail
+- `git rebase --interactive` : pour choisir les _commits_ à "rejouer"
+
+Git ne possède pas d’outil de modification d’historique mais, il est possible d'utiliser l’outil `rebase` en mode interactif pour :
+
+- Réordonner les _commits_
+- Écraser un _commit_
+- Diviser un _commit_
+- Supprimer un _commit_
+
+Il est également possible de prendre une série de _commits_ et de les rassembler en un seul avec l’outil de rebasage interactif :
+
+----
+$ git log --oneline
+e29d1f8 (HEAD -> master) Modification README
+bb6ef9f Renommage README
+948859b Renommage README.md
+f937b30 Ajout README
+357d005 Suppression README
+e60cc7e Ajout README
+4717082 Affiche un message de bienvenue
+af1dcc8 Ajout du fichier .gitignore
+973e4f7 Création du programme principal
+bb344f4 Ajout du fichier bienvenue.cpp
+----
+
+[NOTE]
+====
+Rappel : `HEAD` est une référence symbolique pointant vers l'endroit où l'on se trouve dans l'historique. Si on fait un _commit_, `HEAD` se déplacera. `HEAD^` signifie le premier parent immédiat de la pointe de la branche actuelle. `HEAD^` est l'abréviation de `HEAD^1`. Pour un _commit_ avec un seul parent, `HEAD~` et `HEAD^` signifient la même chose. cf. xref:ancre-head-parents[Exemple de déplacement avec HEAD]
+====
+
+.Rebasage des 6 derniers commits :
+----
+$ git rebase -i HEAD~6
+pick e60cc7e Ajout README
+squash 357d005 Suppression README
+squash f937b30 Ajout README
+squash 948859b Renommage README.md
+squash bb6ef9f Renommage README
+squash e29d1f8 Modification README
+
+# Rebasage de 4717082..e29d1f8 sur 4717082 (6 commandes)
+#
+# Commandes :
+#  p, pick = utiliser le commit
+#  r, reword = utiliser le commit, mais reformuler son message
+#  e, edit = utiliser le commit, mais s'arrêter pour le modifier
+#  s, squash = utiliser le commit, mais le fusionner avec le précédent
+#  f, fixup = comme "squash", mais en éliminant son message
+#  x, exec = lancer la commande (reste de la ligne) dans un shell
+#  d, drop = supprimer le commit
+#
+# Vous pouvez réordonner ces lignes ; elles sont exécutées de haut en bas.
+#
+# Si vous éliminez une ligne ici, LE COMMIT CORRESPONDANT SERA PERDU.
+#
+# Cependant, si vous effacez tout, le rebasage sera annulé.
+#
+# Veuillez noter que les commits vides sont en commentaire
+
+# Ceci est la combinaison de 6 commits.
+# Ceci est le premier message de validation :
+
+Ajout README
+
+# Ceci est le message de validation numéro 2 :
+
+#Suppression README
+
+# Ceci est le message de validation numéro 3 :
+
+#Ajout README
+
+# Ceci est le message de validation numéro 4 :
+
+#Renommage README.md
+
+# Ceci est le message de validation numéro 5 :
+
+#Renommage README
+
+# Ceci est le message de validation numéro 6 :
+
+#Modification README
+
+# Veuillez saisir le message de validation pour vos modifications. Les lignes
+# commençant par '#' seront ignorées, et un message vide abandonne la validation.
+#
+# Date :       Sat Jul 31 11:55:48 2021 +0200
+#
+# rebasage interactif en cours ; sur 4717082
+# Dernières commandes effectuées (6 commandes effectuées) :
+#    squash bb6ef9f Renommage README
+#    squash e29d1f8 Modification README
+# Aucune commande restante.
+# Vous êtes en train de rebaser la branche 'master' sur '4717082'.
+#
+# Modifications qui seront validées :
+#       nouveau fichier : README
+#
+
+
+[HEAD détachée 7cbe84f] Ajout README
+ Date: Sat Jul 31 11:55:48 2021 +0200
+ 1 file changed, 4 insertions(+)
+ create mode 100644 README
+Successfully rebased and updated refs/heads/master.
+----
+
+.Vérification :
+----
+$ git log --oneline
+7cbe84f (HEAD -> master) Ajout README
+4717082 Affiche un message de bienvenue
+af1dcc8 Ajout du fichier .gitignore
+973e4f7 Création du programme principal
+bb344f4 Ajout du fichier bienvenue.cpp
+----
+
+[WARNING]
+====
+De manière générale, il est déconseillé de modifier l'historique centralisé dans le cas d'un travail collaboratif. Voir : xref:rebasage-interactif[Nettoyer son historique local avant de publier].
+====
+
+=== Conclusion
+
+.Cycle de travail
+****
+- Éditer des fichiers (`vim` ou un xref:ancre-edi[EDI])
+- Ajouter les changement (`git add <fichier>`)
+- Valider les changements (`git commit -m "Message"`)
+****
+
+Les commandes que l'on utilise tout le temps :
+
+- `git status`
+- `git log ...`
+
+== Les branches
+
+.Objectif
+****
+Découvrir l'utilisation des branches.
+****
+
+=== Introduction
+
+En général, les gestionnaires de version (VCS) proposent une gestion de branches. Créer une branche signifie diverger de la ligne principale de développement et continuer à travailler sans impacter cette ligne.
+
+La branche par défaut dans Git s’appelle `master` ou `main`. Au fur et à mesure des validations, la branche `master` pointe vers le dernier des _commits_ réalisés. À chaque validation, le pointeur de la branche `master` avance automatiquement.
+
+[NOTE]
+====
+La branche `master` ou `main` n’est pas une branche spéciale. Elle est identique à toutes les autres branches. La seule raison pour laquelle chaque dépôt en a une est que la commande `git init` la crée par défaut.
+====
+
+D'un point de vue technique, une branche dans Git est simplement un pointeur déplaçable vers un _commit_.
+
+Pour créer une nouvelle branche, on utilise la commande `git branch <nom-branche>`. Cela crée simplement un nouveau pointeur vers le _commit_ courant.
+
+Git connaît la branche actuelle avec le pointeur spécial appelé `HEAD`. Dans Git, il s’agit simplement d’un pointeur sur la branche locale où l'on se trouve.
+
+Pour l'instant, on se trouve toujours sur la branche `master`. En effet, la commande `git branch` n’a fait que créer une nouvelle branche et elle n’a pas fait basculer la copie de travail vers cette branche.
+
+Pour basculer sur une branche existante, il suffit d'exécuter la commande `git checkout <nom-branche>`. Cela déplace `HEAD` pour le faire pointer vers la branche `<nom-branche>`.
+
+Il est habituel de créer une nouvelle branche et de vouloir basculer sur cette nouvelle branche en même temps : pour cela on exécutera la commande `git checkout -b <nouvelle-branche>` (voir aussi `git switch`).
+
+[NOTE]
+====
+Il est important de noter que lorsque l'on change de branche avec Git, les fichiers du répertoire de travail sont modifiés. Si la copie de travail ou la zone d’index contiennent des modifications non validées qui sont en conflit avec la branche à extraire, Git n'autorisera pas le changement de branche. Le mieux est donc d’avoir une copie de travail propre au moment de changer de branche.
+====
+
+Une fois le travail réalisé (terminé et testé) dans la branche, il est prêt à être fusionné dans la branche `master`. On réalise ceci au moyen de la commande `git merge`.
+
+image:branche.png[]
+
+À présent que le travail a été fusionné, on n’a plus besoin de la branche. On peut la supprimer avec l’option `-d` de la commande `git branch`.
+
+[[ancre-branches]]
+=== Travailler avec les branches
+
+On crée des nouvelles branches depuis `master` ou `main` à chaque nouvelle fonctionnalité ou nouvelle modification qu'il faut apporter au projet. Git permet de gérer plusieurs branches en parallèle et ainsi de cloisonner les travaux et d'éviter ainsi de mélanger des modifications du code source qui n'ont rien à voir entre elles.
+
+En gardant une branche `master` ou `main` saine, on conserve ainsi une version du logiciel prête à être livrée à tout instant puisqu'on ne fusionne (`merge`) dedans que lorsque le développement d'une branche est bien terminé.
+
+[NOTE]
+====
+Un dépôt Git peut maintenir de nombreuses branches de développement.
+====
+
+Liens :
+
+- http://git-scm.com/book/fr/v2[Manuel de référence en français] dans le chapitre "Les branches avec Git"
+- https://fr.wikibooks.org/wiki/Git/Branches[Wikilivre Git - Branches]
+
+On commence par lister les branches existantes :
+
+----
+$ git branch -vv
+* master 7cbe84f Ajout README
+
+$ git branch --all
+* master
+----
+
+On crée une branche pour réaliser un "travail" sur le projet :
+
+----
+$ git branch fonction-bienvenue
+
+$ git branch
+  fonction-bienvenue
+* master
+----
+
+On bascule sur la nouvelle branche :
+
+----
+$ git checkout fonction-bienvenue
+Basculement sur la branche 'fonction-bienvenue'
+
+$ git branch
+* fonction-bienvenue
+  master
+----
+
+On travaille dans la branche :
+
+----
+$ touch fonction-bienvenue.h
+$ touch fonction-bienvenue.cpp
+
+$ vim fonction-bienvenue.h
+----
+
+[source,cpp]
+----
+#ifndef FONCTION_BIENVENUE_H
+#define FONCTION_BIENVENUE_H
+
+void afficherBienvenue();
+
+#endif // FONCTION_BIENVENUE_H
+----
+
+----
+$ vim fonction-bienvenue.cpp
+----
+
+[source,cpp]
+----
+#include "fonction-bienvenue.h"
+#include <iostream>
+
+void afficherBienvenue()
+{
+   std::cout << "Bienvenue le monde !" << std::endl;
+}
+----
+
+----
+$ vim bienvenue.cpp
+----
+
+[source,cpp]
+----
+// Affiche un message de bienvenue
+
+#include "fonction-bienvenue.h"
+
+int main()
+{
+   afficherBienvenue();
+
+   return 0;
+}
+----
+
+On crée un `Makefile` :
+
+----
+$ touch Makefile
+$ vim Makefile
+----
+
+[source,Makefile]
+----
+TARGET := bienvenue
+MODULE := fonction-bienvenue
+
+CXX = g++ -c
+LD = g++ -o
+RM = rm -f
+CXXFLAGS = -Wall -std=c++11
+LDFLAGS =
+
+$(info Fabrication du programme : $(TARGET))
+
+all : $(TARGET)
+
+$(TARGET): $(TARGET).o $(MODULE).o
+	$(LD) $@ $(LDFLAGS) $^
+
+$(TARGET).o: $(TARGET).cpp $(MODULE).h
+	$(CXX) $(CXXFLAGS) $<
+
+$(MODULE).o: $(MODULE).cpp $(MODULE).h
+	$(CXX) $(CXXFLAGS) $<
+
+.PHONY: clean
+
+clean:
+	$(RM) *.o
+
+cleanall:
+	$(RM) *.o $(TARGET)
+
+rebuild: clean all
+----
+
+On teste le travail :
+
+----
+$ make
+Fabrication du programme : bienvenue
+g++ -c -Wall -std=c++11 bienvenue.cpp
+g++ -c -Wall -std=c++11 fonction-bienvenue.cpp
+g++ -o bienvenue  bienvenue.o fonction-bienvenue.o
+
+./bienvenue
+Bienvenue le monde !
+----
+
+On valide les modifications :
+
+----
+$ git status
+Sur la branche fonction-bienvenue
+Modifications qui ne seront pas validées :
+  (utilisez "git add <fichier>..." pour mettre à jour ce qui sera validé)
+  (utilisez "git checkout -- <fichier>..." pour annuler les modifications dans la copie de travail)
+
+	modifié :         bienvenue.cpp
+
+Fichiers non suivis:
+  (utilisez "git add <fichier>..." pour inclure dans ce qui sera validé)
+
+	Makefile
+	fonction-bienvenue.cpp
+	fonction-bienvenue.h
+
+aucune modification n'a été ajoutée à la validation (utilisez "git add" ou "git commit -a")
+----
+
+----
+$ git add Makefile fonction-bienvenue.cpp fonction-bienvenue.h
+$ git add bienvenue.cpp
+----
+
+----
+$ git status
+Sur la branche fonction-bienvenue
+Modifications qui seront validées :
+  (utilisez "git reset HEAD <fichier>..." pour désindexer)
+
+	nouveau fichier : Makefile
+	modifié :         bienvenue.cpp
+	nouveau fichier : fonction-bienvenue.cpp
+	nouveau fichier : fonction-bienvenue.h
+----
+
+----
+$ git commit -m "Ajout de la fonction afficherBienvenue()"
+[fonction-bienvenue c8824fc] Ajout de la fonction afficherBienvenue()
+ 4 files changed, 46 insertions(+), 3 deletions(-)
+ create mode 100644 Makefile
+ create mode 100644 fonction-bienvenue.cpp
+ create mode 100644 fonction-bienvenue.h
+----
+
+.Vérification :
+----
+$ git status
+Sur la branche fonction-bienvenue
+rien à valider, la copie de travail est propre
+
+$ git log --oneline
+c8824fc (HEAD -> fonction-bienvenue) Ajout de la fonction afficherBienvenue()
+7cbe84f (master) Ajout README
+4717082 Affiche un message de bienvenue
+af1dcc8 Ajout du fichier .gitignore
+973e4f7 Création du programme principal
+bb344f4 Ajout du fichier bienvenue.cpp
+----
+
+On fusionne la branche dans `master` (ou `main)` :
+
+.Basculement sur la branche principale :
+----
+$ git checkout master
+Basculement sur la branche 'master'
+
+$ ls -l
+-rwxrwxr-x 1 tv tv 9008 août  11 14:08 bienvenue
+-rw-rw-r-- 1 tv tv  140 août  11 14:14 bienvenue.cpp
+-rw-rw-r-- 1 tv tv 1432 août  11 14:08 bienvenue.o
+-rw-rw-r-- 1 tv tv 2816 août  11 14:08 fonction-bienvenue.o
+-rw-rw-r-- 1 tv tv   63 août  11 10:11 README
+
+$ git status
+Sur la branche master
+rien à valider, la copie de travail est propre
+----
+
+.Fusion :
+----
+$ git merge fonction-bienvenue
+Mise à jour 7cbe84f..c8824fc
+Fast-forward
+ Makefile               | 31 +++++++++++++++++++++++++++++++
+ bienvenue.cpp          |  5 ++---
+ fonction-bienvenue.cpp |  7 +++++++
+ fonction-bienvenue.h   |  6 ++++++
+ 4 files changed, 46 insertions(+), 3 deletions(-)
+ create mode 100644 Makefile
+ create mode 100644 fonction-bienvenue.cpp
+ create mode 100644 fonction-bienvenue.h
+----
+
+[NOTE]
+====
+Lors de la fusion (`merge`), Git a simplement déplacé le pointeur (vers l’avant) : le _commit_ `7cbe84f` vers `c8824fc`.
+Lorsque l’on cherche à fusionner un _commit_ qui peut être atteint en parcourant l’historique depuis le _commit_ d’origine, Git se contente d’avancer le pointeur car il n’y a pas de travaux divergents à fusionner. Ceci s’appelle un _fast-forward_ (avance rapide).
+====
+
+image:git-fusion-fast-forward.png[]
+
+.Vérification :
+----
+$ ls -l
+-rwxrwxr-x 1 tv tv 9008 août  11 14:08 bienvenue
+-rw-rw-r-- 1 tv tv  122 août  11 14:16 bienvenue.cpp
+-rw-rw-r-- 1 tv tv 1432 août  11 14:08 bienvenue.o
+-rw-rw-r-- 1 tv tv  135 août  11 14:16 fonction-bienvenue.cpp
+-rw-rw-r-- 1 tv tv  117 août  11 14:16 fonction-bienvenue.h
+-rw-rw-r-- 1 tv tv 2816 août  11 14:08 fonction-bienvenue.o
+-rw-rw-r-- 1 tv tv  459 août  11 14:16 Makefile
+-rw-rw-r-- 1 tv tv   63 août  11 10:11 README
+
+$ make
+Fabrication du programme : bienvenue
+g++ -c -Wall -std=c++11 bienvenue.cpp
+g++ -c -Wall -std=c++11 fonction-bienvenue.cpp
+g++ -o bienvenue  bienvenue.o fonction-bienvenue.o
+$ ./bienvenue 
+Bienvenue le monde !
+----
+
+On supprimme la branche (cf. branche thématique dans la xref:ancre-conclusion-branches[Conclusion]) :
+
+.Avant :
+----
+$ git branch -vv
+  fonction-bienvenue c8824fc Ajout de la fonction afficherBienvenue()
+* master             c8824fc Ajout de la fonction afficherBienvenue()
+----
+
+.Suppression d'une branche :
+----
+$ git branch -d fonction-bienvenue
+Branche fonction-bienvenue supprimée (précédemment c8824fc).
+----
+
+.Après :
+----
+$ git branch -vv
+* master c8824fc Ajout de la fonction afficherBienvenue()
+
+$ git log --oneline
+c8824fc (HEAD -> master) Ajout de la fonction afficherBienvenue()
+7cbe84f Ajout README
+4717082 Affiche un message de bienvenue
+af1dcc8 Ajout du fichier .gitignore
+973e4f7 Création du programme principal
+bb344f4 Ajout du fichier bienvenue.cpp
+----
+
+=== Retour sur le fonctionnement interne
+
+Le répertoire de travail et dépôt local [red]+tp-git-sequence-1+ actuel :
+
+----
+$ ls -l
+-rwxrwxr-x 1 tv tv 9008 août  11 14:17 bienvenue
+-rw-rw-r-- 1 tv tv  122 août  11 14:16 bienvenue.cpp
+-rw-rw-r-- 1 tv tv 1432 août  11 14:17 bienvenue.o
+-rw-rw-r-- 1 tv tv  135 août  11 14:16 fonction-bienvenue.cpp
+-rw-rw-r-- 1 tv tv  117 août  11 14:16 fonction-bienvenue.h
+-rw-rw-r-- 1 tv tv 2816 août  11 14:17 fonction-bienvenue.o
+-rw-rw-r-- 1 tv tv  459 août  11 14:16 Makefile
+-rw-rw-r-- 1 tv tv  111 août  11 17:17 README.md
+
+$ git log --oneline
+c479e51 (HEAD -> main, origin/main) Renommage README.md
+470794d Modification du fichier README
+c8824fc (tag: 1.0) Ajout de la fonction afficherBienvenue()
+7cbe84f Ajout README
+4717082 Affiche un message de bienvenue
+af1dcc8 Ajout du fichier .gitignore
+973e4f7 Création du programme principal
+bb344f4 Ajout du fichier bienvenue.cpp
+----
+
+Le dépôt local contient l'historique des instantanés (_commits_). C'est une base de "données" (d'objets) qui peut contenir n'importe quel type d'objets (_commit_, _tree_, _blob_ et _tag_). Git utilise des index (somme de contrôle calculée avec la https://fr.wikipedia.org/wiki/Fonction_de_hachage[fonction de hachage] https://fr.wikipedia.org/wiki/SHA-1[SHA-1]) pour référncer les objets de la base.
+
+L'objet *commit* correspond à une arborescence de fichiers (_tree_) enrichie de métadonnées comme un message de description, le nom de l'auteur, etc.
+
+.Visualiser le contenu d'un objet commit :
+----
+$ git show -s --pretty=raw bb344f4
+commit bb344f417dbbf7f6725b24b293af2909bad6a519
+tree e789bf9e379f78fefad662d9f0e3dffad003a8ba
+author tvaira <tvaira@free.fr> 1627497186 +0200
+committer tvaira <tvaira@free.fr> 1627497186 +0200
+
+    Ajout du fichier bienvenue.cpp
+----
+
+Il pointe également vers un ou plusieurs objets _commit_ parents pour former un graphe d'historiques :
+
+.Son objet commit parent :
+----
+$ git show -s --pretty=raw 973e4f7
+commit 973e4f7d830313e4ac9b08a332db767cdf28941f
+tree a660d022174d628ff4ac03a086fb87f5e41e20ea
+parent bb344f417dbbf7f6725b24b293af2909bad6a519
+author tvaira <tvaira@free.fr> 1627498512 +0200
+committer tvaira <tvaira@free.fr> 1627498512 +0200
+
+    Création du programme principal
+----
+
+L'objet *tree* décrit une arborescence de fichiers. Il est constitué d'une liste d'objets de type _blobs_ (et des informations qui leur sont associées, tel que le nom du fichier et les permissions). Il peut contenir d'autres objets _trees_ pour représenter les sous-répertoires.
+
+.Visualiser le contenu d'un objet tree :
+----
+$ git ls-tree e789bf9e
+100644 blob e69de29bb2d1d6434b8b29ae775ad8c2e48c5391	bienvenue.cpp
+
+$ git ls-tree a660d022
+100644 blob d315a7024964809e7a893ef0e5888023c8b833dd	bienvenue.cpp
+----
+
+L'objet *blob* (_binary large object_) représente le contenu d'un fichier. Git enregistre chaque révision dans un fichier en tant qu'objet _blob_ unique.
+
+.Visualiser le contenu d'un objet blob :
+----
+$ git show e69de29b
+
+$ git show d315a702
+// TODO Indiquer ce que fait le programme
+
+int main()
+{
+   // TODO Afficher un message de bienvenue
+
+   return 0;
+}
+----
+
+[WARNING]
+====
+Un objet _blob_ ne contient que le contenu du fichier. Il ne fait référence à rien d'autres : aucun attribut, même pas le nom de fichier !
+====
+
+On obtient cette « vue » de l'historique pour les deux premiers _commits_ :
+
+image:git-historique.png[title="Un historique du point de vue de Git"]
+
+L'objet *tag* est une manière de nommer arbitrairement un _commit_ spécifique pour l'identifier plus facilement. Il est en général utilisé pour marquer certains _commits_, par exemple par un numéro ou un nom de version. Un objet _tag_ contient un nom d’objet (simplement nommé _object_), un type d’objet (ici _commit_), un nom de tag, le nom du « taggeur » et un message :
+
+.Visualiser le contenu d'un objet tag :
+----
+$ git cat-file tag 1.0
+object c8824fc9dbb24745e722ad237a02105461bb7c3f
+type commit
+tag 1.0
+tagger tvaira <tvaira@free.fr> 1628689213 +0200
+
+La version 1.0
+----
+
+[[ancre-conclusion-branches]]
+=== Conclusion
+
+Dans Git, créer, développer, fusionner et supprimer des branches plusieurs fois par jour est un travail "normal".
+
+On peut distinguer plusieurs types de branches :
+
+- les branches au long cours : ce sont des branches ouvertes en permanence pour les différentes phases du cycle de développement.
+- les branches thématiques : une branche thématique est une branche ayant une courte durée de vie créée et utilisée pour une fonctionnalité ou une tâche particulière (un correctif par exemple). On y réalise quelques _commits_ et on supprime la branche immédiatement après l'avoir fusionnée dans la branche principale. Les branches thématiques sont utiles quelle que soit la taille du projet.
+
+[NOTE]
+====
+De nombreux développeurs travaillent avec Git en utilisant une méthode de développement basée sur les branches (cf. xref:ancre-gitflow[Workflow git et Gitflow]).
+====
+
+.Cycle de travail
+****
+- Créer une branche thématique et basculer dessus (`get branch <branche>` puis `git checkout <branche>` ou `git checkout -b <branche>`)
+  * Éditer des fichiers (`vim` ou un xref:ancre-edi[EDI])
+  * Ajouter les changement (`git add <fichier>`)
+  * Valider les changements (`git commit -m "Message"`)
+- Basculer sur la branche principale et fusionner la branche thématique (`git checkout master` puis `git merge <branche>`)
+- Supprimer la branche thématique (`get branch -d <branche>`)
+****
+
+Les commandes que l'on utilise tout le temps :
+
+- `git status`
+- `git log ...`
+- `git branch --all -vv`
+
+== Git hébergé
+
+.Objectif
+****
+Mettre en oeuvre l'utilisation d'un dépôt distant.
+****
+
+Il est possible d'héberger des projets Git sur un site externe dédié à l’hébergement.
+
+Liste : https://git.wiki.kernel.org/index.php/GitHosting
+
+Quelques hébergeurs :
+
+- https://fr.wikipedia.org/wiki/GitHub[GitHub] est un service web d'hébergement (lancé en 2008) et de gestion de développement de logiciels, utilisant le logiciel de gestion de versions https://fr.wikipedia.org/wiki/Git[Git]. Site officiel : https://github.com/
+
+//.Le logo GitHub
+image:github-logo.png[title="Le logo GitHub",150,150]
+
+- https://fr.wikipedia.org/wiki/GitLab[GitLab] est un logiciel libre de forge basé sur https://fr.wikipedia.org/wiki/Git[Git] proposant les fonctionnalités de wiki, un système de suivi des bugs, l’intégration continue et la livraison continue. Site officiel : https://about.gitlab.com/
+
+//.Le logo GitLab
+image:gitlab-logo.png[title="Le logo GitLab",320,114]
+
+- https://fr.wikipedia.org/wiki/Bitbucket[Bitbucket] est un service web d'hébergement et de gestion de développement logiciel utilisant le logiciel de gestion de versions https://fr.wikipedia.org/wiki/Git[Git]. Site officiel : https://bitbucket.org/
+
+//.Le logo Bitbucket
+image:bitbucket-logo.png[title="Le logo Bitbucket",320,58]
+
+Ressources :
+
+- https://guides.github.com/introduction/git-handbook/[Git Handbook sur Github]
+- https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/git-and-github-learning-resources[Git and GitHub learning resources]
+- https://guides.github.com/activities/hello-world/[Hello World]
+- https://support.atlassian.com/bitbucket-cloud/resources/[Bitbucket Cloud resources]
+- https://www.atlassian.com/fr/git/tutorials[Tutoriels]
+
+=== Notion de dépôt distant
+
+Un dépôt distant est un dépôt hébergé sur un serveur, généralement sur Internet.
+
+image:git-depot-distant.png[]
+
+Des commandes spécifiques seront utilisées pour synchroniser les dépôts local et distant :
+
+- `git push​` publie ("pousse") les nouvelles révisions du dépôt local sur le dépôt distant ;
+
+- `git fetch` récupère l’ensemble des changements (qui n’ont pas déjà été rapatriés localement) présents sur le serveur et met à jour la base de donnée locale (le dépôt local). Elle ne modifie pas le répertoire de travail.
+
+- `git pull` consiste essentiellement en un `git fetch` immédiatement suivi par un `git merge` dans la plupart des cas. Le répertoire de travail peut donc être modifié.
+
+image:git-depot-distant-commandes.png[]
+
+=== Création d'un dépôt distant
+
+Création d'un dépôt distant (_remote repository_) sur https://github.com/[GitHub] :
+
+- On clique sur `+` pour créer un nouveau dépôt :
+
+image:github-2.png[]
+
+- On complète les informations du dépôt :
+
+image:github-new-repository.png[]
+
+Il y a deux façons de récupérer un dépôt Git :
+
+- soit le dépôt local est déjà existant (`git init`) et il faut donc le relier à un dépôt distant (`git remote add origin https://github.com/nomutilisateur/depot-distant.git`)
+- soit le dépôt distant existe et il faut le copier (`git clone`) pour obtenir un dépôt local
+
+=== Cloner un dépôt distant
+
+La commande `git clone` effectuera les actions suivantes :
+
+- créé un répertoire du nom du dépôt existant, initialisé avec un répertoire `.git` à l'intérieur,
+- nomme automatiquement le serveur distant (_remote_) `origin`,
+- tire l'historique,
+- crée un pointeur sur l’état actuel de la branche `main` et l’appelle localement `origin/main`
+- crée également une branche locale `main` qui démarre au même endroit que la branche `main` distante
+
+[NOTE]
+====
+`main` (ou `master`) et `origin` sont des noms donnés par défaut.
+====
+
+Clonage du dépôt :
+
+----
+$ git clone https://github.com/tvaira/tp-cplusplus.git
+----
+
+État du dépôt :
+
+----
+$ cd tp-cplusplus/
+
+$ ls -l
+-rw-rw-r-- 1 tv tv 50 août  11 20:17 README.md
+
+$ cat README.md
+# tp-cplusplus
+TP C++ - Deuxième année BTS SNIR
+
+$ git remote -v
+origin	https://github.com/tvaira/tp-cplusplus.git (fetch)
+origin	https://github.com/tvaira/tp-cplusplus.git (push)
+----
+
+image:git-clone.png[]
+
+****
+On suppose qu'un compte sur https://github.com/signup[GitHub] a été créé.
+****
+
+On se connecte :
+
+ifdef::backend-html5[]
+image:github-1.png[]
+endif::[]
+
+ifdef::backend-pdf[]
+image::github-1.png[,260,,align="center"]
+endif::[]
+
+Il est possible d'interagir avec le dépôt sur https://github.com/[GitHub] de plusieurs manières :
+
+- https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/connecting-to-github-with-ssh[SSH]
+
+L'URL d'accès au dépôt en SSH sera de la forme : `https://github.com/user/repo.git`
+
+image:git-clone-ssh.png[]
+
+  * Étape n°1 : https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent[générer des clés SSH]
+
+Sous GNU/Linux Ubuntu :
+
+----
+$ ssh-keygen -t ed25519 -C "tvaira@free.fr"
+
+$ eval "$(ssh-agent -s)"
+Agent pid 13867
+
+$ ssh-add ~/.ssh/id_ed25519
+Enter passphrase for ~/.ssh/id_ed25519: 
+Identity added: ~/.ssh/id_ed25519 (tvaira@free.fr)
+
+$ sudo apt-get -y install xclip
+
+$ xclip -selection clipboard < ~/.ssh/id_ed25519.pub
+----
+
+  * Étape n°2 : https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account[ajouter les clés SSH au compte GitHub]
+  * Étape n°3 (facultative) : https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/testing-your-ssh-connection[tester la connexion SSH]
+
+.Accès en SSH :
+----
+$ git clone git@github.com:tvaira/tp-cplusplus.git
+Clonage dans 'tp-cplusplus'...
+remote: Enumerating objects: 4, done.
+remote: Counting objects: 100% (4/4), done.
+remote: Compressing objects: 100% (4/4), done.
+remote: Total 4 (delta 0), reused 0 (delta 0), pack-reused 0
+Réception d'objets: 100% (4/4), fait.
+----
+
+- HTTPS
+
+L'URL d'accès au dépôt en HTPS sera de la forme : `https://github.com/user/repo.git`
+
+image:git-clone-https.png[]
+
+[IMPORTANT]
+====
+Il faut maintenant créer un jeton d'accès personnel à utiliser à la place du mot de passe (https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token)
+====
+
+.Accès en HTTPS :
+----
+$ git clone https://github.com/tvaira/tp-cplusplus.git
+Clonage dans 'tp-cplusplus'...
+Username for 'https://github.com': tvaira
+Password for 'https://tvaira@github.com': 
+remote: Enumerating objects: 4, done.
+remote: Counting objects: 100% (4/4), done.
+remote: Compressing objects: 100% (4/4), done.
+remote: Total 4 (delta 0), reused 0 (delta 0), pack-reused 0
+Dépaquetage des objets: 100% (4/4), fait.
+----
+
+- https://github.com/cli/cli[GitHub CLI]
+
+La commande `gh` permet l'utilisation de GitHub en la ligne de commande (CLI).
+
+image:git-clone-cli.png[]
+
+Liens : https://cli.github.com/
+
+Sous GNU/Linux Ubuntu, on put installer `gh` avec la commande `sudo snap install gh`
+
+----
+$ tldr gh
+
+  Work seamlessly with GitHub from the command-line.
+  More information: https://cli.github.com/.
+
+  - Clone a GitHub repository locally:
+    gh repo clone owner/repository
+
+  - Create a new issue:
+    gh issue create
+
+  - View and filter the open issues of the current repository:
+    gh issue list
+
+  - Create a pull request:
+    gh pr create
+
+  - Locally check out the branch of a pull request, given its number:
+    gh pr checkout pr_number
+
+  - Check the status of a repository's pull requests:
+    gh pr status
+----
+
+Avant d'utiliser `gh`, il faut s'authentifier : `gh auth login`
+
+Puis, on peut cloner un dépôt :
+----
+$ gh repo clone tvaira/tp-cplusplus.git
+----
+
+=== Exemple détaillé : développeur seul
+
+On utilise le répertoire `tp-git-sequence-1` qui contient un dépôt local.
+
+Un dépôt distant (_remote repository_) doit exister sur https://github.com/[GitHub] :
+
+- On clique sur `+` pour créer un nouveau dépôt :
+
+image:github-2.png[]
+
+- On complète les informations du dépôt :
+
+image:github-3.png[]
+
+À la fin, https://github.com/[GitHub] fournit les indications en fonction de la situation :
+
+image:github-quick-setup.png[]
+
+Il est possible alors de l'ajouter comme dépôt distant pour le dépôt local de l'ordinateur de travail et de synchroniser les deux emplacements.
+
+----
+$ git remote add origin git@github.com:tvaira/tp-git-sequence-1.git
+----
+
+Il faut renommer la branche `master` en `main` (l'option `-M` est un raccourci pour les options `--move` et `--force`) :
+
+----
+$ git branch -M main
+
+$ git branch -vv
+* main c8824fc Ajout de la fonction afficherBienvenue()
+----
+
+Puis, on synchronise les deux emplacements (local et distant) :
+
+----
+$ git push -u origin main
+Décompte des objets: 21, fait.
+Delta compression using up to 12 threads.
+Compression des objets: 100% (17/17), fait.
+Écriture des objets: 100% (21/21), 2.32 KiB | 395.00 KiB/s, fait.
+Total 21 (delta 1), reused 0 (delta 0)
+remote: Resolving deltas: 100% (1/1), done.
+To github.com:tvaira/tp-git-sequence-1.git
+ * [new branch]      main -> main
+La branche 'main' est paramétrée pour suivre la branche distante 'main' depuis 'origin'.
+
+$ git pull
+Déjà à jour.
+----
+
+[TIP]
+====
+L'option `--set-upstream` (alias `-u`) crée une référence qui permettra ensuite d'utiliser `git push` et `git pull` directement sans argument.
+====
+
+Lister les dépôts distants :
+
+----
+$ git remote -v
+origin	git@github.com:tvaira/tp-git-sequence-1.git (fetch)
+origin	git@github.com:tvaira/tp-git-sequence-1.git (push)
+
+$ git branch --all
+* main
+  remotes/origin/main
+----
+
+[NOTE]
+====
+Le serveur distant (_remote_) est nommé `origin` par défaut.
+====
+
+On modifie le fichier `README` sur le dépôt local :
+
+----
+$ vim README
+# Bienvenue
+
+Programme C++ qui affiche "Bienvenue le monde !" en utilisant la fonction
+`afficherBienvenue()`.
+
+$ git add README
+
+$ git commit -a -m "Modification du fichier README"
+[main 470794d] Modification du fichier README
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+----
+
+----
+$ git status
+Sur la branche main
+Votre branche est en avance sur 'origin/main' de 1 commit.
+  (utilisez "git push" pour publier vos commits locaux)
+
+rien à valider, la copie de travail est propre
+----
+
+Et on l'envoie sur le dépôt distant :
+
+----
+$ git push
+Décompte des objets: 3, fait.
+Delta compression using up to 12 threads.
+Compression des objets: 100% (3/3), fait.
+Écriture des objets: 100% (3/3), 352 bytes | 352.00 KiB/s, fait.
+Total 3 (delta 1), reused 0 (delta 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To github.com:tvaira/tp-git-sequence-1.git
+   c8824fc..470794d  main -> main
+----
+
+----
+$ git status
+Sur la branche main
+Votre branche est à jour avec 'origin/main'.
+
+rien à valider, la copie de travail est propre
+----
+
+----
+$ git pull
+Déjà à jour.
+----
+
+Dans https://github.com/[GitHub] :
+
+image:github-4.png[]
+
+[NOTE]
+====
+https://github.com/[GitHub] traite automatique le format https://fr.wikipedia.org/wiki/Markdown[Markdown] si l'extension du fichier est `.md`. Ce qui n'est pas le cas içi ! Il faudra donc renommer le fichier `README.md`.
+====
+
+On peut éditer le nom du fichier directement dans https://github.com/[GitHub] :
+
+image:github-5.png[]
+
+Et c'est mieux :
+
+image:github-6.png[]
+
+On re-synchronise les deux emplacements :
+
+.Avant :
+----
+$ ls -l
+-rwxrwxr-x 1 tv tv 9008 août  11 14:17 bienvenue
+-rw-rw-r-- 1 tv tv  122 août  11 14:16 bienvenue.cpp
+-rw-rw-r-- 1 tv tv 1432 août  11 14:17 bienvenue.o
+-rw-rw-r-- 1 tv tv  135 août  11 14:16 fonction-bienvenue.cpp
+-rw-rw-r-- 1 tv tv  117 août  11 14:16 fonction-bienvenue.h
+-rw-rw-r-- 1 tv tv 2816 août  11 14:17 fonction-bienvenue.o
+-rw-rw-r-- 1 tv tv  459 août  11 14:16 Makefile
+-rw-rw-r-- 1 tv tv  111 août  11 17:03 README
+----
+
+.Récupère les modifications du dépôt distant :
+----
+$  git pull
+remote: Enumerating objects: 3, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 2 (delta 1), reused 0 (delta 0), pack-reused 0
+Dépaquetage des objets: 100% (2/2), fait.
+Depuis github.com:tvaira/tp-git-sequence-1
+   470794d..c479e51  main       -> origin/main
+Mise à jour 470794d..c479e51
+Fast-forward
+ README => README.md | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ rename README => README.md (100%)
+----
+
+.Après :
+----
+$ ls -l
+-rwxrwxr-x 1 tv tv 9008 août  11 14:17 bienvenue
+-rw-rw-r-- 1 tv tv  122 août  11 14:16 bienvenue.cpp
+-rw-rw-r-- 1 tv tv 1432 août  11 14:17 bienvenue.o
+-rw-rw-r-- 1 tv tv  135 août  11 14:16 fonction-bienvenue.cpp
+-rw-rw-r-- 1 tv tv  117 août  11 14:16 fonction-bienvenue.h
+-rw-rw-r-- 1 tv tv 2816 août  11 14:17 fonction-bienvenue.o
+-rw-rw-r-- 1 tv tv  459 août  11 14:16 Makefile
+-rw-rw-r-- 1 tv tv  111 août  11 17:17 README.md
+
+$ git log --oneline
+c479e51 (HEAD -> main, origin/main) Renommage README.md
+470794d Modification du fichier README
+c8824fc (tag: 1.0) Ajout de la fonction afficherBienvenue()
+7cbe84f Ajout README
+4717082 Affiche un message de bienvenue
+af1dcc8 Ajout du fichier .gitignore
+973e4f7 Création du programme principal
+bb344f4 Ajout du fichier bienvenue.cpp
+----
+
+[WARNING]
+====
+Les _tags_ ne sont pas poussés (_push_) automatiquement.
+====
+
+image:github-7a.png[]
+
+----
+$ git push --tags
+Décompte des objets: 1, fait.
+Écriture des objets: 100% (1/1), 154 bytes | 154.00 KiB/s, fait.
+Total 1 (delta 0), reused 0 (delta 0)
+To github.com:tvaira/tp-git-sequence-1.git
+ * [new tag]         1.0 -> 1.0
+----
+
+Maintenant, le _tag_ `1.0` est accessible à partir de https://github.com/[GitHub] :
+
+image:github-7b.png[]
+
+[TIP]
+====
+On peut récupérer une archive compressée du projet au format `zip` ou `tar.gz` !
+====
+
+=== Branche de suivi
+
+Une branche de suivi (_tracking branch_) est une branche locale qui est en relation directe avec une branche distante (_upstream branch_).
+
+Les branches de suivi peuvent servir :
+
+- à sauvegarder son travail sur la branche dans un dépôt distant
+- partager son travail sur la branche avec d'autres développeurs
+
+[NOTE]
+====
+Dans le cadre d'un travail collaboratif, on pourra aussi décider d'utiliser des branches locales privées que l'on ne souhaite pas partager.
+====
+
+L’extraction d’une branche locale à partir d’une branche distante crée automatiquement une branche de suivi (c'est l'option par défaut `--track` de la commande `git checkout`). Si la branche distante n'existe pas encore, il faudra utiliser l'option `-u` ou `--set-upstream-to` pour créer le suivi.
+
+Si on se trouve sur une branche de suivi :
+
+- `git push` sélectionne automatiquement le serveur vers lequel pousser les modifications.
+- `git pull` récupère toutes les références distantes et fusionne automatiquement la branche distante correspondante dans la branche actuelle.
+
+====
+On souhaite modifier la fonction `afficherBienvenue()` pourqu'elle soit plus "générique" en recevant en argument le message à afficher. Pour cela on créer une branche qui va permettre de réaliser ce travail de manière isolée.
+====
+
+L'état du dépôt local est le suivant :
+
+----
+$ git branch -v
+* main c479e51 [origin/main] Renommage README.md
+
+$ git log --oneline
+c479e51 (HEAD -> main, origin/main) Renommage README.md
+470794d Modification du fichier README
+...
+----
+
+image:github-commits-main-avant.png[]
+
+On crée une branche `modification-fonction` et on bascule dessus :
+
+----
+$ git checkout -b modification-fonction
+Basculement sur la nouvelle branche 'modification-fonction'
+
+$ git branch -v
+  main                  c479e51 [origin/main] Renommage README.md
+* modification-fonction c479e51 Renommage README.md
+
+$ git log --oneline
+c479e51 (HEAD -> modification-fonction, origin/main, main) Renommage README.md
+...
+----
+
+image:git-checkout-branch.png[]
+
+On "travaille" sur le code :
+
+----
+$ vim fonction-bienvenue.h
+----
+[source,cpp]
+----
+#ifndef FONCTION_BIENVENUE_H
+#define FONCTION_BIENVENUE_H
+
+#include <string>
+
+void afficherMessage(std::string message);
+
+#endif // FONCTION_BIENVENUE_H
+----
+----
+$ vim fonction-bienvenue.cpp
+----
+[source,cpp]
+----
+#include "fonction-bienvenue.h"
+#include <iostream>
+
+void afficherMessage(std::string message)
+{
+   std::cout << message << std::endl;
+}
+----
+----
+$ vim bienvenue.cpp
+----
+[source,cpp]
+----
+// Affiche un message de bienvenue
+
+#include "fonction-bienvenue.h"
+
+int main()
+{
+   afficherMessage("Bienvenue le monde !");
+
+   return 0;
+}
+----
+
+On teste :
+
+----
+$ make rebuild
+$ ./bienvenue
+Bienvenue le monde !
+----
+
+On ajoute les fichiers dans l'index :
+
+----
+$ git add fonction-bienvenue.h
+$ git add fonction-bienvenue.cpp
+$ git add bienvenue.cpp
+----
+
+Et on valide les changements (_commit_) :
+
+----
+$ git commit -m "Modification afficherBienvenue en afficherMessage"
+----
+
+.Vérification :
+----
+$ git branch -v
+  main                  c479e51 [origin/main] Renommage README.md
+* modification-fonction ce00d34 Modification afficherBienvenue en afficherMessage
+
+$ git log --oneline
+ce00d34 (HEAD -> modification-fonction) Modification afficherBienvenue en afficherMessage
+c479e51 (origin/main, main) Renommage README.md
+470794d Modification du fichier README
+...
+----
+
+image:git-commit-branch.png[]
+
+On crée une branche de suivi :
+
+----
+$ git push --set-upstream origin modification-fonction
+Décompte des objets: 5, fait.
+Delta compression using up to 12 threads.
+Compression des objets: 100% (5/5), fait.
+Écriture des objets: 100% (5/5), 660 bytes | 660.00 KiB/s, fait.
+Total 5 (delta 1), reused 0 (delta 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+remote: 
+remote: Create a pull request for 'modification-fonction' on GitHub by visiting:
+remote:      https://github.com/tvaira/tp-git-sequence-1/pull/new/modification-fonction
+remote: 
+To github.com:tvaira/tp-git-sequence-1.git
+ * [new branch]      modification-fonction -> modification-fonction
+La branche 'modification-fonction' est paramétrée pour suivre la branche distante 'modification-fonction' depuis 'origin'.
+----
+
+.Vérification :
+----
+$ git branch -vv
+  main                  c479e51 [origin/main] Renommage README.md
+* modification-fonction ce00d34 [origin/modification-fonction] Modification afficherBienvenue en afficherMessage
+
+git log --oneline
+ce00d34 (HEAD -> modification-fonction, origin/modification-fonction) Modification afficherBienvenue en afficherMessage
+c479e51 (origin/main, main) Renommage README.md
+470794d Modification du fichier README
+
+$ git ls-remote
+From git@github.com:tvaira/tp-git-sequence-1.git
+c479e51a64712908cf823b053b72d75a015d2cf8	HEAD
+c479e51a64712908cf823b053b72d75a015d2cf8	refs/heads/main
+ce00d3449aa40aa44d51effcc66c796eb9b2ed20	refs/heads/modification-fonction
+----
+
+image:git-push-branch.png[]
+
+image:github-branch-apres.png[]
+
+[NOTE]
+====
+À partir d'ici, il y a deux possibilités pour fusionner la branche dans la branche principale. Dans le cadre d'un travail collaboratif, on pourrait (devrait ?) créer une _Pull Request_ (une demande modification) comme l'indique le message "_Create a pull request for 'modification-fonction' on GitHub ..._" (cf. xref:ancre-pr[Pull Request et Révision de code]). _Pull Request_ peut être traduit par « Proposition de révision » (PR). C'est l'action qui consiste à demander au détenteur du dépôt de référence de prendre en compte des modifications d'un autre dépôt (_fork_ ou local).
+
+Dans une situation "Développeur seul", cela n'a pas d'intérêt donc on peut continuer sur le dépôt local pour faire la fusion (_merge_) puis la "publier" (_push_) sur le dépôt distant.
+====
+
+Il faut basculer sur la branche principale :
+
+----
+$ git checkout main
+Basculement sur la branche 'main'
+Votre branche est à jour avec 'origin/main'.
+
+$ git branch -vv
+* main                  c479e51 [origin/main] Renommage README.md
+  modification-fonction ce00d34 [origin/modification-fonction] Modification afficherBienvenue en afficherMessage
+
+$ git log --oneline
+c479e51 (HEAD -> main, origin/main) Renommage README.md
+470794d Modification du fichier README
+...
+----
+
+image:git-checkout-main.png[]
+
+On fusionne la branche `modification-fonction` dans `main` :
+
+----
+$ git merge modification-fonction
+Mise à jour c479e51..ce00d34
+Fast-forward
+ bienvenue.cpp          | 2 +-
+ fonction-bienvenue.cpp | 4 ++--
+ fonction-bienvenue.h   | 4 +++-
+ 3 files changed, 6 insertions(+), 4 deletions(-)
+----
+
+.Vérification :
+----
+$ git branch -vv
+* main                  ce00d34 [origin/main: en avance de 1] Modification afficherBienvenue en afficherMessage
+  modification-fonction ce00d34 [origin/modification-fonction] Modification afficherBienvenue en afficherMessage
+
+$ git log --oneline
+ce00d34 (HEAD -> main, origin/modification-fonction, modification-fonction) Modification afficherBienvenue en afficherMessage
+c479e51 (origin/main) Renommage README.md
+470794d Modification du fichier README
+...
+
+$ git status
+Sur la branche main
+Votre branche est en avance sur 'origin/main' de 1 commit.
+  (utilisez "git push" pour publier vos commits locaux)
+
+rien à valider, la copie de travail est propre
+----
+
+image:git-merge-branch.png[]
+
+Il faut synchroniser le dépôt distant :
+
+----
+$ git push
+Total 0 (delta 0), reused 0 (delta 0)
+To github.com:tvaira/tp-git-sequence-1.git
+   c479e51..ce00d34  main -> main
+----
+
+.Vérification :
+----
+$ git branch -vv
+* main                  ce00d34 [origin/main] Modification afficherBienvenue en afficherMessage
+  modification-fonction ce00d34 [origin/modification-fonction] Modification afficherBienvenue en afficherMessage
+
+$ git log --oneline
+ce00d34 (HEAD -> main, origin/modification-fonction, origin/main, modification-fonction) Modification afficherBienvenue en afficherMessage
+c479e51 Renommage README.md
+470794d Modification du fichier README
+...
+----
+
+image:git-push-merge.png[]
+
+image:github-commits-main-apres.png[]
+
+On peut visualiser le _commit_ de fusion :
+
+image:github-commit-merge.png[]
+
+On supprime la branche locale (c'est une branche thématique) : (l'option `-D` force la suppression)
+
+----
+$ git branch -D modification-fonction
+Branche modification-fonction supprimée (précédemment ce00d34).
+----
+
+.Vérification :
+----
+$ git branch -vv
+* main ce00d34 [origin/main] Modification afficherBienvenue en afficherMessage
+
+$ git log --oneline
+ce00d34 (HEAD -> main, tag: 1.1, origin/modification-fonction, origin/main) Modification afficherBienvenue en afficherMessage
+c479e51 Renommage README.md
+470794d Modification du fichier README
+...
+----
+
+image:git-delete-branch-local.png[]
+
+On supprime la branche distante :
+
+----
+$ git push origin --delete modification-fonction
+To github.com:tvaira/tp-git-sequence-1.git
+ - [deleted]         modification-fonction
+----
+
+.Vérification :
+----
+$ git log --oneline
+ce00d34 (HEAD -> main, tag: 1.1, origin/main) Modification afficherBienvenue en afficherMessage
+c479e51 Renommage README.md
+470794d Modification du fichier README
+
+$ git ls-remote
+From git@github.com:tvaira/tp-git-sequence-1.git
+ce00d3449aa40aa44d51effcc66c796eb9b2ed20	HEAD
+ce00d3449aa40aa44d51effcc66c796eb9b2ed20	refs/heads/main
+...
+----
+
+image:git-delete-branch-distant.png[]
+
+On peut créer et publier un nouveau _tag_ :
+
+----
+$ git tag -a 1.1 -m 'La version 1.1'
+
+$ git push --tags
+Décompte des objets: 1, fait.
+Écriture des objets: 100% (1/1), 153 bytes | 153.00 KiB/s, fait.
+Total 1 (delta 0), reused 0 (delta 0)
+To github.com:tvaira/tp-git-sequence-1.git
+ * [new tag]         1.1 -> 1.1
+----
+
+image:github-tags.png[]
+
+Sur https://github.com[GitHub], on peut créer des versions livrables "_release_" :
+
+image:github-publish-release.png[]
+
+[TIP]
+====
+On peut ajouter des fichiers comme ici l'exécutable.
+====
+
+image:github-release.png[]
+
+Au final, l'état du projet sur https://github.com[GitHub] est le suivant :
+
+image:github-final.png[]
+
+Quelques commandes supplémentaires :
+
+----
+$ git remote show origin
+* distante origin
+  URL de rapatriement : https://github.com/tvaira/tp-git-sequence-1.git
+  URL push : https://github.com/tvaira/tp-git-sequence-1.git
+  Branche HEAD : main
+  Branches distantes :
+    main                  suivi
+    modification-fonction suivi
+  Branches locales configurées pour 'git pull' :
+    main                  fusionne avec la distante main
+    modification-fonction fusionne avec la distante modification-fonction
+  Références locales configurées pour 'git push' :
+    main                  pousse vers main                  (à jour)
+    modification-fonction pousse vers modification-fonction (à jour)
+----
+
+Les branches qui ont été fusionnées (ou pas) :
+
+----
+$ git branch --merged | grep -v \* | xargs
+modification-fonction
+
+$ git branch --no-merged | grep -v \* | xargs
+
+----
+
+Pour éviter de conserver en local des anciennes branches généralement fusionnées, on les nettoye avec :
+
+----
+$ git remote prune origin
+----
+
+=== Travailler dans GitHub
+
+https://github.com/[GitHub] permet aussi d'éditer les fichiers, notamment ceux en https://fr.wikipedia.org/wiki/Markdown[Markdown] :
+
+image:github-readme-markdown.png[]
+
+Dans la nouvelle fenêtre, on peut éditer le fichier :
+
+image:github-edit-readme.png[]
+
+Le prévisualiser :
+
+image:github-preview-readme.png[]
+
+Et terminer en réalisant le _commit_ :
+
+image:github-commit-readme.png[]
+
+Le _commit_ ayant été réalisé directement sur le dépôt distant, il n'est pas (encore) disponible sur le dépôt local :
+
+----
+$ git status
+Sur la branche main
+Votre branche est en retard sur 'origin/main' de 1 commit, et peut être mise à jour en avance rapide.
+  (utilisez "git pull" pour mettre à jour votre branche locale)
+
+rien à valider, la copie de travail est propre
+----
+
+On peut mettre à jour le dépôt local et le répertoire de travail directement avec la commande `git pull` (équivalente à `git fetch` suivi d'un `git merge`) :
+
+----
+$ git pull
+Mise à jour 3cf9129..73c7f78
+Fast-forward
+ README.md | 45 ++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 44 insertions(+), 1 deletion(-)
+----
+
+.Vérification :
+----
+$ cat README.md
+# Bienvenue
+
+Programme C++ qui affiche le message "Bienvenue le monde !" en utilisant la fonction `afficherBienvenue()`.
+
+## La fonction afficherBienvenue
+
+Elle est déclarée dans le fichier d'en-tête (_header_) `fonction-bienvenue.h` :
+
+```cpp
+#ifndef FONCTION_BIENVENUE_H
+#define FONCTION_BIENVENUE_H
+
+#include <string>
+
+void afficherBienvenue(std::string message="Bienvenue le monde !");
+
+#endif // FONCTION_BIENVENUE_H
+```
+
+Et définie dans le fichier `fonction-bienvenue.cpp` :
+
+```cpp
+#include "fonction-bienvenue.h"
+#include <iostream>
+
+void afficherBienvenue(std::string message/*="Bienvenue le monde !"*/)
+{
+   std::cout << message << std::endl;
+}
+```
+
+La fonction reçoit en argument le **message** de type `string` et affiche sur la sortie standard (par défaut l’écran). Si la fonction est appelée sans argument, elle affiche par défaut "Bienvenue le monde !" :
+
+```cpp
+// Affiche un message de bienvenue
+
+#include "fonction-bienvenue.h"
+
+int main()
+{
+   afficherBienvenue();
+
+   return 0;
+}
+```
+
+Lire : [Affichage avec cout](http://tvaira.free.fr/dev/cours/affichage-cout.html) et [Saisie avec cin en C++](http://tvaira.free.fr/dev/cours/saisie-cin.html) en C++.
+
+Thierry Vaira <tvaira@free.fr>
+----
+
+On obtient un joli `README.md` :
+
+image:github-final-readme.png[]
+
+On peut créer et publier un dernier _tag_ :
+
+----
+$ git tag -a 1.2 -m 'La version 1.2'
+
+$ git push --tags
+Décompte des objets: 1, fait.
+Écriture des objets: 100% (1/1), 154 bytes | 154.00 KiB/s, fait.
+Total 1 (delta 0), reused 0 (delta 0)
+To github.com:tvaira/tp-git-sequence-1.git
+ * [new tag]         1.2 -> 1.2
+----
+
+[[ancre-pr]]
+=== Pull Request et Révision de code
+
+Les _Pull Requests_ sont une fonctionnalité facilitant la collaboration des développeurs sur un projet.
+
+[TIP]
+====
+GitHub a popularisé le principe de _Pull Request_ et les autres système Git hébergés l'utilisent aussi : Bitbucket Cloud, GitLab (_Merge Request_), ...
+
+Lien : https://docs.github.com/en/github/collaborating-with-pull-requests[Collaborating with pull requests]
+====
+
+Les _Pull Requests_ sont un mécanisme permettant à un développeur d'informer les membres de l'équipe qu'il a terminé un « travail » (une fonctionnalité, une version livrable, un correctif, ...) et de proposer sa contribution au dépôt central.
+
+[NOTE]
+====
+_Pull Request_ peut être traduit par « Proposition de révision » (PR) : c'est-à-dire une demande de modification ou de contribution.
+====
+
+Principe :
+
+Une fois que sa branche de suivi est prête, le développeur crée ou ouvre (_Open_) une _Pull Request_.
+
+Tous les développeurs du projet seront informées du fait qu'ils doivent *réviser le code* puis le *fusionner* (_merge_) dans la branche principale (`main` ou `master`) ou dans une branche de développement (`develop`).
+
+Pendant cette révision de code, les développeurs peuvent discuter de la fonctionnalité (commenter le code, poser des questions, ...) et proposer des adaptations de la fonctionnalité en publiant des _commits_ de suivi.
+
+image:pull-request.png[]
+
+[NOTE]
+====
+Les _Pull Requests_ offrent cette fonctionnalité dans une interface Web à côté des dépôts GitHub ou Bitbucket. Cette interface affiche une comparaison des changements, permet l'échange entre développeurs et fournit une méthode simple pour réaliser la fusion (_merge_) du code quand il est prêt.
+====
+
+Les _Pull Requests_ peuvent être utilisées avec le _workflow_ Gitflow (un modèle de branches strict conçu autour de la livraison du projet).
+
+Liens :
+
+- https://www.atlassian.com/fr/git/tutorials/making-a-pull-request[Faire une pull request]
+- https://docs.github.com/en/github/collaborating-with-pull-requests[Collaborating with pull requests]
+- xref:rebasage-interactif[Workflow git et Gitflow]
+
+=== Travail collaboratif
+
+[[rebasage-interactif]]
+1 . Nettoyer son historique local avant de publier
+
+Avant de faire un `git push` sur une branche de suivi, il faut eut être nettoyer son historique local (une série de _commits_ dans la branche) afin de pouvoir proposer quelque chose de propre et d'utilisable. Avant de publier la branche, il est conseillé d'effectuer une rebasage interactif avec `git rebase -i`. On a alors une totale liberté pour nettoyer, réécrire, annuler, regrouper les _commits_ locaux avant de les partager (`git push`) sur le dépôt distant.
+
+Sur la branche actuelle depuis la dernière synchronisation : `git rebase -i @{upstream}` (ou `git rebase -i origin/feature` ou `git rebase -i HEAD~n`).
+
+.Par exemple :
+image:git-rebasage-interactif.png[]
+
+[NOTE]
+====
+Lorsque l'on développe seul, une branche de suivi peut servir de sauvegarde sur un dépôt distant. Dans le cadre d'un travail collaboratif, cela devient une branche de partage.
+====
+
+2 . Travailler à plusieurs sur une branche de fonctionnalité
+
+Il est possible que le `git push` soit refusé en raison d'une branche de suivi obsolète (un travail a été poussé entre-temps) : entre la dernière synchronisation entrante (`git pull`) et le moment où on souhaite effectuer un `git push`, un autre développeur a publié des changements (des _commits_). La branche distante (par exemple `origin/feature`) est donc maintenant plus avancée que sa copie locale.
+
+Un `git pull` provoquerait une fusion avec une divergence mais on souhaite conserver un historique linéaire au sein d'une branche : car ce n'est réalité qu'un problème de séquencement dans le travail sur la branche.
+
+On va demander à `git pull` de faire un _rebase_ au lieu d'une fusion (_merge_) en utilisant `git pull --rebase`.
+
+[NOTE]
+====
+La commande `git rebase` permet de changer la « base » d'une branche, c'est-à-dire son _commit_ d'origine. Elle rejoue une série de _commits_ sur une nouvelle base.
+====
+
+[red]+Bonus : Supprimer toutes ses modifications et commits locaux et récupérer un dépôt distant « propre »+
+
+----
+$ git fetch origin
+$ git reset --hard origin/main
+----
+
+[[ancre-merge]]
+== La fusion
+
+=== Stratégies de fusion
+
+Les différentes stratégies de fusion :
+
+- Avance rapide (_Fast Forward_) : c'est la fusion utilisée *par défaut* par `git merge` si c'est possible. Git déplace les _commits_ de la branche `feature` vers la branche destination `main` si il n'y a pas eu de nouveaux _commits_ sur cette branche. En réalité, Git déplace simplement le pointeur vers l’avant. On peut réaliser cette fusion avec l'option `--ff-only`.
+
+image:git-fusion-ff.png[]
+
+- _Commit_ de fusion : lorsque l’historique de développement a divergé, `git merge` réalise une fusion à trois sources (_three-way merge_) en utilisant les deux _commits_ au sommet des deux branches (`C4` et `C5`) ainsi que leur plus proche ancêtre commun (`C2`) pour créer un nouveau _commit_ (`C6`). On peut réaliser cette fusion avec l'option `--no-ff`.
+
+image:git-fusion-commit.png[]
+
+- _Squash_ : on obtient un nouveau _commit_ qui regroupe tous les _commits_ de la branche. Pour réaliser cette fusion, il faut ajouter l'option `--squash`.
+
+image:git-fusion-squash.png[]
+
+Dans GitHub :
+
+image:jira-github-types-merge-pr.png[]
+
+Dans Bitbucket :
+
+image:bitbucket-merge-strategy.png[]
+
+
+=== Le conflit de fusion
+
+Il est possible qu'une fusion (_merge_) ne puisse pas être réalisée automatiquement par Git. Cela arrive lorsqu'une même partie d'un fichier a été modifiée dans deux branches distinctes.
+
+[WARNING]
+====
+Cette situation peut se produire dans le cadre d'un travail collaboratif mais, rarement en Développeur seul.
+====
+
+On s'aperçoit que le fichier `README.md` n'a pas été modifié (nom de fonction incorrect) lors de la modification de la fonction (un oubli !) :
+
+----
+$ cat README.md
+# Bienvenue
+
+Programme C++ qui affiche "Bienvenue le monde !" en utilisant la fonction
+`afficherBienvenue()`.
+----
+
+Il faut donc faire un correctif. Pour cela, on va créer une branche thématique (dans https://github.com[GitHub] pour changer) :
+
+image:github-create-branch.png[]
+
+La branche `correctif-readme` est créée sur le dépôt distant mais elle n'est pas encore disponible sur le dépôt local :
+
+----
+$ git ls-remote
+From git@github.com:tvaira/tp-git-sequence-1.git
+ce00d3449aa40aa44d51effcc66c796eb9b2ed20	HEAD
+ce00d3449aa40aa44d51effcc66c796eb9b2ed20	refs/heads/correctif-readme
+ce00d3449aa40aa44d51effcc66c796eb9b2ed20	refs/heads/main
+...
+
+$ git branch -vv
+* main ce00d34 [origin/main] Modification afficherBienvenue en afficherMessage
+----
+
+Il faut donc récupèrer les informations du dépôt distant et les rapatrier dans le dépôt local :
+
+----
+$ git fetch
+Depuis github.com:tvaira/tp-git-sequence-1
+ * [nouvelle branche] correctif-readme -> origin/correctif-readme
+----
+
+[IMPORTANT]
+====
+La commande `git fetch` ne modifie pas le répertoire de travail, seulement le dépôt.
+====
+
+On bascule sur la branche `correctif-readme` qui sera automatiquement défini comme une branche de suivi :
+
+----
+$ git checkout correctif-readme
+La branche 'correctif-readme' est paramétrée pour suivre la branche distante 'correctif-readme' depuis 'origin'.
+Basculement sur la nouvelle branche 'correctif-readme'
+
+$ git branch -vv
+* correctif-readme ce00d34 [origin/correctif-readme] Modification afficherBienvenue en afficherMessage
+  main             ce00d34 [origin/main] Modification afficherBienvenue en afficherMessage
+
+$ git log --oneline
+ce00d34 (HEAD -> correctif-readme, tag: 1.1, origin/main, origin/correctif-readme, main) Modification afficherBienvenue en afficherMessage
+c479e51 Renommage README.md
+470794d Modification du fichier README
+...
+----
+
+On modifie le fichier `README.md` et on valide le changement :
+
+----
+$ vim README.md
+# Bienvenue
+
+Programme C++ qui affiche "Bienvenue le monde !" en utilisant la fonction `afficherMessage()`.
+
+$ git add README.md
+$ git commit -m "Modification README.md"
+[correctif-readme 3d4fa0d] Modification README.md
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+----
+
+.Vérification :
+----
+$ git branch -vv
+* correctif-readme 3d4fa0d [origin/correctif-readme: en avance de 1] Modification README.md
+  main             ce00d34 [origin/main] Modification afficherBienvenue en afficherMessage
+
+$ git log --oneline
+3d4fa0d (HEAD -> correctif-readme) Modification README.md
+ce00d34 (tag: 1.1, origin/main, origin/correctif-readme, main) Modification afficherBienvenue en afficherMessage
+c479e51 Renommage README.md
+470794d Modification du fichier README
+...
+----
+
+Maintenant, on va basculer sur la branche principale pour créer une nouvelle branche thématique `modification-fonction` pour modifier la fonction (et remettre un peu d'ordre dans le code !) :
+
+.Basculement sur la branche principale :
+----
+$ git checkout main
+Basculement sur la branche 'main'
+Votre branche est à jour avec 'origin/main'.
+
+$ git branch -vv
+  correctif-readme 3d4fa0d [origin/correctif-readme: en avance de 1] Modification README.md
+* main             ce00d34 [origin/main] Modification afficherBienvenue en afficherMessage
+----
+
+.Création d'une branche thématique :
+----
+$ git branch modification-fonction
+
+$ git branch -vv
+  correctif-readme      3d4fa0d [origin/correctif-readme: en avance de 1] Modification README.md
+* main                  ce00d34 [origin/main] Modification afficherBienvenue en afficherMessage
+  modification-fonction ce00d34 Modification afficherBienvenue en afficherMessage
+----
+
+.Basculement sur la branche thématique :
+----
+$ git checkout modification-fonction
+Basculement sur la branche 'modification-fonction'
+
+$ git branch -vv
+  correctif-readme      3d4fa0d [origin/correctif-readme: en avance de 1] Modification README.md
+  main                  ce00d34 [origin/main] Modification afficherBienvenue en afficherMessage
+* modification-fonction ce00d34 Modification afficherBienvenue en afficherMessage
+----
+
+On modifie le projet :
+
+----
+$ vim fonction-bienvenue.h
+----
+[source,cpp]
+----
+#ifndef FONCTION_BIENVENUE_H
+#define FONCTION_BIENVENUE_H
+
+#include <string>
+
+void afficherBienvenue(std::string message="Bienvenue le monde !");
+
+#endif // FONCTION_BIENVENUE_H
+----
+----
+$ vim fonction-bienvenue.cpp
+----
+[source,cpp]
+----
+#include "fonction-bienvenue.h"
+#include <iostream>
+
+void afficherBienvenue(std::string message/*="Bienvenue le monde !"*/)
+{
+   std::cout << message << std::endl;
+}
+----
+----
+$ vim bienvenue.cpp
+----
+[source,cpp]
+----
+// Affiche un message de bienvenue
+
+#include "fonction-bienvenue.h"
+
+int main()
+{
+   afficherBienvenue();
+
+   return 0;
+}
+----
+----
+$ vim README.md
+----
+[source,Markdown]
+----
+# Bienvenue
+
+Programme C++ qui affiche le message "Bienvenue le monde !" en utilisant la fonction `afficherBienvenue()`.
+
+Thierry Vaira <tvaira@free.fr>
+----
+
+On teste :
+
+----
+$ make rebuild
+Fabrication du programme : bienvenue
+rm -f *.o
+g++ -c -Wall -std=c++11 bienvenue.cpp
+g++ -c -Wall -std=c++11 fonction-bienvenue.cpp
+g++ -o bienvenue  bienvenue.o fonction-bienvenue.o
+
+$ ./bienvenue
+Bienvenue le monde !
+----
+
+On ajoute les fichiers dans l'index :
+
+----
+$ git add fonction-bienvenue.h
+$ git add fonction-bienvenue.cpp
+$ git add bienvenue.cpp
+$ git add REAME.md
+----
+
+Et on valide les changements :
+
+----
+$ git commit -m "Modification de la fonction afficherBienvenue() qui affiche le message "Bienvenue le monde !" par défaut"
+----
+
+.Vérification :
+----
+$ git log --oneline
+f909007 (HEAD -> modification-fonction) Modification de la fonction afficherBienvenue() qui affiche le message "Bienvenue le monde !" par défaut
+ce00d34 (tag: 1.1, origin/main, origin/correctif-readme, main) Modification afficherBienvenue en afficherMessage
+c479e51 Renommage README.md
+470794d Modification du fichier README
+----
+
+On rebascule la branche principale et on peut voir qu'il y a maintenant une divergence dans l'historique :
+
+----
+$ git log --graph --decorate --oneline --all
+* f909007 (modification-fonction) Modification de la fonction afficherBienvenue() qui affiche le message "Bienvenue le monde !" par défaut
+| * 3d4fa0d (correctif-readme) Modification README.md
+|/  
+* ce00d34 (HEAD -> main, tag: 1.1, origin/main, origin/correctif-readme) Modification afficherBienvenue en afficherMessage
+* c479e51 Renommage README.md
+* 470794d Modification du fichier README
+...
+----
+
+image:git-branch-divergence.png[]
+
+On fusionne la branche `correctif-readme` dans la branche principale :
+
+----
+$ git merge correctif-readme
+Mise à jour ce00d34..3d4fa0d
+Fast-forward
+ README.md | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+----
+
+----
+$ git log --graph --decorate --oneline --all
+* f909007 (modification-fonction) Modification de la fonction afficherBienvenue() qui affiche le message "Bienvenue le monde !" par défaut
+| * 3d4fa0d (HEAD -> main, correctif-readme) Modification README.md
+|/  
+* ce00d34 (tag: 1.1, origin/main, origin/correctif-readme) Modification afficherBienvenue en afficherMessage
+* c479e51 Renommage README.md
+* 470794d Modification du fichier README
+...
+----
+
+On essaye maintenant de fusionner la branche `modification-fonction` dans la branche principale :
+
+----
+$ git merge modification-fonction
+Fusion automatique de README.md
+CONFLIT (contenu) : Conflit de fusion dans README.md
+La fusion automatique a échoué ; réglez les conflits et validez le résultat.
+----
+
+.Très utile :
+----
+$ git status
+Sur la branche main
+Votre branche est en avance sur 'origin/main' de 1 commit.
+  (utilisez "git push" pour publier vos commits locaux)
+
+Vous avez des chemins non fusionnés.
+  (réglez les conflits puis lancez "git commit")
+  (utilisez "git merge --abort" pour annuler la fusion)
+
+Modifications qui seront validées :
+
+	modifié :         bienvenue.cpp
+	modifié :         fonction-bienvenue.cpp
+	modifié :         fonction-bienvenue.h
+
+Chemins non fusionnés :
+  (utilisez "git add <fichier>..." pour marquer comme résolu)
+
+	modifié des deux côtés :  README.md
+----
+
+On va commencer par voir le conflit :
+
+----
+$ cat README.md
+# Bienvenue
+
+<<<<<<< HEAD
+Programme C++ qui affiche "Bienvenue le monde !" en utilisant la fonction `afficherMessage()`.
+=======
+Programme C++ qui affiche le message "Bienvenue le monde !" en utilisant la fonction `afficherBienvenue()`.
+>>>>>>> modification-fonction
+
+Thierry Vaira <tvaira@free.fr>
+----
+
+[NOTE]
+====
+Lorsque Git rencontre un conflit au cours d'une fusion, il l'indique dans les fichiers avec des délimiteurs (`<<<<<<<`, `=======` et `>>>>>>>`) qui marquent les deux côtés du conflit.
+====
+
+Pour résoudre le conflit, il faut choisir une partie ou l’autre ou bien fusionner les deux contenus "à la main" :
+
+----
+$ vim README.md
+----
+[source,Markdown]
+----
+# Bienvenue
+
+Programme C++ qui affiche le message "Bienvenue le monde !" en utilisant la fonction `afficherBienvenue()`.
+
+Thierry Vaira <tvaira@free.fr>
+----
+
+On peut ensuite terminer la fusion en suivant les indications de `git status` :
+
+----
+$ git add README.md
+
+$ git status
+Sur la branche main
+Votre branche est en avance sur 'origin/main' de 1 commit.
+  (utilisez "git push" pour publier vos commits locaux)
+
+Tous les conflits sont réglés mais la fusion n'est pas terminée.
+  (utilisez "git commit" pour terminer la fusion)
+
+Modifications qui seront validées :
+
+	modifié :         README.md
+	modifié :         bienvenue.cpp
+	modifié :         fonction-bienvenue.cpp
+	modifié :         fonction-bienvenue.h
+
+$ git commit
+[main 3cf9129] Merge branch 'modification-fonction' into main
+----
+
+----
+$ git log --graph --decorate --oneline --all
+*   3cf9129 (HEAD -> main) Merge branch 'modification-fonction' into main
+|\  
+| * f909007 (modification-fonction) Modification de la fonction afficherBienvenue() qui affiche le message "Bienvenue le monde !" par défaut
+* | 3d4fa0d (correctif-readme) Modification README.md
+|/  
+* ce00d34 (tag: 1.1, origin/main, origin/correctif-readme) Modification afficherBienvenue en afficherMessage
+* c479e51 Renommage README.md
+* 470794d Modification du fichier README
+...
+----
+
+image:git-branch-divergence-merge.png[]
+
+[[ancre-head-parents]]
+image:git-head-parents.png[]
+
+Attention, le dépôt distant n'est plus synchronisé :
+
+----
+$ git branch -vv
+  correctif-readme      3d4fa0d [origin/correctif-readme: en avance de 1] Modification README.md
+* main                  3cf9129 [origin/main: en avance de 3] Merge branch 'modification-fonction' into main
+  modification-fonction f909007 Modification de la fonction afficherBienvenue() qui affiche le message "Bienvenue le monde !" par défaut
+
+$ git status
+Sur la branche main
+Votre branche est en avance sur 'origin/main' de 3 commits.
+  (utilisez "git push" pour publier vos commits locaux)
+
+rien à valider, la copie de travail est propre
+----
+
+Donc, on "pousse" (_push_) vers le dépôt distant :
+
+----
+$ git push
+Décompte des objets: 12, fait.
+Delta compression using up to 12 threads.
+Compression des objets: 100% (12/12), fait.
+Écriture des objets: 100% (12/12), 1.25 KiB | 425.00 KiB/s, fait.
+Total 12 (delta 7), reused 0 (delta 0)
+remote: Resolving deltas: 100% (7/7), completed with 3 local objects.
+To github.com:tvaira/tp-git-sequence-1.git
+   ce00d34..3cf9129  main -> main
+----
+
+image:github-conflit-final.png[]
+
+On peut finir par un nettoyage des branches thématiques qui ne servent plus :
+
+----
+$ git branch -D modification-fonction
+Branche modification-fonction supprimée (précédemment f909007).
+
+$ git branch -D correctif-readme
+Branche correctif-readme supprimée (précédemment 3d4fa0d).
+
+$ git push origin --delete correctif-readme
+To github.com:tvaira/tp-git-sequence-1.git
+ - [deleted]         correctif-readme
+
+$ git branch -vv
+* main 3cf9129 [origin/main] Merge branch 'modification-fonction' into main
+----
+
+[[ancre-gitflow]]
+== Workflow git et Gitflow
+
+[NOTE]
+====
+Un https://fr.wikipedia.org/wiki/Workflow[workflow] (flux de travaux) est la représentation d'une suite de tâches ou d'opérations effectuées par une personne, un groupe de personnes, un organisme, etc.
+====
+
+Un _workflow git_ est une méthode, un processus de travail, une recette ou une recommandation sur la façon d'utiliser `git` pour accomplir un travail de manière cohérente et productive.
+
+Il n'existe pas de processus standardisé sur la façon d'interagir avec `git`. Il est important de s'assurer que l'équipe de projet est d'accord sur la façon dont le flux de modifications sera appliqué. Un _workflow git_ doit donc être défini.
+
+Il existe plusieurs _workflows git_ connus qui peuvent être utilisés :
+
+- _workflow_ centralisé
+- _workflow_ de branche de fonctionnalité
+- _workflow_ Gitflow
+
+Lien : https://www.atlassian.com/fr/git/tutorials/comparing-workflows[Comparaison des workflow git]
+
+Le _workflow_ *Gitflow* définit un modèle de branchement strict conçu autour de la version du projet. Ce _workflow_ n'ajoute pas de nouveaux concepts ou commandes. Gitflow permet de gérer les bugs (_issues_), les nouvelles fonctionnalités (_features_) et les versions (_releases_) en attribuant des rôles très spécifiques à différentes branches et définit comment et quand elles doivent interagir.
+
+image:gitflow.png[title="Le workflow Gitflow"]
+
+Les rôles des branches sont les suivants :
+
+- pour les branches permanentes :
+
+  * La branche `master` stocke l'historique des versions officielles. Tous les _commits_ de cette branche sont étiquetés avec un numéro de version (_tags_).
+  * La branche `develop` est créée à partir de la branche `master`. Elle sert de branche d'intégration pour les fonctionnalités. Cette branche contiendra l'historique complet du projet.
+
+- pour les branches temporaires :
+
+  * Les branches `features-xxxx` permettent de travailler sur des nouvelles fonctionnalités. Elles sont créées directement à partir de la branche `develop` et une fois le travail fini, fusionnées vers la branche `develop`.
+  * Les branches `release-xxxx` permettent de travailler sur une livraison (généralement des tâches dédiées à la documentation). On les crée à partir de `develop` puis on les fusionne dans `master` en leur attribuant un numéro de version (_tag_).
+  * Les branches `hotfix-xxxx` permettent de publier rapidement (_hot_) une correction (_fix_) depuis la branche `master`. Ces branches seront ensuite fusionnées vers la branche `master` et `develop`.
+
+.Les extensions `git-flow`
+[NOTE]
+====
+Il existe des extensions `git-flow` à `git` pour intégrer le _workflow_ Gitflow.
+
+----
+$ sudo apt install git-flow
+
+$ git flow help
+usage: git flow <subcommand>
+
+Available subcommands are:
+   init      Initialize a new git repo with support for the branching model.
+   feature   Manage your feature branches.
+   bugfix    Manage your bugfix branches.
+   release   Manage your release branches.
+   hotfix    Manage your hotfix branches.
+   support   Manage your support branches.
+   version   Shows version information.
+   config    Manage your git-flow configuration.
+   log       Show log deviating from base branch.
+
+Try 'git flow <subcommand> help' for details.
+----
+====
+
+[IMPORTANT]
+====
+En projet BTS SN, les branches (_feature_, _release_ et _hotfix_) seront créées dans Jira à partir d'un ticket. Les fusions seront réalisées lors d'une revue de code en utilisant les _Pull Requests_ dans GitHub ou Bitbucket.
+====
+
+Réalisation d'une fonctionnalité :
+
+image:gitflow-feature-2.png[]
+
+Réalisation d'une _release_ :
+
+image:gitflow-release.png[]
+
+Correction d'un _bug_ :
+
+image:gitflow-hotfix.png[]
+
+[IMPORTANT]
+====
+Une branche représente une ligne de développement indépendante. Lorsqu'elle désigne un travail bien identifié du projet (une fonctionnalité, une _release_ ou un correctif), il est préférable (obligatoire) que cela reste visible dans le graphe d'historique, même lorsque la branche est supprimée. Pour éviter que Git utilise par défaut une avance rapide (_Fast Forward_) si c'est possible, il faudra réaliser un _commit_ de fusion avec l'option `--no-ff`.
+====
+
+[[ancre-edi]]
+== Environnement de développement intégré (EDI ou IDE)
+
+La plupart des environnements de développement intégre Git ou propose des extensions pour le faire.
+
+[[ancre-vscode]]
+=== Visual Studio Code
+
+https://code.visualstudio.com/[Visual Studio Code] (un des IDE les plus utilisés actuellement) intégre la gestion du contrôle de source (SCM) et inclut par défaut la prise en charge de Git.
+
+Installation de https://code.visualstudio.com/[Visual Studio Code] :
+
+- https://code.visualstudio.com/Download[Download]
+- https://code.visualstudio.com/docs/setup/linux[Setup]
+- https://code.visualstudio.com/docs[Getting Started]
+
+image:vscode-tp.png[]
+
+Liens :
+
+- https://code.visualstudio.com/docs/editor/versioncontrol
+- https://code.visualstudio.com/docs/editor/github
+
+Le contrôle de source (SCM) :
+
+image:vscode-scm.png[]
+
+Il existe de nombreuses extensions pour faciliter l'utilisation de Git dont https://marketplace.visualstudio.com/items?itemName=donjayamanne.git-extension-pack[Git Extension Pack] qui comprend :
+
+- https://marketplace.visualstudio.com/items?itemName=donjayamanne.githistory[Git History]
+- https://marketplace.visualstudio.com/items?itemName=alefragnani.project-manager[Project Manager]
+- https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens[GitLens]
+- https://marketplace.visualstudio.com/items?itemName=codezombiech.gitignore[gitignore]
+- https://marketplace.visualstudio.com/items?itemName=ziyasal.vscode-open-in-github[Open in GitHub / Bitbucket / VisualStudio.com]
+
+image:github-extensions-vscode.png[]
+
+Et quelques autres :
+
+- https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github[GitHub Pull Requests and Issues]
+- https://marketplace.visualstudio.com/items?itemName=github.remotehub[GitHub Repositories]
+- https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph[Git Graph]
+- https://marketplace.visualstudio.com/items?itemName=felipecaputo.git-project-manager[Git Project Manager]
+- https://marketplace.visualstudio.com/items?itemName=waderyan.gitblame[Git Blame]
+- https://marketplace.visualstudio.com/items?itemName=ardisaurus.gitflow-actions-sidebar[Gitflow Actions Sidebar]
+- https://marketplace.visualstudio.com/items?itemName=vector-of-bool.gitflow[gitflow]
+
+- https://marketplace.visualstudio.com/items?itemName=atlassian.atlascode[Jira and Bitbucket (Atlassian Labs)]
+
+[[ancre-outils]]
+== Les outils graphiques
+
+Il existe de nombreuses interfaces graphiques permettant de gérer des projets Git.
+
+En standard :
+
+- une interface web avec https://git-scm.com/book/fr/v2/Git-sur-le-serveur-GitWeb[GitWeb]
+- une interface de visualisation détaillée et graphique avec `gitk` :
+
+image:gitk.png[]
+
+Il existe également de nombreuses autres applications :
+
+- https://github.com/tibirna/qgit[qgit] propose des outils supplémentaires par rapport à `gitk` ;
+- https://github.com/GNOME/giggle[Giggle] : une interface en GTK+ ;
+- http://gitextensions.github.io/[GitExtensions] : un client Git graphique pour Windows (C) ;
+- https://tortoisegit.org/[TortoiseGit] : logiciel libre pour Windows reprenant les éléments d'interface de `TortoiseSVN` (un classique) ;
+- ...
+- https://www.sourcetreeapp.com/[SourceTree] : un logiciel propriétaire gratuit pour Windows (C) et macOS (C) édité par Atlassian ;
+
+image:SourceTree.png[]
+
+- https://www.collab.net/downloads/giteye[GitEye] : un client graphique pour Windows (C), macOS  (C) et Linux
+
+----
+$ cd ~/Téléchargements/
+$ wget -c https://www.collab.net/sites/default/files/downloads/GitEye-2.2.0-linux.x86_64.zip
+
+$ mkdir /tmp/GitEye
+$ unzip -d /tmp/GitEye ~/Téléchargements/GitEye-2.2.0-linux.x86_64.zip
+
+$ sudo chown -R root:root /tmp/GitEye
+$ sudo mv /tmp/GitEye /opt/GitEye
+$ sudo ln -s /opt/GitEye/GitEye /usr/local/bin/GitEye
+$ GitEye
+----
+
+image:GitEye.png[]
+
+***
+
+ifdef::backend-html5[]
+Site : {home}[tvaira.free.fr]
+endif::[]
+
+ifdef::backend-pdf[]
+{author} - <{email}> - version {revnumber} - {revdate} - {home}[tvaira.free.fr]
+endif::[]

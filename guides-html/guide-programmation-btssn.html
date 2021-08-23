@@ -1,0 +1,1832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.12">
+<meta name="description" content="Règles de codage et bonnes pratiques en BTS SN (LaSalle Avignon)">
+<meta name="keywords" content="">
+<meta name="author" content="Thierry Vaira">
+<title>Guide de programmation BTS SN</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<style>
+/* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
+/* Uncomment @import statement to use as custom stylesheet */
+/*@import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700";*/
+article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section{display:block}
+audio,video{display:inline-block}
+audio:not([controls]){display:none;height:0}
+html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}
+a{background:none}
+a:focus{outline:thin dotted}
+a:active,a:hover{outline:0}
+h1{font-size:2em;margin:.67em 0}
+abbr[title]{border-bottom:1px dotted}
+b,strong{font-weight:bold}
+dfn{font-style:italic}
+hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0}
+mark{background:#ff0;color:#000}
+code,kbd,pre,samp{font-family:monospace;font-size:1em}
+pre{white-space:pre-wrap}
+q{quotes:"\201C" "\201D" "\2018" "\2019"}
+small{font-size:80%}
+sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
+sup{top:-.5em}
+sub{bottom:-.25em}
+img{border:0}
+svg:not(:root){overflow:hidden}
+figure{margin:0}
+fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}
+legend{border:0;padding:0}
+button,input,select,textarea{font-family:inherit;font-size:100%;margin:0}
+button,input{line-height:normal}
+button,select{text-transform:none}
+button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer}
+button[disabled],html input[disabled]{cursor:default}
+input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0}
+button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
+textarea{overflow:auto;vertical-align:top}
+table{border-collapse:collapse;border-spacing:0}
+*,*::before,*::after{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
+html,body{font-size:100%}
+body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;font-family:"Noto Serif","DejaVu Serif",serif;font-weight:400;font-style:normal;line-height:1;position:relative;cursor:auto;tab-size:4;word-wrap:anywhere;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}
+a:hover{cursor:pointer}
+img,object,embed{max-width:100%;height:auto}
+object,embed{height:100%}
+img{-ms-interpolation-mode:bicubic}
+.left{float:left!important}
+.right{float:right!important}
+.text-left{text-align:left!important}
+.text-right{text-align:right!important}
+.text-center{text-align:center!important}
+.text-justify{text-align:justify!important}
+.hide{display:none}
+img,object,svg{display:inline-block;vertical-align:middle}
+textarea{height:auto;min-height:50px}
+select{width:100%}
+.subheader,.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{line-height:1.45;color:#7a2518;font-weight:400;margin-top:0;margin-bottom:.25em}
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6,pre,form,p,blockquote,th,td{margin:0;padding:0}
+a{color:#2156a5;text-decoration:underline;line-height:inherit}
+a:hover,a:focus{color:#1d4b8f}
+a img{border:0}
+p{font-family:inherit;font-weight:400;font-size:1em;line-height:1.6;margin-bottom:1.25em;text-rendering:optimizeLegibility}
+p aside{font-size:.875em;line-height:1.35;font-style:italic}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{font-family:"Open Sans","DejaVu Sans",sans-serif;font-weight:300;font-style:normal;color:#ba3925;text-rendering:optimizeLegibility;margin-top:1em;margin-bottom:.5em;line-height:1.0125em}
+h1 small,h2 small,h3 small,#toctitle small,.sidebarblock>.content>.title small,h4 small,h5 small,h6 small{font-size:60%;color:#e99b8f;line-height:0}
+h1{font-size:2.125em}
+h2{font-size:1.6875em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.375em}
+h4,h5{font-size:1.125em}
+h6{font-size:1em}
+hr{border:solid #dddddf;border-width:1px 0 0;clear:both;margin:1.25em 0 1.1875em;height:0}
+em,i{font-style:italic;line-height:inherit}
+strong,b{font-weight:bold;line-height:inherit}
+small{font-size:60%;line-height:inherit}
+code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;color:rgba(0,0,0,.9)}
+ul,ol,dl{font-size:1em;line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
+ul,ol{margin-left:1.5em}
+ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0;font-size:1em}
+ul.square li ul,ul.circle li ul,ul.disc li ul{list-style:inherit}
+ul.square{list-style-type:square}
+ul.circle{list-style-type:circle}
+ul.disc{list-style-type:disc}
+ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
+dl dt{margin-bottom:.3125em;font-weight:bold}
+dl dd{margin-bottom:1.25em}
+abbr,acronym{text-transform:uppercase;font-size:90%;color:rgba(0,0,0,.8);border-bottom:1px dotted #ddd;cursor:help}
+abbr{text-transform:none}
+blockquote{margin:0 0 1.25em;padding:.5625em 1.25em 0 1.1875em;border-left:1px solid #ddd}
+blockquote cite{display:block;font-size:.9375em;color:rgba(0,0,0,.6)}
+blockquote cite::before{content:"\2014 \0020"}
+blockquote cite a,blockquote cite a:visited{color:rgba(0,0,0,.6)}
+blockquote,blockquote p{line-height:1.6;color:rgba(0,0,0,.85)}
+@media screen and (min-width:768px){h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2}
+h1{font-size:2.75em}
+h2{font-size:2.3125em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.6875em}
+h4{font-size:1.4375em}}
+table{background:#fff;margin-bottom:1.25em;border:solid 1px #dedede;word-wrap:normal}
+table thead,table tfoot{background:#f7f8f7}
+table thead tr th,table thead tr td,table tfoot tr th,table tfoot tr td{padding:.5em .625em .625em;font-size:inherit;color:rgba(0,0,0,.8);text-align:left}
+table tr th,table tr td{padding:.5625em .625em;font-size:inherit;color:rgba(0,0,0,.8)}
+table tr.even,table tr.alt{background:#f8f8f7}
+table thead tr th,table tfoot tr th,table tbody tr td,table tr td,table tfoot tr td{line-height:1.6}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2;word-spacing:-.05em}
+h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title strong,h4 strong,h5 strong,h6 strong{font-weight:400}
+.center{margin-left:auto;margin-right:auto}
+.stretch{width:100%}
+.clearfix::before,.clearfix::after,.float-group::before,.float-group::after{content:" ";display:table}
+.clearfix::after,.float-group::after{clear:both}
+:not(pre).nobreak{word-wrap:normal}
+:not(pre).nowrap{white-space:nowrap}
+:not(pre).pre-wrap{white-space:pre-wrap}
+:not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;-webkit-border-radius:4px;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed}
+pre{color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;line-height:1.45;text-rendering:optimizeSpeed}
+pre code,pre pre{color:inherit;font-size:inherit;line-height:inherit}
+pre>code{display:block}
+pre.nowrap,pre.nowrap pre{white-space:pre;word-wrap:normal}
+em em{font-style:normal}
+strong strong{font-weight:400}
+.keyseq{color:rgba(51,51,51,.8)}
+kbd{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;display:inline-block;color:rgba(0,0,0,.8);font-size:.65em;line-height:1.45;background:#f7f7f7;border:1px solid #ccc;-webkit-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 1px 0 rgba(0,0,0,.2),0 0 0 .1em white inset;box-shadow:0 1px 0 rgba(0,0,0,.2),0 0 0 .1em #fff inset;margin:0 .15em;padding:.2em .5em;vertical-align:middle;position:relative;top:-.1em;white-space:nowrap}
+.keyseq kbd:first-child{margin-left:0}
+.keyseq kbd:last-child{margin-right:0}
+.menuseq,.menuref{color:#000}
+.menuseq b:not(.caret),.menuref{font-weight:inherit}
+.menuseq{word-spacing:-.02em}
+.menuseq b.caret{font-size:1.25em;line-height:.8}
+.menuseq i.caret{font-weight:bold;text-align:center;width:.45em}
+b.button::before,b.button::after{position:relative;top:-1px;font-weight:400}
+b.button::before{content:"[";padding:0 3px 0 2px}
+b.button::after{content:"]";padding:0 2px 0 3px}
+p a>code:hover{color:rgba(0,0,0,.9)}
+#header,#content,#footnotes,#footer{width:100%;margin-left:auto;margin-right:auto;margin-top:0;margin-bottom:0;max-width:62.5em;*zoom:1;position:relative;padding-left:.9375em;padding-right:.9375em}
+#header::before,#header::after,#content::before,#content::after,#footnotes::before,#footnotes::after,#footer::before,#footer::after{content:" ";display:table}
+#header::after,#content::after,#footnotes::after,#footer::after{clear:both}
+#content{margin-top:1.25em}
+#content::before{content:none}
+#header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
+#header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
+#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:-ms-flexbox;display:-webkit-flex;display:flex;-ms-flex-flow:row wrap;-webkit-flex-flow:row wrap;flex-flow:row wrap}
+#header .details span:first-child{margin-left:-.125em}
+#header .details span.email a{color:rgba(0,0,0,.85)}
+#header .details br{display:none}
+#header .details br+span::before{content:"\00a0\2013\00a0"}
+#header .details br+span.author::before{content:"\00a0\22c5\00a0";color:rgba(0,0,0,.85)}
+#header .details br+span#revremark::before{content:"\00a0|\00a0"}
+#header #revnumber{text-transform:capitalize}
+#header #revnumber::after{content:"\00a0"}
+#content>h1:first-child:not([class]){color:rgba(0,0,0,.85);border-bottom:1px solid #dddddf;padding-bottom:8px;margin-top:0;padding-top:1rem;margin-bottom:1.25rem}
+#toc{border-bottom:1px solid #e7e7e9;padding-bottom:.5em}
+#toc>ul{margin-left:.125em}
+#toc ul.sectlevel0>li>a{font-style:italic}
+#toc ul.sectlevel0 ul.sectlevel1{margin:.5em 0}
+#toc ul{font-family:"Open Sans","DejaVu Sans",sans-serif;list-style-type:none}
+#toc li{line-height:1.3334;margin-top:.3334em}
+#toc a{text-decoration:none}
+#toc a:active{text-decoration:underline}
+#toctitle{color:#7a2518;font-size:1.2em}
+@media screen and (min-width:768px){#toctitle{font-size:1.375em}
+body.toc2{padding-left:15em;padding-right:0}
+#toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
+#toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
+#toc.toc2>ul{font-size:.9em;margin-bottom:0}
+#toc.toc2 ul ul{margin-left:0;padding-left:1em}
+#toc.toc2 ul.sectlevel0 ul.sectlevel1{padding-left:0;margin-top:.5em;margin-bottom:.5em}
+body.toc2.toc-right{padding-left:0;padding-right:15em}
+body.toc2.toc-right #toc.toc2{border-right-width:0;border-left:1px solid #e7e7e9;left:auto;right:0}}
+@media screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
+#toc.toc2{width:20em}
+#toc.toc2 #toctitle{font-size:1.375em}
+#toc.toc2>ul{font-size:.95em}
+#toc.toc2 ul ul{padding-left:1.25em}
+body.toc2.toc-right{padding-left:0;padding-right:20em}}
+#content #toc{border-style:solid;border-width:1px;border-color:#e0e0dc;margin-bottom:1.25em;padding:1.25em;background:#f8f8f7;-webkit-border-radius:4px;border-radius:4px}
+#content #toc>:first-child{margin-top:0}
+#content #toc>:last-child{margin-bottom:0}
+#footer{max-width:none;background:rgba(0,0,0,.8);padding:1.25em}
+#footer-text{color:rgba(255,255,255,.8);line-height:1.44}
+#content{margin-bottom:.625em}
+.sect1{padding-bottom:.625em}
+@media screen and (min-width:768px){#content{margin-bottom:1.25em}
+.sect1{padding-bottom:1.25em}}
+.sect1:last-child{padding-bottom:0}
+.sect1+.sect1{border-top:1px solid #e7e7e9}
+#content h1>a.anchor,h2>a.anchor,h3>a.anchor,#toctitle>a.anchor,.sidebarblock>.content>.title>a.anchor,h4>a.anchor,h5>a.anchor,h6>a.anchor{position:absolute;z-index:1001;width:1.5ex;margin-left:-1.5ex;display:block;text-decoration:none!important;visibility:hidden;text-align:center;font-weight:400}
+#content h1>a.anchor::before,h2>a.anchor::before,h3>a.anchor::before,#toctitle>a.anchor::before,.sidebarblock>.content>.title>a.anchor::before,h4>a.anchor::before,h5>a.anchor::before,h6>a.anchor::before{content:"\00A7";font-size:.85em;display:block;padding-top:.1em}
+#content h1:hover>a.anchor,#content h1>a.anchor:hover,h2:hover>a.anchor,h2>a.anchor:hover,h3:hover>a.anchor,#toctitle:hover>a.anchor,.sidebarblock>.content>.title:hover>a.anchor,h3>a.anchor:hover,#toctitle>a.anchor:hover,.sidebarblock>.content>.title>a.anchor:hover,h4:hover>a.anchor,h4>a.anchor:hover,h5:hover>a.anchor,h5>a.anchor:hover,h6:hover>a.anchor,h6>a.anchor:hover{visibility:visible}
+#content h1>a.link,h2>a.link,h3>a.link,#toctitle>a.link,.sidebarblock>.content>.title>a.link,h4>a.link,h5>a.link,h6>a.link{color:#ba3925;text-decoration:none}
+#content h1>a.link:hover,h2>a.link:hover,h3>a.link:hover,#toctitle>a.link:hover,.sidebarblock>.content>.title>a.link:hover,h4>a.link:hover,h5>a.link:hover,h6>a.link:hover{color:#a53221}
+details,.audioblock,.imageblock,.literalblock,.listingblock,.stemblock,.videoblock{margin-bottom:1.25em}
+details>summary:first-of-type{cursor:pointer;display:list-item;outline:none;margin-bottom:.75em}
+.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{text-rendering:optimizeLegibility;text-align:left;font-family:"Noto Serif","DejaVu Serif",serif;font-size:1rem;font-style:italic}
+table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
+.paragraph.lead>p,#preamble>.sectionbody>[class="paragraph"]:first-of-type p{font-size:1.21875em;line-height:1.6;color:rgba(0,0,0,.85)}
+table.tableblock #preamble>.sectionbody>[class="paragraph"]:first-of-type p{font-size:inherit}
+.admonitionblock>table{border-collapse:separate;border:0;background:none;width:100%}
+.admonitionblock>table td.icon{text-align:center;width:80px}
+.admonitionblock>table td.icon img{max-width:none}
+.admonitionblock>table td.icon .title{font-weight:bold;font-family:"Open Sans","DejaVu Sans",sans-serif;text-transform:uppercase}
+.admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6);word-wrap:anywhere}
+.admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content{border-style:solid;border-width:1px;border-color:#e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;-webkit-border-radius:4px;border-radius:4px}
+.exampleblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child{margin-bottom:0}
+.sidebarblock{border-style:solid;border-width:1px;border-color:#dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;-webkit-border-radius:4px;border-radius:4px}
+.sidebarblock>:first-child{margin-top:0}
+.sidebarblock>:last-child{margin-bottom:0}
+.sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
+.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.literalblock pre,.listingblock>.content>pre{-webkit-border-radius:4px;border-radius:4px;overflow-x:auto;padding:1em;font-size:.8125em}
+@media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
+@media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
+.literalblock pre,.listingblock>.content>pre:not(.highlight),.listingblock>.content>pre[class="highlight"],.listingblock>.content>pre[class^="highlight "]{background:#f7f7f8}
+.literalblock.output pre{color:#f7f7f8;background:rgba(0,0,0,.9)}
+.listingblock>.content{position:relative}
+.listingblock code[data-lang]::before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:inherit;opacity:.5}
+.listingblock:hover code[data-lang]::before{display:block}
+.listingblock.terminal pre .command::before{content:attr(data-prompt);padding-right:.5em;color:inherit;opacity:.5}
+.listingblock.terminal pre .command:not([data-prompt])::before{content:"$"}
+.listingblock pre.highlightjs{padding:0}
+.listingblock pre.highlightjs>code{padding:1em;-webkit-border-radius:4px;border-radius:4px}
+.listingblock pre.prettyprint{border-width:0}
+.prettyprint{background:#f7f7f8}
+pre.prettyprint .linenums{line-height:1.45;margin-left:2em}
+pre.prettyprint li{background:none;list-style-type:inherit;padding-left:0}
+pre.prettyprint li code[data-lang]::before{opacity:1}
+pre.prettyprint li:not(:first-child) code[data-lang]::before{display:none}
+table.linenotable{border-collapse:separate;border:0;margin-bottom:0;background:none}
+table.linenotable td[class]{color:inherit;vertical-align:top;padding:0;line-height:inherit;white-space:normal}
+table.linenotable td.code{padding-left:.75em}
+table.linenotable td.linenos{border-right:1px solid currentColor;opacity:.35;padding-right:.5em}
+pre.pygments .lineno{border-right:1px solid currentColor;opacity:.35;display:inline-block;margin-right:.75em}
+pre.pygments .lineno::before{content:"";margin-right:-.125em}
+.quoteblock{margin:0 1em 1.25em 1.5em;display:table}
+.quoteblock:not(.excerpt)>.title{margin-left:-1.5em;margin-bottom:.75em}
+.quoteblock blockquote,.quoteblock p{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
+.quoteblock blockquote{margin:0;padding:0;border:0}
+.quoteblock blockquote::before{content:"\201c";float:left;font-size:2.75em;font-weight:bold;line-height:.6em;margin-left:-.6em;color:#7a2518;text-shadow:0 1px 2px rgba(0,0,0,.1)}
+.quoteblock blockquote>.paragraph:last-child p{margin-bottom:0}
+.quoteblock .attribution{margin-top:.75em;margin-right:.5ex;text-align:right}
+.verseblock{margin:0 1em 1.25em}
+.verseblock pre{font-family:"Open Sans","DejaVu Sans",sans;font-size:1.15rem;color:rgba(0,0,0,.85);font-weight:300;text-rendering:optimizeLegibility}
+.verseblock pre strong{font-weight:400}
+.verseblock .attribution{margin-top:1.25rem;margin-left:.5ex}
+.quoteblock .attribution,.verseblock .attribution{font-size:.9375em;line-height:1.45;font-style:italic}
+.quoteblock .attribution br,.verseblock .attribution br{display:none}
+.quoteblock .attribution cite,.verseblock .attribution cite{display:block;letter-spacing:-.025em;color:rgba(0,0,0,.6)}
+.quoteblock.abstract blockquote::before,.quoteblock.excerpt blockquote::before,.quoteblock .quoteblock blockquote::before{display:none}
+.quoteblock.abstract blockquote,.quoteblock.abstract p,.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{line-height:1.6;word-spacing:0}
+.quoteblock.abstract{margin:0 1em 1.25em;display:block}
+.quoteblock.abstract>.title{margin:0 0 .375em;font-size:1.15em;text-align:center}
+.quoteblock.excerpt>blockquote,.quoteblock .quoteblock{padding:0 0 .25em 1em;border-left:.25em solid #dddddf}
+.quoteblock.excerpt,.quoteblock .quoteblock{margin-left:0}
+.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{color:inherit;font-size:1.0625rem}
+.quoteblock.excerpt .attribution,.quoteblock .quoteblock .attribution{color:inherit;text-align:left;margin-right:0}
+p.tableblock:last-child{margin-bottom:0}
+td.tableblock>.content{margin-bottom:1.25em;word-wrap:anywhere}
+td.tableblock>.content>:last-child{margin-bottom:-1.25em}
+table.tableblock,th.tableblock,td.tableblock{border:0 solid #dedede}
+table.grid-all>*>tr>*{border-width:1px}
+table.grid-cols>*>tr>*{border-width:0 1px}
+table.grid-rows>*>tr>*{border-width:1px 0}
+table.frame-all{border-width:1px}
+table.frame-ends{border-width:1px 0}
+table.frame-sides{border-width:0 1px}
+table.frame-none>colgroup+*>:first-child>*,table.frame-sides>colgroup+*>:first-child>*{border-top-width:0}
+table.frame-none>:last-child>:last-child>*,table.frame-sides>:last-child>:last-child>*{border-bottom-width:0}
+table.frame-none>*>tr>:first-child,table.frame-ends>*>tr>:first-child{border-left-width:0}
+table.frame-none>*>tr>:last-child,table.frame-ends>*>tr>:last-child{border-right-width:0}
+table.stripes-all tr,table.stripes-odd tr:nth-of-type(odd),table.stripes-even tr:nth-of-type(even),table.stripes-hover tr:hover{background:#f8f8f7}
+th.halign-left,td.halign-left{text-align:left}
+th.halign-right,td.halign-right{text-align:right}
+th.halign-center,td.halign-center{text-align:center}
+th.valign-top,td.valign-top{vertical-align:top}
+th.valign-bottom,td.valign-bottom{vertical-align:bottom}
+th.valign-middle,td.valign-middle{vertical-align:middle}
+table thead th,table tfoot th{font-weight:bold}
+tbody tr th{background:#f7f8f7}
+tbody tr th,tbody tr th p,tfoot tr th,tfoot tr th p{color:rgba(0,0,0,.8);font-weight:bold}
+p.tableblock>code:only-child{background:none;padding:0}
+p.tableblock{font-size:1em}
+ol{margin-left:1.75em}
+ul li ol{margin-left:1.5em}
+dl dd{margin-left:1.125em}
+dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
+ol>li p,ul>li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
+ul.checklist,ul.none,ol.none,ul.no-bullet,ol.no-bullet,ol.unnumbered,ul.unstyled,ol.unstyled{list-style-type:none}
+ul.no-bullet,ol.no-bullet,ol.unnumbered{margin-left:.625em}
+ul.unstyled,ol.unstyled{margin-left:0}
+ul.checklist{margin-left:.625em}
+ul.checklist li>p:first-child>.fa-square-o:first-child,ul.checklist li>p:first-child>.fa-check-square-o:first-child{width:1.25em;font-size:.8em;position:relative;bottom:.125em}
+ul.checklist li>p:first-child>input[type="checkbox"]:first-child{margin-right:.25em}
+ul.inline{display:-ms-flexbox;display:-webkit-box;display:flex;-ms-flex-flow:row wrap;-webkit-flex-flow:row wrap;flex-flow:row wrap;list-style:none;margin:0 0 .625em -1.25em}
+ul.inline>li{margin-left:1.25em}
+.unstyled dl dt{font-weight:400;font-style:normal}
+ol.arabic{list-style-type:decimal}
+ol.decimal{list-style-type:decimal-leading-zero}
+ol.loweralpha{list-style-type:lower-alpha}
+ol.upperalpha{list-style-type:upper-alpha}
+ol.lowerroman{list-style-type:lower-roman}
+ol.upperroman{list-style-type:upper-roman}
+ol.lowergreek{list-style-type:lower-greek}
+.hdlist>table,.colist>table{border:0;background:none}
+.hdlist>table>tbody>tr,.colist>table>tbody>tr{background:none}
+td.hdlist1,td.hdlist2{vertical-align:top;padding:0 .625em}
+td.hdlist1{font-weight:bold;padding-bottom:1.25em}
+td.hdlist2{word-wrap:anywhere}
+.literalblock+.colist,.listingblock+.colist{margin-top:-.5em}
+.colist td:not([class]):first-child{padding:.4em .75em 0;line-height:1;vertical-align:top}
+.colist td:not([class]):first-child img{max-width:none}
+.colist td:not([class]):last-child{padding:.25em 0}
+.thumb,.th{line-height:0;display:inline-block;border:solid 4px #fff;-webkit-box-shadow:0 0 0 1px #ddd;box-shadow:0 0 0 1px #ddd}
+.imageblock.left{margin:.25em .625em 1.25em 0}
+.imageblock.right{margin:.25em 0 1.25em .625em}
+.imageblock>.title{margin-bottom:0}
+.imageblock.thumb,.imageblock.th{border-width:6px}
+.imageblock.thumb>.title,.imageblock.th>.title{padding:0 .125em}
+.image.left,.image.right{margin-top:.25em;margin-bottom:.25em;display:inline-block;line-height:0}
+.image.left{margin-right:.625em}
+.image.right{margin-left:.625em}
+a.image{text-decoration:none;display:inline-block}
+a.image object{pointer-events:none}
+sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
+sup.footnote a,sup.footnoteref a{text-decoration:none}
+sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+#footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
+#footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
+#footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
+#footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none;margin-left:-1.05em}
+#footnotes .footnote:last-of-type{margin-bottom:0}
+#content #footnotes{margin-top:-.625em;margin-bottom:0;padding:.75em 0}
+.gist .file-data>table{border:0;background:#fff;width:100%;margin-bottom:0}
+.gist .file-data>table td.line-data{width:99%}
+div.unbreakable{page-break-inside:avoid}
+.big{font-size:larger}
+.small{font-size:smaller}
+.underline{text-decoration:underline}
+.overline{text-decoration:overline}
+.line-through{text-decoration:line-through}
+.aqua{color:#00bfbf}
+.aqua-background{background:#00fafa}
+.black{color:#000}
+.black-background{background:#000}
+.blue{color:#0000bf}
+.blue-background{background:#0000fa}
+.fuchsia{color:#bf00bf}
+.fuchsia-background{background:#fa00fa}
+.gray{color:#606060}
+.gray-background{background:#7d7d7d}
+.green{color:#006000}
+.green-background{background:#007d00}
+.lime{color:#00bf00}
+.lime-background{background:#00fa00}
+.maroon{color:#600000}
+.maroon-background{background:#7d0000}
+.navy{color:#000060}
+.navy-background{background:#00007d}
+.olive{color:#606000}
+.olive-background{background:#7d7d00}
+.purple{color:#600060}
+.purple-background{background:#7d007d}
+.red{color:#bf0000}
+.red-background{background:#fa0000}
+.silver{color:#909090}
+.silver-background{background:#bcbcbc}
+.teal{color:#006060}
+.teal-background{background:#007d7d}
+.white{color:#bfbfbf}
+.white-background{background:#fafafa}
+.yellow{color:#bfbf00}
+.yellow-background{background:#fafa00}
+span.icon>.fa{cursor:default}
+a span.icon>.fa{cursor:inherit}
+.admonitionblock td.icon [class^="fa icon-"]{font-size:2.5em;text-shadow:1px 1px 2px rgba(0,0,0,.5);cursor:default}
+.admonitionblock td.icon .icon-note::before{content:"\f05a";color:#19407c}
+.admonitionblock td.icon .icon-tip::before{content:"\f0eb";text-shadow:1px 1px 2px rgba(155,155,0,.8);color:#111}
+.admonitionblock td.icon .icon-warning::before{content:"\f071";color:#bf6900}
+.admonitionblock td.icon .icon-caution::before{content:"\f06d";color:#bf3400}
+.admonitionblock td.icon .icon-important::before{content:"\f06a";color:#bf0000}
+.conum[data-value]{display:inline-block;color:#fff!important;background:rgba(0,0,0,.8);-webkit-border-radius:50%;border-radius:50%;text-align:center;font-size:.75em;width:1.67em;height:1.67em;line-height:1.67em;font-family:"Open Sans","DejaVu Sans",sans-serif;font-style:normal;font-weight:bold}
+.conum[data-value] *{color:#fff!important}
+.conum[data-value]+b{display:none}
+.conum[data-value]::after{content:attr(data-value)}
+pre .conum[data-value]{position:relative;top:-.125em}
+b.conum *{color:inherit!important}
+.conum:not([data-value]):empty{display:none}
+dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
+h1,h2,p,td.content,span.alt{letter-spacing:-.01em}
+p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
+p,blockquote,dt,td.content,span.alt{font-size:1.0625rem}
+p{margin-bottom:1.25rem}
+.sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
+.exampleblock>.content{background:#fffef7;border-color:#e0e0dc;-webkit-box-shadow:0 1px 4px #e0e0dc;box-shadow:0 1px 4px #e0e0dc}
+.print-only{display:none!important}
+@page{margin:1.25cm .75cm}
+@media print{*{-webkit-box-shadow:none!important;box-shadow:none!important;text-shadow:none!important}
+html{font-size:80%}
+a{color:inherit!important;text-decoration:underline!important}
+a.bare,a[href^="#"],a[href^="mailto:"]{text-decoration:none!important}
+a[href^="http:"]:not(.bare)::after,a[href^="https:"]:not(.bare)::after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
+abbr[title]::after{content:" (" attr(title) ")"}
+pre,blockquote,tr,img,object,svg{page-break-inside:avoid}
+thead{display:table-header-group}
+svg{max-width:100%}
+p,blockquote,dt,td.content{font-size:1em;orphans:3;widows:3}
+h2,h3,#toctitle,.sidebarblock>.content>.title{page-break-after:avoid}
+#header,#content,#footnotes,#footer{max-width:none}
+#toc,.sidebarblock,.exampleblock>.content{background:none!important}
+#toc{border-bottom:1px solid #dddddf!important;padding-bottom:0!important}
+body.book #header{text-align:center}
+body.book #header>h1:first-child{border:0!important;margin:2.5em 0 1em}
+body.book #header .details{border:0!important;display:block;padding:0!important}
+body.book #header .details span:first-child{margin-left:0!important}
+body.book #header .details br{display:block}
+body.book #header .details br+span::before{content:none!important}
+body.book #toc{border:0!important;text-align:left!important;padding:0!important;margin:0!important}
+body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-break-before:always}
+.listingblock code[data-lang]::before{display:block}
+#footer{padding:0 .9375em}
+.hide-on-print{display:none!important}
+.print-only{display:block!important}
+.hide-for-print{display:none!important}
+.show-for-print{display:inherit!important}}
+@media print,amzn-kf8{#header>h1:first-child{margin-top:1.25rem}
+.sect1{padding:0!important}
+.sect1+.sect1{border:0}
+#footer{background:none}
+#footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
+@media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/rainbow.min.css">
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<h1>Guide de programmation BTS SN</h1>
+<div class="details">
+<span id="author" class="author">Thierry Vaira</span><br>
+<span id="email" class="email"><a href="mailto:tvaira@free.fr">tvaira@free.fr</a></span><br>
+<span id="revnumber">version v0.3,</span>
+<span id="revdate">23/08/2021</span>
+<br><span id="revremark"></span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Sommaire</div>
+<ul class="sectlevel1">
+<li><a href="#_le_métier_de_programmeur">1. Le métier de programmeur</a></li>
+<li><a href="#_définitions">2. Définitions</a>
+<ul class="sectlevel2">
+<li><a href="#_bonnes_pratiques_et_règles_de_codage">2.1. Bonnes pratiques et règles de codage</a></li>
+<li><a href="#_notations_typographiques">2.2. Notations typographiques</a>
+<ul class="sectlevel3">
+<li><a href="#_camel_case">2.2.1. Camel case</a></li>
+<li><a href="#_pascal_case">2.2.2. Pascal case</a></li>
+<li><a href="#_snake_case">2.2.3. Snake case</a></li>
+<li><a href="#_screaming_snake_case">2.2.4. Screaming snake case</a></li>
+</ul>
+</li>
+<li><a href="#_notations_informatiques">2.3. Notations informatiques</a>
+<ul class="sectlevel3">
+<li><a href="#_notation_hongroise">2.3.1. Notation hongroise</a></li>
+<li><a href="#_sigil">2.3.2. Sigil</a></li>
+</ul>
+</li>
+<li><a href="#_variable_métasyntaxique">2.4. Variable métasyntaxique</a></li>
+<li><a href="#_environnements_de_développement_intégré">2.5. Environnements de développement intégré</a></li>
+</ul>
+</li>
+<li><a href="#_guide_de_programmation_en_bts_sn_lasalle_avignon">3. Guide de programmation en BTS SN (LaSalle Avignon)</a>
+<ul class="sectlevel2">
+<li><a href="#_travaux_pratiques">3.1. Travaux Pratiques</a></li>
+<li><a href="#_mini_projets_et_projets">3.2. Mini-projets et projets</a></li>
+<li><a href="#_règles_de_codage_et_conventions_de_nommage">3.3. Règles de codage et conventions de nommage</a>
+<ul class="sectlevel3">
+<li><a href="#_les_répertoires">3.3.1. Les répertoires</a></li>
+<li><a href="#_les_fichiers">3.3.2. Les fichiers</a></li>
+<li><a href="#_les_variables_et_attributs">3.3.3. Les variables et attributs</a></li>
+<li><a href="#_les_constantes">3.3.4. Les constantes</a></li>
+<li><a href="#_les_fonctions_et_méthodes">3.3.5. Les fonctions et méthodes</a></li>
+<li><a href="#_les_classes">3.3.6. Les classes</a></li>
+<li><a href="#_les_commentaires">3.3.7. Les commentaires</a></li>
+</ul>
+</li>
+<li><a href="#_bonnes_pratiques">3.4. Bonnes pratiques</a>
+<ul class="sectlevel3">
+<li><a href="#_les_fichiers_2">3.4.1. Les fichiers</a></li>
+<li><a href="#_formatage">3.4.2. Formatage</a></li>
+<li><a href="#_variables">3.4.3. Variables</a></li>
+<li><a href="#_constantes">3.4.4. Constantes</a></li>
+<li><a href="#_fonctions">3.4.5. Fonctions</a></li>
+<li><a href="#_structures_de_contrôle">3.4.6. Structures de contrôle</a></li>
+<li><a href="#_classes">3.4.7. Classes</a></li>
+<li><a href="#_commentaires">3.4.8. Commentaires</a></li>
+<li><a href="#_programme_principal">3.4.9. Programme principal</a></li>
+<li><a href="#_débogage_release_vs_debug">3.4.10. Débogage (<em>release</em> vs <em>debug</em>)</a></li>
+<li><a href="#_divers">3.4.11. Divers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_exemple">4. Exemple</a></li>
+<li><a href="#_voir_aussi">5. Voir aussi</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</div>
+</div>
+<div class="sect1">
+<h2 id="_le_métier_de_programmeur">1. Le métier de programmeur</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>D&#8217;après <a href="https://fr.wikipedia.org/wiki/Bjarne_Stroustrup">Bjarne Stroustrup</a>, le métier de programmeur consiste à écrire des programmes qui :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>donnent des résultats corrects</p>
+</li>
+<li>
+<p>sont simples</p>
+</li>
+<li>
+<p>sont efficaces</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><a href="https://fr.wikipedia.org/wiki/Bjarne_Stroustrup">Bjarne Stroustrup</a> : "L&#8217;ordre donné ici est très important : peu importe qu&#8217;un programme soit rapide si ses résultats sont faux. De même, un programme correct et efficace peut être si compliqué et mal écrit qu&#8217;il faudra le jeter ou le récrire complètement pour en produire une nouvelle version. N&#8217;oubliez pas que les programmes utiles seront toujours modifiés pour répondre à de nouveaux besoins."</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Règle n°4 : Les algorithmes élégants comportent plus d&#8217;erreurs que ceux qui sont plus simples, et ils sont plus difficiles à appliquer. Utilisez des algorithmes simples ainsi que des structures de données simples.</p>
+</div>
+</blockquote>
+<div class="attribution">
+&#8212; Rob Pike (ancien chercheur des Laboratoires Bell et maintenant ingénieur chez Google)
+</div>
+</div>
+<div class="paragraph">
+<p>Cette règle n°4 est une des instances de la philosophie de conception KISS (<em>Keep it Simple, Stupid</em> dans le sens de « Ne complique pas les choses ») ou <a href="https://fr.wikipedia.org/wiki/Principe_KISS">Principe KISS</a>, dont la ligne directrice de conception préconise de rechercher la simplicité dans la conception et que toute complexité non nécessaire devrait être évitée.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Le <a href="https://fr.wikipedia.org/wiki/Principe_KISS">principe KISS</a> se retrouve dans la <a href="https://fr.wikipedia.org/wiki/Philosophie_d%27Unix">philosophie d&#8217;Unix</a>. Il apparait aussi dans le <a href="https://fr.wikipedia.org/wiki/Zen_de_Python">Zen de Python</a> sous la forme « Préfère&#8230;&#8203; le simple au complexe [et]&#8230;&#8203; le complexe au compliqué ».</p>
+</div>
+<div class="paragraph">
+<p>L&#8217;expression ironique inverse (<a href="https://fr.wikipedia.org/wiki/Les_Shadoks">devise shadok</a>) : « Pourquoi faire simple quand on peut faire compliqué ? » est assimilable au <a href="https://fr.wikipedia.org/wiki/Principe_KISS">principe KISS</a>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>Écrire de "bons programmes", c&#8217;est <strong>écrire des programmes corrects, simples et efficaces</strong>.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Il faut accepter ces principes pour devenir des professionnels. En termes pratiques, cela signifie que on ne peut pas se contenter d&#8217;aligner du code jusqu&#8217;à ce qu&#8217;il ait l&#8217;air de fonctionner : on doit se soucier de sa structure. Paradoxalement, le fait de s&#8217;intéresser à la structure et à la "qualité du code" est souvent le moyen le plus facile de faire fonctionner un programme.</p>
+</div>
+<div class="paragraph">
+<p>En programmation, les principes à respecter s&#8217;expriment par des <strong>règles de codage</strong> et des <strong>bonnes pratiques</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Ces principes permettront de présenter du code clair, simple et fonctionnel. Cela aidera à la compréhension, à la relecture, au contrôle visuel, à la maintenance, au travail collaboratif, aux évolutions et améliorations. Des activités classiques du développement logiciel !</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_définitions">2. Définitions</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_bonnes_pratiques_et_règles_de_codage">2.1. Bonnes pratiques et règles de codage</h3>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Bonnes pratiques</div>
+<div class="paragraph">
+<p>L&#8217;expression « bonnes pratiques » (<em>best practice</em> ou <em>good practice</em>) désigne, dans un milieu professionnel donné, un ensemble de comportements qui font consensus et qui sont considérés comme indispensables par la plupart des professionnels du domaine. Ils sont souvent établis dans le cadre d&#8217;une démarche de qualité.</p>
+</div>
+</div>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Règles de codage</div>
+<div class="paragraph">
+<p>Les règles de codage sont un ensemble de règles à suivre pour uniformiser les pratiques de développement logiciel, diffuser les bonnes pratiques de développement et éviter les erreurs de développement "classiques" au sein d&#8217;un groupe de développeurs. Les règles de codage s&#8217;articulent autour de plusieurs thèmes, les plus courants étant : le nommage et l&#8217;organisation des fichiers du code source, le style d&#8217;indentation, les conventions de nommage, les commentaires et documentation du code source, recommandations sur la déclaration des variables, sur l&#8217;écriture des instructions, des structures de contrôle et l&#8217;usage des parenthèses dans les expressions &#8230;&#8203; Les règles de codage participent à la qualité logicielle.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Quelques règles de codage célèbres :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://www.gnu.org/prep/standards/">GNU coding standards</a> écrit par <a href="https://fr.wikipedia.org/wiki/Richard_Stallman">Richard Stallman</a></p>
+</li>
+<li>
+<p><a href="https://www.kernel.org/doc/html/v4.10/process/coding-style.html">Linux kernel coding style</a> écrit par <a href="https://fr.wikipedia.org/wiki/Linus_Torvalds">Linus Torvalds</a></p>
+</li>
+<li>
+<p><a href="https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-1.1/xzf533w0(v=vs.71)">Microsoft Naming Guidelines</a></p>
+</li>
+<li>
+<p><a href="https://www.oracle.com/java/technologies/javase/codeconventions-contents.html">Code Conventions for the Java Programming Language</a></p>
+</li>
+<li>
+<p><a href="https://www.python.org/dev/peps/pep-0008/">Style Guide for Python Code</a></p>
+</li>
+</ul>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>First off, I’d suggest printing out a copy of the GNU coding standards, and NOT read it. Burn them, it’s a great symbolic gesture.</p>
+</div>
+</blockquote>
+<div class="attribution">
+&#8212; Linus Torvalds (créateur du noyau Linux et de git)
+</div>
+</div>
+<div class="paragraph">
+<p>Par exemple, la première règle de codage extraite de <a href="https://www.kernel.org/doc/html/v4.10/process/coding-style.html">Linux kernel coding style</a> :</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>1) Indentation</p>
+</div>
+<div class="paragraph">
+<p>Tabs are 8 characters, and thus indentations are also 8 characters. There are heretic movements that try to make indentations 4 (or even 2!) characters deep, and that is akin to trying to define the value of PI to be 3.</p>
+</div>
+<div class="paragraph">
+<p>Rationale: The whole idea behind indentation is to clearly define where a block of control starts and ends. Especially when you’ve been looking at your screen for 20 straight hours, you’ll find it a lot easier to see how the indentation works if you have large indentations.</p>
+</div>
+<div class="paragraph">
+<p>Now, some people will claim that having 8-character indentations makes the code move too far to the right, and makes it hard to read on a 80-character terminal screen. The answer to that is that if you need more than 3 levels of indentation, you’re screwed anyway, and should fix your program.</p>
+</div>
+<div class="paragraph">
+<p>In short, 8-char indents make things easier to read, and have the added benefit of warning you when you’re nesting your functions too deep. Heed that warning.</p>
+</div>
+</div>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Learn the rules like a pro, so you can break them like an artist.</p>
+</div>
+</blockquote>
+<div class="attribution">
+&#8212; Pablo Picasso
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_notations_typographiques">2.2. Notations typographiques</h3>
+<div class="paragraph">
+<p>Une notation est très utilisée en programmation informatique car il est souvent nécessaire de nommer lisiblement des concepts compliqués avec une suite de lettres sans espace ni ponctuation.</p>
+</div>
+<div class="paragraph">
+<p>La majorité des langages informatiques utilisent des <strong>fichiers texte</strong> (<a href="https://fr.wikipedia.org/wiki/American_Standard_Code_for_Information_Interchange">ASCII</a> ou <a href="https://fr.wikipedia.org/wiki/Unicode">Unicode</a>) et n&#8217;acceptent généralement que des caractères encodés en <a href="https://fr.wikipedia.org/wiki/American_Standard_Code_for_Information_Interchange">ASCII</a> standard (7 bits).</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Certains caractères (<code>=</code>, <code>+</code>, <code>-</code>, <code>.</code> &#8230;&#8203;) sont réservés par le langage et ne peuvent donc pas être utilisés comme identifiant.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_camel_case">2.2.1. Camel case</h4>
+<div class="paragraph">
+<p>Le <a href="https://fr.wikipedia.org/wiki/Camel_case">Camel case</a> (littéralement « casse de chameau ») est une notation consistant à écrire un ensemble de mots en les liant sans espace ni ponctuation, et en mettant en capitale (majuscule) la première lettre de chaque mot. Ces noms doivent en effet être constitués de lettres et de chiffres sans espace.</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Origine de Camel case</div>
+<div class="paragraph">
+<p>La notation <em>camel case</em> semble avoir été pratiquée en premier par les Écossais pour écrire leurs noms de famille comme le clan MacLeod. Au XXe siècle, elle a été utilisée par des marques ou entreprises, par exemple CinemaScope dans les années 1950. Cette façon d&#8217;écrire est aussi devenue une mode, le marketing ayant généré de nombreuses marques de cette forme, comme MasterCard, PlayStation, iPhone, etc. Dans les années 1970 cette notation est adoptée pour écrire les noms des variables, et fonctions dans de nombreux langages de programmation informatique.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Il existe deux variantes concernant la casse de la première lettre :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>en <em>lower camel case</em>, elle est en minuscule</p>
+</li>
+<li>
+<p>en <em>upper camel case</em> (ou <em>Pascal case</em>), elle est en majuscule</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Exemple en Javascript</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-javascript hljs" data-lang="javascript">var body = document.getElementsByTagName("body");
+var myFirstParagraph = document.createElement("p");
+var helloWorld = document.createTextNode("Hello, world!");
+myFirstParagraph.appendChild(helloWorld);
+body.item(0).appendChild(myFirstParagraph);</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>La langue anglaise est plus propice à l&#8217;emploi de <em>camel case</em> que la française, où l&#8217;adjonction de particules (de, à &#8230;&#8203;) rend ces mots plus longs.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_pascal_case">2.2.2. Pascal case</h4>
+<div class="paragraph">
+<p>En <em>Pascal case</em> (ou <em>upper camel case</em>), la première lettre de l&#8217;identificateur et la première lettre de chaque mot concaténé sont en majuscules.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_snake_case">2.2.3. Snake case</h4>
+<div class="paragraph">
+<p>Le <a href="https://fr.wikipedia.org/wiki/Snake_case">Snake case</a> est une convention typographique en informatique consistant à écrire des ensembles de mots, généralement, en minuscules en les séparant par des tirets bas <code>_</code> (underscore). Cette convention s&#8217;oppose par exemple au <a href="https://fr.wikipedia.org/wiki/Camel_case">Camel case</a> qui consiste à mettre en majuscule les premières lettres de chaque mot.</p>
+</div>
+<div class="paragraph">
+<p>Cette convention est conseillée dans certains langages de programmation :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>En Python, pour les noms de variables, de fonctions et de méthodes</p>
+</li>
+<li>
+<p>En Ruby, pour les noms de méthodes et de variables.</p>
+</li>
+<li>
+<p>En Rust, pour les noms de variables, méthodes, fonctions, modules &#8230;&#8203;</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Exemples :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>"nom de variable" devient <code>nom_de_variable</code></p>
+</li>
+<li>
+<p>"NomDeVariableUpperCamelCase" devient <code>nom_de_variable_upper_camel_case</code></p>
+</li>
+<li>
+<p>"Variable" devient <code>variable</code></p>
+</li>
+<li>
+<p>"variable" devient <code>variable</code> (pas de changement)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_screaming_snake_case">2.2.4. Screaming snake case</h4>
+<div class="paragraph">
+<p>Le <em>Screaming snake case</em> est une variante du <em>snake case</em> qui consiste à écrire ces ensembles de mots en les séparant par des tirets bas <code>_</code> (underscore), mais en <strong>majuscules</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Elle est surtout utilisée pour écrire des <strong>constantes</strong>, en Ruby et en Python par exemple. C&#8217;est une convention originaire du langage C, dans lequel les constantes sont le plus souvent définies en tant que macros, et cette convention s&#8217;applique alors aussi aux autres types de macros. Java l&#8217;utilise abondamment pour les énumérations informelles (sans enum).</p>
+</div>
+<div class="paragraph">
+<p>Cela donne <code>JE_SUIS_UNE_CONSTANTE</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_notations_informatiques">2.3. Notations informatiques</h3>
+<div class="sect3">
+<h4 id="_notation_hongroise">2.3.1. Notation hongroise</h4>
+<div class="paragraph">
+<p>La <a href="https://fr.wikipedia.org/wiki/Notation_hongroise">notation hongroise</a> est, en programmation informatique, une convention de nommage des variables et des fonctions qui met en avant soit leur usage, soit leur type.</p>
+</div>
+<div class="paragraph">
+<p>Par exemple :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>la variable booléenne <code>danger</code> est préfixée par un <code>b</code> pour indiquer un type booléen : <code>bDanger</code></p>
+</li>
+<li>
+<p>la variable indexant un <code>client</code> sera préfixée par un <code>idx</code> pour indiquer son usage : <code>idxClient</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>On distingue en principe deux notations hongroises :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>Apps</em> qui préfixe le nom des variables de manière à indiquer son utilisation</p>
+</li>
+<li>
+<p><em>Systems</em> qui préfixe le nom des variables de manière à indiquer son type</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Cette notation est notamment utilisée par <strong>Microsoft</strong> qui a introduit deux coutumes pour sa notation <em>Systems</em> : utiliser trois caractères au lieu d&#8217;un pour qualifier une variable ou une constante, et commencer chaque nom par une majuscule au sein d&#8217;un mot comportant plusieurs noms.</p>
+</div>
+<div class="paragraph">
+<p>Lien : <a href="https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-1.1/xzf533w0(v=vs.71)">Naming Guidelines</a> chez Microsoft&#169;</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_sigil">2.3.2. Sigil</h4>
+<div class="paragraph">
+<p>Un <a href="https://fr.wikipedia.org/wiki/Sigil_(informatique)">sigil</a> est le premier caractère d&#8217;un identificateur en langage Perl. Il est non alphanumérique et dénote son type. Perl 6 introduit des <em>sigils</em> secondaires appelés <em>twigils</em>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Exemple en Perl</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-perl hljs" data-lang="perl">$a   # variable de type scalaire
+@a   # variable de type tableau
+%a   # variable de type hash
+\&amp;a  # fonction</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Le fait que le type fasse partie de la syntaxe comporte un avantage considérable : le type est ainsi indissociable du nom. C&#8217;est une forme d&#8217;autodocumentation.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_variable_métasyntaxique">2.4. Variable métasyntaxique</h3>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Ce terme fait partie du jargon informatique.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>En programmation informatique, une variable <a href="https://fr.wikipedia.org/wiki/Variable_m%C3%A9tasyntaxique">métasyntaxique</a> est une variable générique (<code>var</code> pour variable serait l&#8217;exemple type). Ces variables sont utilisées dans les exemples pour se concentrer sur le fond plutôt que sur la forme.</p>
+</div>
+<div class="paragraph">
+<p>Leurs noms sont choisis pour être tacitement reconnus comme tel par les administrateurs et les programmeurs. Le mot <code>toto</code> est l&#8217;exemple le plus parlant. L&#8217;utilisation des variables métasyntaxiques permet de libérer le programmeur de la recherche d&#8217;un nom de variable logique adéquat au sujet étudié.</p>
+</div>
+<div class="paragraph">
+<p>Les plus courants :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>toto</code> : traditionnellement, la première variable métasyntaxique d&#8217;un programme ou d&#8217;une fonction s&#8217;appellera <code>toto</code>. Il est possible de créer autant de variantes de toto qu&#8217;il y a de voyelles : <code>tata</code>, <code>titi</code>, <code>tete</code>, <code>tutu</code>, <code>tyty</code>.</p>
+</li>
+<li>
+<p><code>foo</code> : historiquement <code>fu</code>, pour <em>fucked up</em>, ou peut-être <em>forward observation officer</em>, connus pendant la Seconde Guerre mondiale notamment pour les inscriptions laissées derrière les lignes ennemies <em>foo was here</em> ; selon une autre interprétation, il s&#8217;agirait de l&#8217;acronyme de <em>File Or Object</em>. Utilisé en langage C comme nom de fonction.</p>
+</li>
+<li>
+<p><code>bar</code>, suite de <code>foo</code> : foobar est alors l&#8217;acronyme de <em>fucked up beyond all recognition / repair</em>. Utilisé en langage C comme deuxième nom de fonction.</p>
+</li>
+<li>
+<p><code>i</code>, <code>j</code> et <code>k</code> : en Fortran, premier langage scientifique de très large utilisation, la commodité d&#8217;utiliser les variables I, J, K&#8230;&#8203; (en fait, toute variable commençant par une lettre de I à N) sans avoir à les déclarer ni à préciser qu&#8217;elles étaient entières a contribué à la popularité du langage : c&#8217;était elles qu&#8217;on utilisait le plus souvent comme indices de boucle.</p>
+</li>
+<li>
+<p><a href="https://fr.wikipedia.org/wiki/42_(nombre)">42</a>, valeur métasyntaxique, réponse à la <a href="https://fr.wikipedia.org/wiki/La_grande_question_sur_la_vie,_l%27univers_et_le_reste">grande question sur la vie, l&#8217;univers et le reste</a>.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Bien évidemment, les variables métasyntaxiques ne doivent jamais apparaître dans un projet logiciel professionnel.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_environnements_de_développement_intégré">2.5. Environnements de développement intégré</h3>
+<div class="paragraph">
+<p>Un environnements de développement intégré (<a href="https://fr.wikipedia.org/wiki/Environnement_de_d%C3%A9veloppement">IDE</a> ou EDI en français) est un ensemble d&#8217;outils qui permet d&#8217;augmenter la productivité des programmeurs qui conçoivent des logiciels. En aucun cas, ils doivent être considérés comme des outils indispensables ou obligatoires.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Le marteau ne fait pas l&#8217;architecte !</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Un EDI comporte généralement un <strong>éditeur de texte</strong> destiné à la programmation, des fonctions qui permettent, par pression sur un bouton, de démarrer le <strong>compilateur</strong> ou l'<strong>éditeur de liens</strong>, d'<strong>exécuter</strong> le programme ainsi qu&#8217;un <strong>débogueur</strong> en ligne, de consulter la <strong>documentation</strong>, etc &#8230;&#8203; Certains environnements sont dédiés à un langage de programmation (IDLE pour Python par exemple), un <em>framework</em> (Qt Creator pour Qt par exemple) ou une architecture (Xcode pour Mac OS X et iOS par exemple) en particulier.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_guide_de_programmation_en_bts_sn_lasalle_avignon">3. Guide de programmation en BTS SN (LaSalle Avignon)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ce guide de programmation intègre les règles de codage, bonnes pratiques et conventions de nommage à appliquer pour les travaux pratiques, les mini-projets et les projets réalisés en BTS SN (LaSalle Avignon). Elle concerne essentiellement le développement en <a href="https://fr.wikipedia.org/wiki/C_(langage)">C</a> / <a href="https://fr.wikipedia.org/wiki/C%2B%2B">C++</a>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Le C++ est une extension du langage C qui a apporté notamment le concept de <a href="https://fr.wikipedia.org/wiki/Programmation_orient%C3%A9e_objet">programmation orientée objet</a> (POO). La <a href="https://fr.wikipedia.org/wiki/Programmation_orient%C3%A9e_objet">programmation orientée objet</a> introduit les concepts de classe, d&#8217;attributs (des variables membres) et de méthodes (des fonctions membres).</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_travaux_pratiques">3.1. Travaux Pratiques</h3>
+<div class="paragraph">
+<p>Les Travaux Pratiques ont pour but d&#8217;établir ou de renforcer vos compétences pratiques. Vous pouvez penser que vous comprenez tout ce que vous lisez ou tout ce que vous a dit votre enseignant mais la répétition et la pratique sont nécessaires pour développer des compétences en programmation.</p>
+</div>
+<div class="paragraph">
+<p>Ceci est comparable au sport ou à la musique ou à tout autre métier demandant un long entraînement pour acquérir l&#8217;habileté nécessaire. Imaginez quelqu&#8217;un qui voudrait disputer une compétition dans l&#8217;un de ces domaines sans pratique régulière. Vous savez bien quel serait le résultat.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mini_projets_et_projets">3.2. Mini-projets et projets</h3>
+<div class="paragraph">
+<p>Les activités de mini-projet et de projet ont pour objectifs :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>d&#8217;analyser l&#8217;expression d&#8217;un besoin client</p>
+</li>
+<li>
+<p>d&#8217;organiser et respecter la planification d&#8217;un projet</p>
+</li>
+<li>
+<p>de travailler en équipe</p>
+</li>
+<li>
+<p>de contribuer à la modélisation de tout ou partie d&#8217;un module logiciel et/ou matériel</p>
+</li>
+<li>
+<p>de réaliser la conception détaillée d&#8217;un module logiciel et/ou matériel</p>
+</li>
+<li>
+<p>de tester et valider un module logiciel et/ou matériel</p>
+</li>
+<li>
+<p>de proposer des corrections ou des améliorations</p>
+</li>
+<li>
+<p>de documenter une réalisation logicielle et/ou matérielle</p>
+</li>
+<li>
+<p>d&#8217;assurer la traçabilité</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_règles_de_codage_et_conventions_de_nommage">3.3. Règles de codage et conventions de nommage</h3>
+<div class="paragraph">
+<p>Ces règles de codage et conventions de nommage ont pour objectifs de rendre les programmes plus clairs et lisibles et de faciliter le travail collaboratif.</p>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Il est interdit d&#8217;utiliser des caractères de contrôle (comme l&#8217;espace) ou des caractères étendus (comme le <code>é</code>). Seuls les caractères du jeu <a href="https://fr.wikipedia.org/wiki/American_Standard_Code_for_Information_Interchange">ASCII</a> standard sur 7 bits sont autorisés ( <code>man ascii</code>).</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_les_répertoires">3.3.1. Les répertoires</h4>
+<div class="paragraph">
+<p>Les répertoires définissent la structure d&#8217;un projet logiciel.</p>
+</div>
+<div class="paragraph">
+<p>Les noms de répertoires sont des <strong>noms principaux</strong> (surtout pas un verbe) suffisamment éloquents (ils doivent synthétiser ce qu&#8217;ils contiennent).</p>
+</div>
+<div class="paragraph">
+<p>Exemple de structure classique pour un projet logiciel sous <a href="https://fr.wikipedia.org/wiki/GNU">GNU</a> / <a href="https://fr.wikipedia.org/wiki/Linux">Linux</a> :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>bin</code> contient le(s) exécutable(s)</p>
+</li>
+<li>
+<p><code>doc</code> contient la documentation</p>
+</li>
+<li>
+<p><code>include</code> contient les fichiers de déclaration (les fichiers d&#8217;en-tête ou <em>header</em>)</p>
+</li>
+<li>
+<p><code>lib</code> contient les bibliothèques</p>
+</li>
+<li>
+<p><code>src</code> contient les fichiers sources</p>
+</li>
+<li>
+<p><code>tests</code> contient les tests unitaires</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_les_fichiers">3.3.2. Les fichiers</h4>
+<div class="paragraph">
+<p>Un nom de fichier est un <strong>nom principal</strong> (surtout pas un verbe) suffisamment éloquent (il doit synthétiser ce qu&#8217;il contient).</p>
+</div>
+<div class="paragraph">
+<p>Exemples :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>les fichiers exécutable et sources sont en <em>Camel Case</em> : <code>racineCarre.exe</code>, <code>racineCarre.cpp</code>, <code>main.cpp</code>, &#8230;&#8203;</p>
+</li>
+<li>
+<p>les classes sont en <em>Pascal Case</em> : <code>LampeDePoche.h</code> et <code>LampeDePoche.cpp</code> pour la classe <code>LampeDePoche</code></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>L&#8217;utilisation des minuscules et du <code>-</code> (tiret haut) est acceptée : <code>racine-carre.exe</code></p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_les_variables_et_attributs">3.3.3. Les variables et attributs</h4>
+<div class="paragraph">
+<p>Un nom de variable (ou d&#8217;attribut) est un <strong>nom principal</strong> (surtout pas un verbe) suffisamment éloquent, éventuellement complété par :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>une caractéristique d&#8217;organisation ou d&#8217;usage</p>
+</li>
+<li>
+<p>un qualificatif ou d&#8217;autres noms</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>On utilisera la convention <em>camel case</em>.</p>
+</div>
+<div class="paragraph">
+<p>Exemples : <code>distance</code>, <code>distanceMax</code>, <code>consigneCourante</code>, <code>etatBoutonGaucheSouris</code>, &#8230;&#8203;</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Certaines abréviations sont admises quand elles sont d&#8217;usage courant : <code>nbre</code> (ou <code>nb</code>), <code>max</code>, <code>min</code>, &#8230;&#8203; Les lettres <code>i</code>, <code>j</code> et <code>k</code> utilisées seules sont usuellement admises pour les indices de boucles.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_les_constantes">3.3.4. Les constantes</h4>
+<div class="paragraph">
+<p>Les identificateurs des constantes sont des <strong>noms principaux</strong> (en <em>Screaming snake case</em>) qui doivent être composés de capitales (majuscules) et de tirets bas (<code>_</code>).</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Les variables qualifiées <code>const</code> peuvent être écrites comme des variables en camel case.</p>
+</div>
+<div class="paragraph">
+<p>Une constante en Screaming snake case ne doit jamais commencé par un tiret bas (<code>_</code>) ou deux tirets bas (<code>__</code>) car cette notation est réservée par le système.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_les_fonctions_et_méthodes">3.3.5. Les fonctions et méthodes</h4>
+<div class="paragraph">
+<p>Un nom de fonction est construit à l&#8217;aide d&#8217;un <strong>verbe</strong> (surtout pas un nom), et éventuellement d&#8217;éléments supplémentaires comme :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>une quantité</p>
+</li>
+<li>
+<p>un complément d&#8217;objet</p>
+</li>
+<li>
+<p>un adjectif représentatif d&#8217;un état</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Le verbe peut être au présent de l&#8217;indicatif ou à l&#8217;infinitif.</p>
+</div>
+<div class="paragraph">
+<p>On utilisera la convention <em>camel case</em>.</p>
+</div>
+<div class="paragraph">
+<p>Exemples : <code>ajouter()</code>, <code>sauverValeur()</code>, <code>estPresent()</code>, <code>estVide()</code>, <code>remplirReservoir()</code>, &#8230;&#8203;</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Les noms des fonctions retournant un booléen (<code>bool</code>) sont généralement préfixées du verbe être (ou avoir) au présent : <code>estPlein()</code></p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_les_classes">3.3.6. Les classes</h4>
+<div class="paragraph">
+<p>Un nom de classe est un <strong>nom principal</strong> (surtout pas un verbe) suffisamment éloquent (il représente un concept), éventuellement complété par :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>une caractéristique d&#8217;organisation ou d&#8217;usage</p>
+</li>
+<li>
+<p>un qualificatif ou d&#8217;autres noms</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>On utilise la convention <em>Pascal case</em>.</p>
+</div>
+<div class="paragraph">
+<p>Exemples : <code>Point</code>, <code>PointCouleur</code>, <code>CommunicationBluetooth</code>, &#8230;&#8203;</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_les_commentaires">3.3.7. Les commentaires</h4>
+<div class="paragraph">
+<p>On écrit des commentaires pour décrire ce que le programme est supposé faire.</p>
+</div>
+<div class="paragraph">
+<p>On utilise seulement les commentaires pour fournir des informations utiles impossibles à exprimer directement dans le code.</p>
+</div>
+<div class="paragraph">
+<p>Il faut distinguer deux types de commentaires :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Les commentaires "internes" ou "privés" : ces commentaires sont destinés aux développeurs et restent dans le code source. Ils ne seront donc pas extraits pour alimenter une documentation.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Des commentaires pour les développeurs</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">// Un commentaire interne ou privé (mais utile) sur une seule ligne
+
+/*
+ * Un commentaire interne ou privé (mais utile) sur plusieurs lignes
+ */</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Les commentaires "externes" ou "publics" : ces commentaires sont destinés à la documentation et seront donc extraits (par l&#8217;utilisation de tags préfixés par <code>@</code> ici) par un logiciel de documentation automatique comme <a href="http://www.doxygen.nl/">Doxygen</a>.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Des commentaires pour Doxygen</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">/**
+ * @def NB
+ * @brief Définit le nombre 42 !
+*/
+#define NB 42 //!&lt; Un nombre NB
+
+/**
+ * @class       Exemple exemple.h "exemple.h"
+ * @brief       La déclaration de la classe Exemple
+ * @details     La classe \c Exemple permet de montrer l'utilisation des \em tags \b Doxygen
+ * @author      Thierry vaira &lt;tvaira@free.fr&gt;
+ * @version     0.1
+ * @date        2020
+ */
+class Exemple
+{
+    private:
+        int a; //!&lt; a est ...
+};
+
+/**
+ * @brief Accesseur de l'attribut a
+ * @return a la valeur de l'attribut a
+ * @retval int la valeur de l'attribut a
+ */
+int Exemple::getA() const
+{
+    return a;
+}
+
+/**
+ * @brief Une fonction ...
+ * @param a ...
+ */
+void foo(int a);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Voir aussi : <a href="http://tvaira.free.fr/projets/activites/activite-documentation-doxygen.html">Documentation du code avec Doxygen</a></p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_bonnes_pratiques">3.4. Bonnes pratiques</h3>
+<div class="paragraph">
+<p>Ces bonnes pratiques augmentent les chances d&#8217;obtenir un programme qui fonctionne correctement.</p>
+</div>
+<div class="sect3">
+<h4 id="_les_fichiers_2">3.4.1. Les fichiers</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Les fichiers d&#8217;en-tête (<em>header</em>) d&#8217;extension <code>.h</code>, <code>.hh</code> ou <code>.hpp</code> ne contiennent que des déclarations et aucune définition.</p>
+</li>
+<li>
+<p>Les fichiers sources C/C++ d&#8217;extension <code>.c</code>, <code>.cpp</code> ou <code>.cc</code> ne contiennent que des définitions et aucune déclaration. Pour accéder aux déclarations dont ils ont besoin, on utilise la directive de préprocesseur (ou de pré-compilation) <code>#include</code></p>
+</li>
+<li>
+<p>Les fichiers sources d&#8217;extension <code>.c</code>, <code>.cpp</code> ou <code>.cc</code> doivent pouvoir se compiler séparément avec : <code>g++ -c &lt;fichier&gt;.cpp</code></p>
+</li>
+<li>
+<p>On n&#8217;utilise jamais de chemins absolus dans une directive <code>#include</code>. Les chemins sont précisés avec l&#8217;option <code>I&lt;chemin&gt;</code> à la compilation.</p>
+</li>
+<li>
+<p>En projet, les fichiers possèderont un en-tête de documentation (précisant au moins sa description, l&#8217;auteur et la version).</p>
+</li>
+<li>
+<p>Les fichiers d&#8217;en-tête (<em>header</em>) d&#8217;extension <code>.h</code>, <code>.hh</code> ou <code>.hpp</code> doivent être protégés contre le risque d&#8217;inclusion multiple.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Protection contre l&#8217;inclusion multiple d&#8217;un fichier <code>outils.h</code></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">#ifndef OUTILS_H
+#define OUTILS_H
+
+// Dans un fichier .h, on peut :
+
+// inclure d'autres fichiers .h de déclarations (seulement si c'est nécessaire)
+
+// déclarer ses propres constantes avec #define
+
+// déclarer des variables définies à l'extérieur avec extern
+
+// déclarer des définitions de type avec typedef
+
+// déclarer des énumérations avec enum
+
+// déclarer des structures de données avec struct (généralement une seule par fichier)
+
+// déclarer des classes avec class (généralement une seule par fichier)
+
+// déclarer des fonctions par leur prototype
+// (plusieurs si elles sont liées par un même concept)
+
+#endif /* OUTILS_H */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_formatage">3.4.2. Formatage</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>On indente avec des <strong>espaces</strong> (3 ou 4). L&#8217;indentation est obligatoire (notamment après une accolade ouvrante <code>{</code>).</p>
+</li>
+<li>
+<p>On sépare les identifiants d&#8217;une expression avec un espace : <code>int a = 0;</code></p>
+</li>
+<li>
+<p>On ne sépare les traitements que par <strong>une et une seule ligne vide</strong>.</p>
+</li>
+<li>
+<p>L&#8217;accolade ouvrante <code>{</code> d&#8217;un bloc est placée après un saut de ligne.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_variables">3.4.3. Variables</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Les noms de variable sont des noms !</p>
+</li>
+<li>
+<p>Toutes les variables doivent être définies avec une valeur initiale.</p>
+</li>
+<li>
+<p>Les variables globales sont déconseillées (risque d&#8217;effet de bord).</p>
+</li>
+<li>
+<p>Deux nombres flottants ne doivent pas être comparés pour une stricte égalité (<code>==</code>).</p>
+</li>
+<li>
+<p>On ne teste pas l&#8217;égalité d&#8217;un booléen à <code>true</code> ou à <code>false</code>, on écrit ceci : <code>if (estCher) &#8230;&#8203;</code> ou <code>if (!estCher) &#8230;&#8203;</code></p>
+</li>
+<li>
+<p>On utilise des variables booléennes à chaque fois que cela est possible.</p>
+</li>
+<li>
+<p>En projet, les attributs possèderont une information de documentation.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_constantes">3.4.4. Constantes</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>On n&#8217;écrit pas de valeurs « en dur » (comme <code>10</code> ou <code>3.14</code>) dans une expression car ce sont des constantes.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_fonctions">3.4.5. Fonctions</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Les noms de fonction sont des verbes !</p>
+</li>
+<li>
+<p>La fonction réalise une <strong>seule action logique</strong> et bien évidemment celle qui correspond à son nom.</p>
+</li>
+<li>
+<p>On limitera la taille des fonctions à une valeur comprise entre <strong>10 à 15 lignes maximum</strong> (accolades exclues).</p>
+</li>
+<li>
+<p>On évitera le plus possible d&#8217;utiliser des saisies et des affichages dans les fonctions (à l&#8217;exception des fonctions dont c&#8217;est la responsabilité) pour permettre notamment leur ré-utilisation.</p>
+</li>
+<li>
+<p>L&#8217;ordre de définition des paramètres doit respecter la règle suivante : <code>nomFonction(parametrePrincipal, listeParametres)</code> où <code>parametrePrincipal</code> est la donnée principale sur laquelle porte la fonction, la <code>listeParametres</code> ne comportant que des données secondaires, nécessaires à la réalisation du traitement réalisé par la fonction.</p>
+</li>
+<li>
+<p>Les fonctions qui ne reçoivent aucun paramètre et qui ne retourne aucun résultat (comme <code>void foo()</code>) sont très suspectes !</p>
+</li>
+<li>
+<p>En C++, les paramètres (ou arguments) d&#8217;une fonction (ou d&#8217;une méthode) sont passées par <strong>référence</strong> (une <strong>référence constante</strong> si la fonction ne doit pas le modifier).</p>
+</li>
+<li>
+<p>Les méthodes doivent être déclarées <code>const</code> si elles ne modifient aucun attribut de la classe.</p>
+</li>
+<li>
+<p>En projet, les méthodes possèderont une information de documentation.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_structures_de_contrôle">3.4.6. Structures de contrôle</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>On met les blocs <code>if</code> et <code>else</code> entre accolades (idem pour les autres blocs comme <code>for</code>, <code>while</code>, ). Le bloc <code>else</code> est obligatoire même s&#8217;il ne contient aucune instruction. Cela est valable aussi pour <code>default</code> dans un <code>switch</code>.</p>
+</li>
+<li>
+<p>On n&#8217;utilise pas l&#8217;instruction <code>break</code> (sauf éventuellement dans un <code>switch</code>) pour sortir d&#8217;une structure de contrôle (<code>for</code>, <code>while</code>, <code>if</code>, &#8230;&#8203;). Les boucles infinies du type <code>while(1)</code> et <code>for(;;)</code> sont fortement déconseillées.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_classes">3.4.7. Classes</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Les noms de classe sont des noms (de concept) ! N&#8217;oubliez pas qu&#8217;une classe est la définition d&#8217;un nouveau <strong>type</strong>.</p>
+</li>
+<li>
+<p>Concentrer vos efforts en premier sur l&#8217;identification des caractéristiques ou propriétés des classes (c&#8217;est-à-dire le nom et le type des attributs)</p>
+</li>
+<li>
+<p>Créer des objets à partir d&#8217;une classe se nomme l&#8217;instanciation (ou instancier). Une instance de classe est donc un objet.</p>
+</li>
+<li>
+<p>Utilisez par défaut le nom de la classe en minuscule pour le nom de l&#8217;objet que vous créez : <code>LampeDePoche lampeDePoche;</code> (<code>laLampeDePoche</code> et <code>maLampeDePoche</code> sont corrects aussi)</p>
+</li>
+<li>
+<p>En C++, les mots clés <code>struct</code> et <code>class</code> sont équivalents à l&#8217;exception que les membres d&#8217;une structure <code>struct</code> sont considérées comme <code>public</code> par défaut et <code>private</code> pour une classe <code>class</code>.</p>
+</li>
+<li>
+<p>Le mot clé <code>struct</code> sera réservé pour déclarer seulement des structures de données (qui ne contiennent pas de méthodes, même si cela n&#8217;est pas interdit par le langage C++)</p>
+</li>
+<li>
+<p>Les classes qui ne contiennent aucun ou un seul attribut sont très suspectes !</p>
+</li>
+<li>
+<p>En projet, les classes possèderont un en-tête de documentation (précisant au moins sa description, l&#8217;auteur et la version).</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_commentaires">3.4.8. Commentaires</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>On commente le moins possible ! C&#8217;est possible en respectant les règles de codage et les bonnes pratiques. Il faut savoir qu&#8217;en pratique les commentaires sont difficilement maintenus à jour par les développeurs.</p>
+</li>
+<li>
+<p>On ne laisse jamais des fragments de code en commentaires.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_programme_principal">3.4.9. Programme principal</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Le minimum attendu : on doit pouvoir fabriquer un exécutable et le lancer !</p>
+</li>
+<li>
+<p>On doit fournir les règles de fabrication dans un fichier de type <code>Makefile</code> ou équivalent</p>
+</li>
+<li>
+<p>Le programme doit énoncer ce qu&#8217;il fait et faire ce qu&#8217;il énonce !</p>
+</li>
+<li>
+<p>On limitera évidemment la taille de la fonction <code>main()</code> à une valeur comprise entre <strong>10 à 15 lignes maximum</strong> (accolades exclues).</p>
+</li>
+<li>
+<p>En projet, le programme principal possèdera un en-tête de documentation (précisant au moins sa description, l&#8217;auteur et la version).</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>La première ligne d&#8217;un programme doit énoncer simplement ce que le programme est censé faire et pas ce que nous avons voulu qu&#8217;il fasse ! Prenez donc l&#8217;habitude de mettre ce type de commentaire au début d&#8217;un programme.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_débogage_release_vs_debug">3.4.10. Débogage (<em>release</em> vs <em>debug</em>)</h4>
+<div class="paragraph">
+<p>Le débogage est un processus de diagnostic, de localisation et d’élimination des erreurs des programmes informatiques. Le débogage permet d&#8217;obtenir des programmes qui donnent des résultats corrects.</p>
+</div>
+<div class="paragraph">
+<p>On utilise un <a href="https://fr.wikipedia.org/wiki/D%C3%A9bogueur">débugueur</a> (de l&#8217;anglais <em>debugger</em>) ou <a href="https://fr.wikipedia.org/wiki/D%C3%A9bogueur">débogueur</a> (de la francisation bogue).</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>Un débogueur est un logiciel qui aide un développeur à analyser les <em>bugs</em> (bogues) d&#8217;un programme. Pour cela, il permet d&#8217;exécuter le programme en pas-à-pas, d&#8217;afficher la valeur des variables à tout moment, de mettre en place des points d&#8217;arrêt sur des conditions ou sur des lignes du programme &#8230;&#8203;</p>
+</div>
+<div class="paragraph">
+<p>Le programme à débuguer est exécuté à travers le débogueur et s&#8217;exécute normalement. Le débogueur offre alors au programmeur la possibilité d&#8217;observer et de contrôler l&#8217;exécution du programme.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://fr.wikipedia.org/wiki/GNU_Debugger">GNU Debugger</a>, également appelé <code>gdb</code>, est le débogueur standard du projet GNU. Il est portable sur de nombreux systèmes type Unix et fonctionne pour plusieurs langages de programmation, comme le C et le C++. Il fut écrit par Richard Stallman en 1988. <code>gdb</code> est un logiciel libre, distribué sous la licence GNU GPL. L’interface de <code>gdb</code> est une simple ligne de commande, mais il existe des applications qui lui offrent une interface graphique beaucoup plus conviviale.</p>
+</div>
+<div class="paragraph">
+<p>Pour débuguer un programme avec <code>gdb</code>, il faut l&#8217;avoir compilé avec l&#8217;option <code>-g</code> de <code>g++</code>.</p>
+</div>
+<div class="paragraph">
+<p>Notons également que <code>gdb</code> est souvent invoqué en arrière-plan par les environnements de développement intégré (IDE).</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Il est aussi possible (mais déconseillé si l&#8217;utilisation d&#8217;un débogueur est possible) d’utiliser de simples affichages pendant l’exécution du programme.</p>
+</div>
+<div class="paragraph">
+<p>Dans ce cas, on procédera de la manière suivante :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>On doit pouvoir activer et désactiver les affichages de débogage</p>
+</li>
+<li>
+<p>On doit afficher des messages concis et précis (par exemple, le nom de la variable et sa valeur)</p>
+</li>
+<li>
+<p>On doit afficher le nom du fichier, de la fonction et la ligne qui produit l’affichage de débogage</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Exemple pour l&#8217;affichage d&#8217;un message de débogage</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">// Ce programme permet la saisie d'une année !
+
+#include &lt;iostream&gt; /* pour cin et cout */
+
+#define DEBUG <i class="conum" data-value="1"></i><b>(1)</b>
+
+int main()
+{
+    int annee = 0;
+
+    std::cout &lt;&lt; "Entrez une année : ";
+    std::cin &gt;&gt; annee;
+
+    #ifdef DEBUG
+    std::cout &lt;&lt; "[" &lt;&lt; __FILE__ &lt;&lt; ":" &lt;&lt; __FUNCTION__ &lt;&lt; "():" &lt;&lt; __LINE__ 	&lt;&lt; "] " &lt;&lt; "annee" &lt;&lt; " = " &lt;&lt; annee &lt;&lt; std::endl;
+    #endif
+
+    // ...
+
+    return 0;
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>On placera cette ligne en commentaire pour désactiver les messages de débugage et obtenir une version <em>release</em>. Il est possible d&#8217;obtenir une version <em>debug</em> en intégrant l&#8217;activation des message directement au moment de la compilation : <code>g++ -DDEBUG &#8230;&#8203;</code></td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>On obtient :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ g++ annee.cpp
+$ ./a.out
+Entrez une année : 2020
+[annee.cpp:main():12] annee = 2020</pre>
+</div>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title"><em>release</em> vs <em>debug</em></div>
+<div class="paragraph">
+<p>Une version <em>release</em> est une version livrable du logiciel. C&#8217;est celle qu&#8217;on fournit au client. Elle ne doit contenir aucun affichage de débugage.</p>
+</div>
+<div class="paragraph">
+<p>Une version <em>debug</em> est une version en cours de développement. Elle peut contenir des affichages de débugage.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_divers">3.4.11. Divers</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Il ne faut pas confondre les <strong>opérateurs booléens</strong> (<code>&amp;&amp;</code>, <code>||</code> et <code>!</code>) qui traitent des valeurs comme <code>true</code> ou <code>false</code> et les <strong>opérateurs bit à bit</strong> (<code>&amp;</code>, <code>|</code> et <code>~</code>) qui traitent les valeurs en binaire (composées de <code>0</code> et de <code>1</code>).</p>
+</li>
+<li>
+<p>Pour limiter la taille des blocs d&#8217;instruction à <strong>10 ou 15 lignes maximum</strong> (accolades exclues), on pratique le remaniement de code qui consiste à extraire des fonctions à partir des lignes de code existantes.</p>
+</li>
+</ul>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>Il est indispensable de décomposer un traitement de grande taille en plusieurs parties plus petites jusqu&#8217;à obtenir quelque chose de suffisamment simple à comprendre et à résoudre. Cette approche consistant à décomposer une tâche complexe en une suite d&#8217;étapes plus petites (et donc plus facile à gérer) ne s&#8217;applique pas uniquement à la programmation et aux ordinateurs. Elle est courante et utile dans la plupart des domaines de l&#8217;existence.</p>
+</div>
+</div>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Diviser chacune des difficultés que j&#8217;examinerais, en autant de parcelles qu&#8217;il se pourrait, et qu&#8217;il serait requis pour les mieux résoudre.</p>
+</div>
+</blockquote>
+<div class="attribution">
+&#8212; Descartes (mathématicien<br>
+<cite>physicien et philosophe français) dans le Discours de la méthode</cite>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Concentrer vos efforts sur l&#8217;identification et les caractéristiques de vos données (c&#8217;est-à-dire le nom et le type de vos variables)</p>
+</li>
+</ul>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Règle n°5 : Les données prévalent sur le code. Si vous avez conçu la structure des données appropriée et bien organisé le tout, les algorithmes viendront d&#8217;eux-mêmes. La structure des données est le coeur de la programmation, et non pas les algorithmes.</p>
+</div>
+</blockquote>
+<div class="attribution">
+&#8212; Rob Pike (ancien chercheur des Laboratoires Bell et maintenant ingénieur chez Google)
+</div>
+</div>
+<div class="paragraph">
+<p>Cette règle n°5 est souvent résumée par « Écrivez du code stupide qui utilise des données futées ! ». Les types sont au centre de la plupart des notions de programmes corrects, et certaines des techniques de construction de programmes les plus efficaces reposent sur la conception et l&#8217;utilisation des types.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_exemple">4. Exemple</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="title">Exemple</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">/**
+ * @file        estMajeur.cpp
+ *
+ * @brief       Ce programme assure la saisie de l'age d'une personne et affiche si celle-ci est majeure
+ * @author      Thierry vaira &lt;tvaira@free.fr&gt;
+ * @version     0.1
+ * @date        2020
+ * @attention   Aucune vérification de saisie n'est effectuée
+ *
+ * @return      int 0 si le programme s'est exécuté avec succès
+ *
+ */
+
+#include &lt;iostream&gt; /* pour cin et cout */
+#include &lt;cstdlib&gt; /* pour EXIT_SUCCESS */
+
+#define AGE_MAJORITE_FRANCE   18
+
+int main()
+{
+    unsigned int age = 0;
+
+    std::cout &lt;&lt; "Entrez un age : ";
+    std::cin &gt;&gt; age;
+
+    bool estMajeur = (age &gt;= AGE_MAJORITE_FRANCE);
+
+    if(estMajeur)
+    {
+        std::cout &lt;&lt; "Vous êtes majeur." &lt;&lt; std::endl;
+    }
+    else
+    {
+    }
+
+    return EXIT_SUCCESS;
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_voir_aussi">5. Voir aussi</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="http://tvaira.free.fr/projets/activites/activite-documentation-doxygen.html">Documentation du code avec Doxygen</a></p>
+</li>
+<li>
+<p><a href="http://tvaira.free.fr/projets/activites/format-documentation/format-documentation.html">Rédaction de documents techniques avec Markdown ou Asciidoc</a></p>
+</li>
+<li>
+<p><a href="http://tvaira.free.fr/projets/activites/activite-visualcode.html">Visual Studio Code (VSCode)</a> et <a href="http://tvaira.free.fr/dev/tutoriel/platformio.html">PlatformIO</a></p>
+</li>
+</ul>
+</div>
+<hr>
+<div class="paragraph">
+<p>Site : <a href="http://tvaira.free.fr/">tvaira.free.fr</a></p>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version v0.3<br>
+Last updated 2021-08-23 09:48:47 +0200
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
+<script>
+if (!hljs.initHighlighting.called) {
+  hljs.initHighlighting.called = true
+  ;[].slice.call(document.querySelectorAll('pre.highlight > code')).forEach(function (el) { hljs.highlightBlock(el) })
+}
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  messageStyle: "none",
+  tex2jax: {
+    inlineMath: [["\\(", "\\)"]],
+    displayMath: [["\\[", "\\]"]],
+    ignoreClass: "nostem|nolatexmath"
+  },
+  asciimath2jax: {
+    delimiters: [["\\$", "\\$"]],
+    ignoreClass: "nostem|noasciimath"
+  },
+  TeX: { equationNumbers: { autoNumber: "none" } }
+})
+MathJax.Hub.Register.StartupHook("AsciiMath Jax Ready", function () {
+  MathJax.InputJax.AsciiMath.postfilterHooks.Add(function (data, node) {
+    if ((node = data.script.parentNode) && (node = node.parentNode) && node.classList.contains("stemblock")) {
+      data.math.root.display = "block"
+    }
+    return data
+  })
+})
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+</body>
+</html>

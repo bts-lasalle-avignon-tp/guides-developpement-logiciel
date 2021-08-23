@@ -1,0 +1,722 @@
+= Rédaction de documents techniques en BTS SN
+:author: Thierry Vaira
+:email: tvaira@free.fr
+:revnumber: v0.3
+:revdate: 23/08/2021
+:revremark: 
+:sectnums:
+:toc: left
+:toclevels: 4
+:toc-title: Sommaire
+:description: Rédaction de documents techniques en BTS SN
+:keywords: AsciiDoc Asciidoctor Markdown pandoc
+:imagesdir: ./images/
+:source-highlighter: highlightjs
+:highlightjs-theme: rainbow
+:stem:
+
+ifdef::backend-html5[]
+++++
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+++++
+:html:
+endif::[]
+
+:icons: font
+
+:home: http://tvaira.free.fr/
+
+ifdef::backend-pdf[]
+{author} - <{email}> - version {revnumber} - {revdate} - {home}[tvaira.free.fr]
+endif::[]
+
+== Objectifs
+
+Dans le cadre du développement logiciel, il est habituel de produire des documents techniques (documentations, manuels, tutoriels, compte-rendus, ...).
+
+Quel outil utilisé ? Quel format ? etc ... À la recherche de la solution simple et rapide pour produire des documents de qualité !
+
+== Présentation
+
+=== Les outils
+
+De manière générale, il existe deux types d'outils pour produire ce type de documents :
+
+* le *traitement de texte* qui consiste à mettre en forme un texte d'un point de vue typographique afin de produire un *document*. Celui-ci possède un format de fichier contenant notamment des informations sur la structuration et la présentation. Ce type de logiciels (comme `Word` de Microsoft ou `Writer` de LibreOffice) sont souvent WYSIWYG.
+
+[NOTE]
+====
+« *WYSIWYG* » est l'acronyme de « _what you see is what you get_ », signifiant littéralement en français « ce que vous voyez est ce que vous obtenez ». Un logiciel WYSIWYG est donc un logiciel qui dispose d'une interface graphique qui permet à l'utilisateur d'éditer son document tel qu'il sera publié.
+====
+
+* l'*éditeur de texte* qui permet de saisir et modifier interactivement des *fichiers textes* (codés en ASCII ou Unicode) sans mise en page, ni mise en forme car cela ne le concerne généralement pas. 
+
+[NOTE]
+====
+Un éditeur de texte est un outil incontournable pour certaines tâches informatiques de base comme l'administration de système et le développement de logiciels.
+====
+
+=== Langage de description de format de document
+
+Un langage de description de format de document est un langage permettant de définir un jeu de règles et contraintes qui seront utilisées pour savoir si une instance de document est valide par rapport à ce même jeu de règles et contraintes.
+
+Pour les documents ou fichiers texte, on utilisera principalement des langages balisés : https://fr.wikipedia.org/wiki/Standard_Generalized_Markup_Language[SGML] (_Standard Generalized Markup Language_), https://fr.wikipedia.org/wiki/Extensible_Markup_Language[XML] (_Extensible Markup Language_), https://fr.wikipedia.org/wiki/Hypertext_Markup_Language[HTML] (Hypertext Markup Language).
+
+Parmi les autres langages de description de texte, on peut citer:
+
+- https://fr.wikipedia.org/wiki/LaTeX[LaTeX] : notamment pour les textes scientifiques comprenant des formules mathématiques
+- https://fr.wikipedia.org/wiki/Roff[roff] : historiquement, c'était un langage de description de texte utilisé autrefois sous Unix.  Il sert en particulier au formatage des pages de manuel (`man`). Lien : http://tvaira.free.fr/dev/methodologie/creation_pages_man.pdf[Un tutoriel pour créer des pages man].
+
+[WARNING]
+====
+Il existe aussi des formats dédiés à la représentation de *données*, comme par exemple : https://fr.wikipedia.org/wiki/JavaScript_Object_Notation[JSON] (_JavaScript Object Notation_) et https://fr.wikipedia.org/wiki/YAML[YAML] (_Yet Another Markup Language_).
+====
+
+=== Le fond et la forme
+
+En informatique, la séparation du fond et de la forme est un point important de la création et de la gestion d'un document par un outil informatique.
+
+La séparation du fond et de la forme consiste à séparer le message d'un document (et sa structure) de sa présentation.
+
+[NOTE]
+====
+La séparation du fond et de la forme n'est pas une nécessité en soi ; elle n'est pas liée à une contrainte du logiciel ou du matériel. Mais elle améliore la qualité des documents car l'auteur se concentre tout d'abord sur le contenu du document. La mise en forme est traitée après, ou parfois avant, mais dans tous les cas séparément.
+====
+
+[red]+Inconvénients des logiciels de traitement de texte WYSIWYG :+
+
+- les documents écrits avec des logiciels WYSIWYG sont très sensibles aux changements de format. Il est donc nécessaire dans ce cas de refaire toute la mise en forme pour chaque support différent.
+- les logiciels « WYSIWYG » sont souvent difficiles à utiliser pour réaliser des mises en pages précises et complexes (typographie fine, équations, langues non latines). De plus, la restriction au visuel peut être source d'erreurs, car on peut avoir une apparence correcte alors que la structure n'est pas correctement indiquée.
+- les traitements de texte type WYSIWYG permettent (sans l'obliger) la séparation du fond et de la forme mais sont le plus souvent mal utilisés de manière spontanée et par manque de formation.
+
+[WARNING]
+====
+Avec un traitement de texte, la séparation du fond et de la forme exigerait de ne placer aucun caractère de mise en page superflu : paragraphes vides, tabulations en début de ligne (ou d'ailleurs où que ce soit), sauts de page non exigés par la fonction, espaces multiples, etc. En effet, tout caractère de mise en page non indispensable est de la « forme » qui pollue le « fond ».
+
+D'autre part, ce n'est pas un texte en rouge de taille 13 qui définit que c'est un titre. Il faut d'abord définir que c'est un titre (le fond) puis on appliquera la couleur rouge et la taille 13 (la forme) à cet élément de structure (le titre).
+====
+
+Un même document peut être multisupport. Le multisupport est la caractéristique d'un document à être présenté sur différents supports, par exemple : un support papier, un diaporama, un livre électronique et/ou un site web interactif. Chacun de ces supports aura des exigences de présentation différentes.
+
+=== Quelques formats de document
+
+Les technologies ci-dessous assurent la séparation du fond et de la forme :
+
+- https://fr.wikipedia.org/wiki/LaTeX[LaTeX] :
+
+*LaTeX* est un langage et un système de composition de documents. Il s'agit d'une collection de macro-commandes destinées à faciliter l'utilisation du « processeur de texte » https://fr.wikipedia.org/wiki/TeX[TeX] de https://fr.wikipedia.org/wiki/Donald_Knuth[Donald Knuth].
+
+LaTeX permet de rédiger des documents dont la mise en page est réalisée automatiquement en se conformant du mieux possible à des normes typographiques. Une fonctionnalité distinctive de LaTeX est son mode mathématique, qui permet de composer des formules complexes.
+
+LaTeX est particulièrement utilisé dans les domaines techniques et scientifiques pour la production de documents de taille moyenne (tels que des articles) ou importante (thèses ou livres, par exemple).
+
+Le langage et système de composition de documents LaTeX dispose d'environnements ou d'instructions permettant la séparation du fond et de la forme :
+
+[source,]
+.Exemple pour un document LateX
+----
+\author{Thierry Vaira}
+\title{Un Exemple}
+\begin{document}
+\section{D\'ebut}
+A faire\dots
+\section{Suite et fin}
+On verra plus tard.
+\end{document}
+----
+
+[TIP]
+====
+Beamer est une classe LaTeX adaptée à la création de présentations (des diaporamas). Elle possède une syntaxe spéciale pour définir les pages (« transparents », « diapositives »), appelées _frames_.
+====
+
+- https://fr.wikipedia.org/wiki/DocBook[DocBook] :
+
+*DocBook* est un langage de balisage sémantique pour la documentation technique. À l'origine prévu pour écrire de la documentation technique portée sur le domaine informatique (matériel et logiciel), il peut être utilisé pour n'importe quel type de documentation.
+
+En tant que langage sémantique DocBook permet à ses utilisateurs de créer du contenu sous une forme neutre vis-à-vis de la présentation qui ne fait que capturer la structure logique du contenu; contenu qui peut ensuite être publié dans une grande variété de formats, notamment HTML, XHTML, EPUB, PDF, pages de man, sans obliger les utilisateurs à faire des changements dans le contenu source. En d'autres termes, quand un document est écrit dans le format DocBook il devient facilement portable vers d'autres formats.
+
+Aujourd'hui, DocBook respecte le standard XML et sa conversion vers un autre format se fait par l'intermédiaire de feuilles de style XSL.
+
+[source,xml]
+.Exemple pour un article en Docbook version 4
+----
+<book id="exemple_de_livre">
+   <title>Livre très simple</title>
+   <chapter id="exemple_de_chapitre">
+      <title>Chapitre très court</title>
+      <para>Bonjour tout le monde !</para>
+      <para>Ceci est un autre paragraphe...</para>
+   </chapter>
+</book>
+----
+
+- https://fr.wikipedia.org/wiki/Hypertext_Markup_Language[HTML] / https://fr.wikipedia.org/wiki/Feuilles_de_style_en_cascade[CSS] :
+
+*HTML* (_HyperText Markup Language_) est un langage de balisage conçu pour représenter les pages web. Ce langage permet notamment de structurer sémantiquement la page mais aussi de mettre en forme le contenu. Il est souvent utilisé conjointement avec des feuilles de style en cascade (CSS). Ces feuilles de style CSS (_Cascading Style Sheets_) forment un langage informatique qui décrit la présentation des documents HTML.
+
+Les documents web sont donc généralement construits afin d'assurer une séparation du fond et de la forme : le contenu et sa structure dans un fichier HTML et sa mise en forme dans une feuille de style CSS.
+
+[source,html]
+.Exemple pour une simple page web en HTML
+----
+<html>
+    <head>
+        <title>Le titre du document</title>
+    </head>
+    <body>
+        <h1>Un titre de niveau 1</h1>
+        <p>Un paragraphe</p>
+    </body>
+</html>
+----
+
+[source,css]
+.Exemple pour une simple feuille de style CSS
+----
+body {
+    background-color: green; /* Couleur de fond */
+}
+p {
+    color: red; /* Couleur du texte */
+    font-size: 20px; /* Taille du texte en px (pixel) */
+}
+----
+
+- https://fr.wikipedia.org/wiki/OpenDocument[OpenDocument] :
+
+*OpenDocument* est un format ouvert (et normalisé) de données pour les applications bureautiques : traitements de texte, tableurs, présentations, diagrammes, dessins et base de données bureautique. De nombreux logiciels utilisent cette norme, principalement OpenOffice.org, *LibreOffice* (qui dérive d'OpenOffice.org), NeoOffice, StarOffice, KOffice.
+
+Le format OpenDocument regroupe différents les formats (avec les extensions de documents associées) : texte formaté `.odt` , tableur `.ods`, etc ...
+
+Techniquement, un fichier OpenDocument est une archive compressée (PKZIP) regroupant un ensemble de fichiers XML et de répertoires. Le format OpenDocument soutient une forte séparation entre contenu, mise en page et métadonnées. Le fichier `content.xml` contient le contenu réel du document (excepté le contenu binaire telles les images qui sont stockées dans des fichiers séparés).
+
+[WARNING]
+====
+OpenDocument représente le premier effort de normalisation des formats de fichier de la bureautique. *En France, le format OpenDocument est le seul format recommandé comme format bureautique par le référentiel général d'interopérabilité depuis sa version 2.0 validé le 20 avril 2016.*
+====
+
+- https://fr.wikipedia.org/wiki/Office_Open_XML[Office Open XML] :
+
+*Office Open XML* est une norme ISO/CEI 29500 créée par Microsoft, destinée à répondre à la demande d’interopérabilité dans les environnements de bureautique et à concurrencer la solution d’interopérabilité OpenDocument soutenue par tous les autres éditeurs de suites bureautiques.
+
+Ce format est à l’instar du format OpenDocument structuré en XML et Zip. 
+
+[red]+Inconvénients de ces types de technologies :+
+
+- syntaxe riche et complexe (notamment LateX)
+- nécessite souvent un logiciel spécifique (comme un traitement de texte) pour manipuler ces formats
+- contenu du document est difficilement lisible sans une transformation dans un format de publication ou un système d'apercu (_preview_)
+- format parfois spécifique à un domaine
+- nécessite un certain temps d'appentissage et ensuite de rédaction
+
+=== Spécificités des documents techniques en informatique
+
+Les documents techniques en informatique contiennent des éléments spécifiques qui sont :
+
+- des fragments de code source dans un langage de programmation
+- des commandes
+- des noms de programme, des entrées au clavier et des messages à l'écran
+
+Ces éléments spécifiques répondent à quelques règles typographiques que tout technicien en Informatique devrait respecter :
+
+- utilisation d'une police (fonte de caractères) à chasse fixe (type *Courier*)
+- utilisation déconseillée (interdite ?) des images (capture d'écran par exemple) pour représenter un contenu texte
+- utilisation si possible d'une coloration syntaxique (les mots clés du langage possèderont une couleur unique et distincte)
+
+****
+Courier a été dessinée par Howard Kettler en 1955, pour le compte d'IBM qui l'utilisera pour la première fois en 1961 sur sa machine à écrire Selectric. C'est une police à chasse fixe (tous les caractères ont exactement la même largeur). La police *Liberation Mono* est une alternative libre qui possède une métrique équivalente.
+****
+
+Pour respecter la séparation du fond et de la forme, il est nécessaire de structurer le document en indiquant ces éléments spécifiques et de leur appliquer ensuite un style adapté.
+
+=== Les formats simples
+
+Ces formats ont pour objectif d'offrir une syntaxe facile à lire et à écrire tout en assurant une structure du document.
+
+Un langage de balisage léger est un type de langage de balisage utilisant une syntaxe simple, conçu pour être aisé à saisir avec un *éditeur de texte* simple, et facile à lire dans sa forme non formatée. 
+
+Exemple de formats très utilisés par les développeurs :
+
+* <<Markdown>>
+* <<Asciidoc>>
+
+[NOTE]
+====
+Les fichiers texte au format Markdown ou Asciidoc permettent aussi d'être versionnés dans un logiciel de gestion de versions (comme `git`, `subversion`, ...) et donc utilisables dans le cadre d'un travail collaboratif. 
+====
+
+Les langages suivants servent aussi à produire des documents : atx, BBCode, Creole, Epytext, Haml, JsonML, MakeDoc, Org-mode, POD, RD, ReStructuredText, Setext, SISU, SPIP, Texy!, Textile, Txt2tags, UDO, Wikitexte et Xupl.
+
+- Un exemple : https://fr.wikipedia.org/wiki/MediaWiki[MediaWiki] (https://fr.wikipedia.org/wiki/Wikitexte[Wikitexte])
+
+*MediaWiki* est un moteur de wiki pour le Web. Il est utilisé par l’ensemble des projets de la Wikimedia Foundation. Un *wiki* est une application web qui permet la création, la modification et l'illustration collaboratives de pages à l'intérieur d'un site web. Il utilise un langage de balisage et son contenu est modifiable au moyen d’un navigateur web. Un wiki fonctionne grâce à un moteur de wiki : c'est un logiciel installé sur le système hôte du site web. Le *wikitexte* ou *wikicode* est un *langage de balisage léger* qui définit la mise en forme de saisies de contenu utilisateur. Il est le plus souvent utilisé pour écrire les pages d'un wiki. La syntaxe de chaque wiki dépend de l'analyseur syntaxique utilisé.
+
+[NOTE]
+====
+Le mot « wikiwiki » signifie, en hawaïen, rapide, vite ou informel. Il a été choisi par Ward Cunningham lorsqu'il créa le premier wiki, qu'il appela WikiWikiWeb.
+====
+
+[source,]
+.Exemple pour MediaWiki
+----
+= Nouveau chapitre =
+== Nouvelle section ==
+=== Nouvelle sous-section ===
+==== Nouveau paragraphe ====
+
+* Les listes sont bien pratiques :
+** Elles permettent d'organiser les données
+** Elles embellissent le document
+
+Lien externe : [http://fr.wikipedia.org Wikipédia]
+----
+
+== Les formats utilisés par les développeurs
+
+=== Markdown
+
+https://fr.wikipedia.org/wiki/Markdown[*Markdown*] est un langage de balisage léger créé par John Gruber en 2004. Son but est d'offrir une syntaxe facile à lire et à écrire. Un simple *éditeur de texte* suffit pour créer des documents en Markdown.
+
+.Le logo Markdown
+image:logo-markdown.png[title="Le logo Markdown",150,150]
+
+Un document formaté selon Markdown devrait pouvoir être publié comme tel, en texte, sans donner l'impression qu'il a été marqué par des balises ou des instructions de formatage.
+
+Un document rédigé en Markdown peut être converti facilement en HTML, PDF, ODT, EPUB etc ... 
+
+Quelques liens : 
+
+* http://daringfireball.net/projects/markdown/[Site officiel]
+* https://fr.wikipedia.org/wiki/Markdown[Le format Markdown]
+* https://michelf.ca/projets/php-markdown/syntaxe/[La syntaxe]
+* http://tvaira.free.fr/projets/activites/markdown-vscode.pdf[Markdown avec VSCode]
+
+[NOTE]
+====
+L'extension par défaut des fichiers Markdown est `.md`.
+====
+
+[source,markdown]
+.Exemple pour un document Markdown
+----
+ # Un titre de niveau 1
+ 
+ ## Un titre de niveau 2
+ 
+ Un mot en *gras* et un mot en _italique_ et le nom d'une célèbre commande `ls`.
+ 
+ Extrait d'un code source en C++ :
+ 
+ ```cpp
+ int a = 0;
+ ```
+ 
+ Une commande sous *GNU/Linux* :
+ 
+ ```
+ $ uname --operating-system
+ GNU/Linux
+ ```
+ 
+ Une simple liste de langages :
+ 
+ - C
+ - C++
+ - Python
+
+ Une liste de tâches :
+ 
+ - [x] déclarer la classe `Point`
+ - [] définir la classe `Point`
+ - [] tester et valider la classe `Point`
+----
+
+[IMPORTANT]
+====
+Un link:./exemples/exemple-markdown.md[exemple de document contenant du code C++ rédigé en Markdown] et converti en HTML → link:./exemples/exemple-markdown.html[exemple-markdown.html]
+====
+
+==== Pandoc
+
+Il est possible d'utiliser l'outil *pandoc* pour convertir un fichier au format Markdown dans de nombreux autres formats (HTML, PDF, ODT, EPUB, Asciidoc, etc ... ) et inversement.
+
+[IMPORTANT]
+====
+Pandoc est considéré comme le couteau suisse ultime de la conversion de documents ! Il supporte plus de quarante formats différents.
+====
+
+Sous Ubuntu :
+
+....
+$ sudo apt-get install -y pandoc
+
+$ pandoc --version
+pandoc 2.5
+Compiled with pandoc-types 1.17.5.4, texmath 0.11.2.2, skylighting 0.7.7
+Default user data directory: /home/iris/.pandoc
+Copyright (C) 2006-2018 John MacFarlane
+Web:  http://pandoc.org
+This is free software; see the source for copying conditions.
+There is no warranty, not even for merchantability or fitness
+for a particular purpose.
+
+$ pandoc -h
+....
+
+Quelques conversions avec `pandoc` : 
+
+....
+# format odt
+$ pandoc --toc -o exemple.odt exemple.md
+
+# format pdf
+$ pandoc --toc -o exemple.pdf exemple.md
+
+# format html
+$ pandoc -s -S --toc -o exemple.html exemple.md
+// avec une feuille de style externe
+$ pandoc -s -S --toc -c exemple.css -A signature.html -o exemple.html exemple.md
+        
+# format epub
+$ pandoc -S exemple.md -o exemple.epub
+....
+
+[NOTE]
+====
+L'option `--self-contained` permet de produire un fichier HTML autonome sans dépendances externes (notamment pour les images).
+====
+
+Sous Windows :
+
+- En ligne de commande (CLI) : https://github.com/jgm/pandoc/releases/tag/1.17.0.2[Pandoc] et https://github.com/fletcher/MultiMarkdown-5/releases[Package Pandoc msi]
+
+- Avec interface graphique (GUI) pour pandoc : http://panconvert.sourceforge.net/[PanConvert] et https://sourceforge.net/projects/panconvert/files/Newest/[Package PanConvert msi]
+
+- Plugin Word pour pandoc : http://www.writage.com/[Writage] et http://www.writage.com/Writage-1.8.3.msi[Package Writge msi]
+
+Tests :
+
+* Pandoc :
+
+Installer `pandoc-1.17.0.2-windows.msi`.
+
+Lancer `cmd.exe` puis `pandoc` :
+
+image:pandoc-1.png[]
+
+Voir les options de `pandoc` :
+
+....
+C:\Users\Thierry\Documents\markdown-windows>pandoc -h
+....
+
+Editer un document `.md` puis le convertir en HTML :
+
+....
+C:\Users\Thierry\Documents\markdown-windows>pandoc -s -S --toc -o markdown-windows.html markdown-windows.md
+....
+
+Et le convertir en `.odt` :
+
+....
+C:\Users\Thierry\Documents\markdown-windows>pandoc --toc -o markdown-windows.odt markdown-windows.md
+....
+
+* `PanConvert` :
+
+Installer `PanConvert-0.1.5-win32.msi`.
+
+Lancer `Panconvert.exe`.
+
+image:panconvert.png[]
+
+`Edit -> Préferences` pour configurer le chemin vers `pandoc` :
+
+image:panconvert-preferences.png[]
+
+Ouvrir un fichier ou saisir un texte puis le convertir :
+
+image:panconvert-conversion.png[]
+
+* Writage :
+
+Installer `Writage-1.8.3.msi`.
+
+Lancer Word et ouvrir un document markdown :
+
+image:writage.png[]
+
+==== Édition avec aperçu
+
+Extension `Markdown Viewer` pour les navigateurs Chrome et Firefox.
+
+Il existe de nombreuses extensions Markdown pour https://code.visualstudio.com/[Visual Studio Code] :
+
+- https://docs.microsoft.com/fr-fr/teamblog/docs-extension[Markdown Docs]
+- https://marketplace.visualstudio.com/items?itemName=bat67.markdown-extension-pack[Markdown Extension Pack]
+- ...
+
+Il existe des éditeurs en ligne pour Markdown :
+
+* https://www.tutorialspoint.com/online_markdown_editor.php[www.tutorialspoint.com]
+* https://dillinger.io/[dillinger.io]
+* https://hackmd.io/[hackmd.io]
+* https://demo.hedgedoc.org/[demo.hedgedoc.org]
+* https://stackedit.io/[stackedit.io] (qui est aussi une extension pour Google Drive)
+* ...
+
+Markdown est le format des fichiers README pour les projets logiciels hébergés sur https://guides.github.com/features/mastering-markdown/[GitHub].
+
+Voir aussi : https://daringfireball.net/projects/markdown/dingus
+
+=== Asciidoc
+
+https://fr.wikipedia.org/wiki/AsciiDoc[*AsciiDoc*] est un langage de balisage léger proche du langage https://fr.wikipedia.org/wiki/Markdown[_Markdown_], proposant une richesse sémantique plus importante. Un simple *éditeur de texte* suffit pour créer des documents en AsciiDoc. Ce document a été rédigé en Asciidoc !
+
+Syntaxe : http://asciidoctor.org/docs/asciidoc-syntax-quick-reference/
+
+.Markdown vs Asciidoc
+[NOTE]
+====
+Comme Markdown, les fichiers `.adoc` (extension par défaut pour des fichiers Asciidoc) utilisent une syntaxe simple à écrire et à lire. Voici un comparatif entre les deux formats : http://asciidoctor.org/docs/user-manual/#compared-to-markdown
+====
+
+.Histoire d'AsciiDoc
+****
+AsciiDoc a été publié pour la première fois en novembre 2002 par Stuart Rackham.
+Il a été conçu dès le départ pour produire des documents professionnels comme DocBook et LaTeX
+à partir d'une syntaxe abrégée.
+****
+
+.Le logo Asciidoc
+image:logo_asciidoc.png[Le format Asciidoc utilisé pour rédiger ce document,title="Le logo Asciidoc",150,150]
+
+Lien : https://asciidoc.org/
+
+[source,]
+.Exemple pour un document Asciidoc
+----
+ = Un titre de niveau 1
+ 
+ == Un titre de niveau 2
+ 
+ Un mot en *gras* et un mot en _italique_ et le nom d'une célèbre commande `ls`.
+ 
+ Extrait d'un code source en C++ :
+ 
+ [source,cpp]
+ ----
+ int a = 0;
+ ----
+ 
+ Une commande sous *GNU/Linux* :
+ 
+ ....
+ $ uname --operating-system
+ GNU/Linux
+ ....
+ 
+ Une simple liste de langages :
+ 
+ - C
+ - C++
+ - Python
+ 
+ Une liste de tâches :
+ 
+ - [x] déclarer la classe `Point`
+ - [] définir la classe `Point`
+ - [] tester et valider la classe `Point`
+----
+
+[IMPORTANT]
+====
+Ce document a été rédigé en Asciidoc (link:./guide-redaction-btssn.adoc[guide-redaction-btssn.adoc]).
+
+Lien : https://powerman.name/doc/asciidoc[AsciiDoc cheatsheet]
+
+Un link:./exemples/exemple-asciidoc.adoc[exemple de document contenant du code C++ rédigé en Asciidoc] et converti en HTML → link:./exemples/exemple-asciidoc.html[exemple-asciidoc.html]
+====
+
+==== Asciidoctor
+
+Un programme de conversion (ou suite logicielle) comme `AsciiDoc` ou `Asciidoctor` permet de transformer le document source en un format "publiable" (comme XHTML, DocBook ou HTML). 
+
+Associé à la suite logicielle AsciiDoc, le programme `a2x` permet d'obtenir d'autres formats tels que PDF, TeX, Unix manpages ou Epub. Asciidoctor intègre des fonctionnalités similaires. 
+
+[.center.text-center]
+image:logo_asciidoctor.png[float="center",align="center"]
+
+Lien : http://asciidoctor.org/
+
+Sous Ubuntu :
+
+....
+$ sudo apt-get install -y asciidoctor
+
+$ asciidoctor --version
+Asciidoctor 2.0.10 [https://asciidoctor.org]
+Runtime Environment (ruby 2.7.0p0 (2019-12-25 revision 647ee6f091) [x86_64-linux-gnu]) (lc:UTF-8 fs:UTF-8 in:UTF-8 ex:UTF-8)
+
+$ sudo gem install asciidoctor-pdf
+....
+
+CAUTION: Utiliser `sudo` sous Ubuntu
+
+Une simple conversion en HTML :
+
+....
+$ asciidoctor exemple.adoc
+....
+
+TIP: L'option `-b html5 -a data-uri` permet de produire un fichier HTML autonome sans dépendances externes (notamment pour les images ou fichier inclus). cf. `asciidoctor --help`
+
+[source,makefile]
+.Exemple de Makefile
+----
+include::./Makefile[]
+----
+
+****
+Asciidoctor ajoute aussi un certain nombre de fonctionnalités qui ne sont pas prises en charge par Asciidoc : http://asciidoctor.org/docs/asciidoc-asciidoctor-diffs/
+****
+
+IMPORTANT: `asciidoctor` ne convertit pas au format PDF. Il faut installer et utiliser `asciidoctor-pdf`
+
+Sous Windows (non testé) :
+
+* télécharger le _package_ https://rubyinstaller.org/downloads/[Rubyinstaller] pour une version de Windows
+* installer https://rvm.io/[RVM] (_Ruby Version Manager_), l'outil en ligne de commande `gem` qui permet d'installer, de gérer et de travailler facilement dans l'environnement Ruby
+
+Ensuite, il faut utiliser la commande `gem` pour installer (ou mettre à jour) `Asciidoctor` dans un terminal :
+
+....
+$ gem install asciidoctor
+....
+
+WARNING: Lors de l'utilisation de RVM, les gems sont installées dans un endroit isolé du système.
+
+Installation de gems supplémentaires :
+
+- Pour : `:source-highlighter: coderay`
+....
+$ sudo gem install coderay
+....
+
+- Pour : `:source-highlighter: pygments`
+
+....
+$ sudo gem install pygments.rb
+
+$ pygmentize -L styles
+....
+
+Liste de thèmes pour le formatage du code :
+
+....
+:highlightjs-theme: xcode
+:highlightjs-theme: androidstudio
+:highlightjs-theme: googlecode
+:highlightjs-theme: github
+:highlightjs-theme: foundation
+:highlightjs-theme: idea
+:highlightjs-theme: rainbow
+:highlightjs-theme: vs
+:highlightjs-theme: sunburst
+:highlightjs-theme: tomorrow
+:highlightjs-theme: railscasts
+:highlightjs-theme: zenburn
+....
+
+-> https://asciidoctor.org/docs/user-manual/#mathematical-expressions[Expressions mathématiques] (`\asciimath:[expression]`) : il faut le support `stem` en ajoutant `:stem:`.
+
+- Pour le support `stem` dans les PDF :
+
+....
+$ sudo -s
+
+# MATHEMATICAL_SKIP_STRDUP=1 gem install mathematical
+# gem install asciidoctor-mathematical
+....
+
+[TIP]
+====
+Il faut ajouter l'option `-r asciidoctor-mathematical` dans `asciidoctor-pdf`.
+====
+
+Liste des gems installés :
+
+....
+$ sudo gem list
+
+*** LOCAL GEMS ***
+
+addressable (2.7.0)
+afm (0.2.2)
+Ascii85 (1.0.3)
+asciidoctor (2.0.12, 1.5.5)
+asciidoctor-mathematical (0.3.5)
+asciidoctor-pdf (1.5.3)
+asciimath (2.0.2)
+...
+....
+
+Voir aussi :
+
+[source,]
+.Exemple de tests conditionnels en fonction du format de sortie
+----
+    ifdef::backend-html5[]
+    ++++
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    ++++
+    :html:
+    endif::[]
+
+    ifdef::backend-pdf[]
+
+    endif::[]
+----
+
+==== Édition avec aperçu
+
+Extension `Asciidoctor.js` pour les navigateurs Chrome et Firefox.
+
+Extension https://marketplace.visualstudio.com/items?itemName=asciidoctor.asciidoctor-vscode[AsciiDoc] dans https://code.visualstudio.com/[Visual Studio Code]
+
+Il existe des éditeurs en ligne pour Asciidoc :
+
+* https://www.tutorialspoint.com/online_asciidoc_editor.php[www.tutorialspoint.com]
+* http://espadrine.github.io/AsciiDocBox/[AsciiDocBox]
+* https://asciidoclive.com/[asciidoclive.com]
+
+Pour les fichiers hébergés sur GitHub : http://gist.asciidoctor.org/[gist.asciidoctor.org]
+
+Voir aussi :
+
+* https://asciidoctor.org/docs/editing-asciidoc-with-live-preview/
+* https://github.com/bodiam/awesome-asciidoc
+
+== Voir aussi
+
+* http://tvaira.free.fr/projets/activites/activite-documentation-doxygen.html[Documentation du code avec Doxygen]
+* http://tvaira.free.fr/projets/activites/activite-plantuml.html[Diagrammes UML avec PlantUML]
+* http://tvaira.free.fr/dev/methodologie/creation_pages_man.pdf[Conception de pages man]
+
+ifdef::backend-html5[]
+La version PDF de ce document produite avec `asciidoctor-pdf` : link:./guide-redaction-btssn.pdf[guide-redaction-btssn.pdf].
+
+La version Asciidoc de ce document : link:./guide-redaction-btssn.adoc[guide-redaction-btssn.adoc].
+endif::[]
+
+***
+
+ifdef::backend-html5[]
+Site : {home}[tvaira.free.fr]
+endif::[]
+
+ifdef::backend-pdf[]
+{author} - <{email}> - version {revnumber} - {revdate} - {home}[tvaira.free.fr]
+endif::[]
+

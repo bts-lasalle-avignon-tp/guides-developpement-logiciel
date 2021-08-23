@@ -1,0 +1,860 @@
+= Gestion de projet logiciel avec Jira
+:author: Thierry Vaira
+:email: tvaira@free.fr
+:revnumber: v0.2
+:revdate: 23/08/2021
+:revremark:
+:sectnums:
+:toc: left
+:toclevels: 4
+:toc-title: Sommaire
+:description: Gestion de projet logiciel avec Jira
+:keywords: git github
+:imagesdir: ./images/
+:source-highlighter: highlightjs
+:highlightjs-theme: rainbow
+:stem:
+
+////
+:highlightjs-theme: xcode
+:highlightjs-theme: androidstudio
+:highlightjs-theme: googlecode
+:highlightjs-theme: github
+:highlightjs-theme: foundation
+:highlightjs-theme: idea
+:highlightjs-theme: rainbow
+:highlightjs-theme: vs
+:highlightjs-theme: sunburst
+:highlightjs-theme: tomorrow
+:highlightjs-theme: railscasts
+:highlightjs-theme: zenburn
+////
+
+ifdef::backend-html5[]
+++++
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+++++
+:html:
+endif::[]
+
+:icons: font
+
+:home: http://tvaira.free.fr/
+
+ifdef::backend-pdf[]
+{author} - <{email}> - version {revnumber} - {revdate} - {home}[tvaira.free.fr]
+endif::[]
+
+Objectif : développer un projet logiciel BTS SNIR avec Jira
+
+== Les outils
+
+=== Git
+
+https://fr.wikipedia.org/wiki/Git[Git] est un logiciel de *gestion de versions décentralisé* (DVCS). C'est un logiciel libre créé par *Linus Torvalds* en 2005. Il s'agit maintenant du logiciel de gestion de versions le plus populaire devant https://fr.wikipedia.org/wiki/Apache_Subversion[Subversion] (`svn`) qu'il a remplacé avantageusement.
+
+//.Le logo Git
+image:git-logo.png[title="Le logo Git"]
+
+Site officiel : https://git-scm.com/
+
+Ressources Git :
+
+- http://book.git-scm.com/docs[Manuel de référence]
+- http://git-scm.com/book/fr/v2[Livre Pro Git en français]
+- https://alexgirard.com/git-book/[Livre Git Community Book en français]
+- https://fr.wikibooks.org/wiki/Git[Wikilivre Git en français]
+
+=== Atlassian : Jira, Bitbucket, ...
+
+À l'origine, https://www.atlassian.com/software/jira[Jira] est un système de suivi de _bugs_ et de gestion des incidents (_tickets_). Il est maintenant un système de gestion de projets développé par **Atlassian**.
+
+//.Le logo Atlassian
+image:atlassian-logo.png[title="Le logo Atlassian"]
+
+https://www.atlassian.com/[Atlassian] est un éditeur de logiciels, basé en Australie, qui développe des produits pour la gestion de développement et de projets. Ses logiciels les plus connus sont Jira, Confluence, Bitbucket et Trello :
+
+- https://www.atlassian.com/fr/software/jira[Jira Software] constitue la plate-forme centrale pour les phases de programmation, de collaboration et de livraison. Jira Software est gratuit jusqu'à 10 utilisateurs, avec 2 Go de stockage.
+
+image:jira-logo.png[]
+
+- https://www.atlassian.com/fr/software/confluence[Confluence] est un logiciel de wiki, utilisé comme logiciel de travail collaboratif. 
+
+- https://bitbucket.org/[Bitbucket] est un service web d'hébergement et de gestion de développement logiciel utilisant le logiciel de gestion de versions https://git-scm.com/[Git]. Bitbucket est gratuit pour les particuliers et les petites équipes comptant jusqu'à 5 utilisateurs, avec des référentiels publics et privés illimités.
+
+image:bitbucket-logo.png[]
+
+- https://trello.com/fr/home[Trello] est un outil de gestion de projet en ligne, inspiré par la méthode Kanban de Toyota.
+
+Ressources Atlassian :
+
+- https://www.atlassian.com/software/jira/guides[Les guides Jira]
+- https://www.atlassian.com/fr/software/jira/guides/use-cases/what-is-jira-used-for[À quoi sert Jira ?]
+- https://www.atlassian.com/fr/agile/tutorials[Découvrez Agile grâce à Jira]
+- https://www.atlassian.com/fr/git/tutorials[Tutoriels]
+
+=== GitHub
+
+https://fr.wikipedia.org/wiki/GitHub[GitHub] est un service web d'hébergement et de gestion de développement de logiciels, utilisant le logiciel de gestion de versions Git.
+
+image:github-logo.png[title="Le logo GitHub"]
+
+Site officiel : https://github.com/
+
+Ressources GitHub :
+
+- https://guides.github.com/introduction/git-handbook/[Git Handbook sur Github]
+- https://docs.github.com/en/github/collaborating-with-pull-requests[Collaborating with pull requests]
+
+== Le projet BTS SNIR à LaSalle Avignon
+
+Un projet (ou mini-projet) BTS SNIR sera mené avec :
+
+- un xref:ancre-processus-developpement[processus de développement] xref:ancre-developpement-iteratif[itératif] et xref:ancre-developpement-incremental[incrémental]
+- la méthode xref:ancre-kanban[Kanban] dans https://www.atlassian.com/fr/software/jira[Jira]
+- le gestionnaire de versions https://git-scm.com/[Git] (et le _workflow_ xref:ancre-gitflow[Gitflow]) dans un dépôt hébergé sur https://fr.wikipedia.org/wiki/GitHub[GitHub] (ou Bitbucket) en lien avec https://www.atlassian.com/fr/software/jira[Jira]
+
+[[ancre-processus-developpement]]
+=== Processus de développement logiciel
+
+Un processus de développement décrit une méthode qui permet de construire, déployer et éventuellement maintenir un logiciel.
+
+Un processus de développement définit une séquence d’étapes, partiellement ordonnées, qui permettent d’obtenir un système logiciel ou faire évoluer un système existant.
+
+Exemples d'étapes :
+
+- Exigences, Analyse, Conception, Mise en œuvre (implémentation), Test
+- Besoin/Faisabilité, Élaboration, Fabrication, Transition/Test
+
+On utilisera un développement xref:ancre-developpement-iteratif[itératif] et xref:ancre-developpement-incremental[incrémental].
+
+Liens :
+
+- https://fr.wikipedia.org/wiki/Cycle_de_d%C3%A9veloppement_(logiciel)[Cycle de développement]
+- https://fr.wikipedia.org/wiki/Processus_unifi%C3%A9[Processus Unifié]
+- https://fr.wikipedia.org/wiki/M%C3%A9thode_agile[Méthode agile] : https://fr.wikipedia.org/wiki/Extreme_programming[extreme programming (XP)], https://fr.wikipedia.org/wiki/Scrum_(d%C3%A9veloppement)[Scrum]
+
+[[ancre-developpement-iteratif]]
+=== Le développement itératif
+
+Le développement itératif s’organise en une série de développement très courts de durée fixe nommée itérations.
+
+Dans une itération, on répète les mêmes activités (de la spécification jusqu'au test).
+
+Le résultat de chaque itération est un système partiel exécutable, testé et intégré mais incomplet.
+
+Une nouvelle itération écrase la précédente.
+
+Le résultat d’une itération n’est pas un prototype expérimental ou « jetable ».
+
+Le projet ou mini-projet sera mené à son terme en plusieurs itérations successives (2 ou 3 maximum).
+
+[[ancre-developpement-incremental]]
+=== Le développement incrémental
+
+Le développement incrémental consiste à réaliser successivement des éléments fonctionnels utilisables.
+
+Un incrément est une avancée dans le développement en terme de fonctionnalités.
+
+Dans un développement incrémental, on planifie donc par fonctionnalités.
+
+Chaque développement s’ajoute et enrichit l’existant.
+
+Chaque incrément produira une version.
+
+=== Versions
+
+Une https://fr.wikipedia.org/wiki/Version_d%27un_logiciel[version d'un logiciel] correspond à un état donné de l'évolution d'un projet logiciel. Une version de logiciel est le plus souvent associée à une numérotation.
+
+Il faut différencier les évolutions dans un logiciel :
+
+- Les évolutions majeures apportent de nouvelles fonctionnalités, voire restructurent complètement l'application.
+- Les évolutions mineures apportent principalement des corrections de bugs ou des ajouts de fonctionnalités secondaires.
+
+Convention utilisée pour les numéros de versions (tags) `X.Y` :
+
+- `X` le numéro de version majeur de l’application (`1` pour la première version/itération)
+- `Y` le numéro de version mineur de l’application (`0` par défaut, ensuite incrémenté pour chaque correction)
+
+=== Planification
+
+La planification est essentielle dans le projet.
+
+La plupart des méthodes encourage une planification itérative pilotée à la fois par les risques et par le client.
+
+Cela signifie que les objectifs des premières itérations sont choisis afin de d’identifier les risques les plus importants et de construire les fonctionnalités visibles qui comptent le plus pour le client.
+
+Pour chaque itération, on choisira des cas d’utilisation présentant ces trois qualités :
+
+- significatifs du point de vue de l’architecture
+- de grande valeur pour le client (les fonctionnalités qui comptent vraiment pour lui)
+- à haut risque (technique)
+
+On classera en distinguant trois niveaux de priorité (Haut, Moyen et Bas).
+
+[[ancre-kanban]]
+=== Kanban
+
+Issue d'un mot japonais signifiant tableau, la méthode https://fr.wikipedia.org/wiki/Kanban[Kanban] a vu le jour dans les usines Toyota au milieu du XXème siècle. Cette image de tableau vient de l'utilisation des porte-étiquettes permettant d'organiser le travail dans les usines.
+
+Sa reprise pour la gestion de projet date de l'apparition des https://fr.wikipedia.org/wiki/M%C3%A9thode_agile[méthodes dites agile].
+
+La méthode Kanban tire sa force de sa simplicité. En effet, toujours dans un esprit agile, cette méthode simplifie au maximum le concept d'organisation des tâches.
+
+Elle repose sur quatre étapes principales aboutissant à un tableau de quatre colonnes :
+
+* à faire (_backlog_ ou _todo_) : la liste des tâches à effectuer pour l'itération ;
+* prêt (_ready_ ou _selected_) : la liste des tâches que vous souhaitez effectuer dans l'itération ;
+* en cours (_in progress_) : les tâches en cours de réalisation (en général par développeur une à la fois, voire deux) ;
+* terminé (_done_) : Les tâches terminées.
+
+[NOTE]
+====
+On peut ajouter, supprimer et/ou renommer les colonnes (Par exemple : à faire, en cours et terminé).
+====
+
+Dans Jira, un tableau Kanban permet à l'équipe de visualiser le flux de travail (_workflow_) :
+
+image:jira-tableau-kanban.png[]
+
+Backlog:: Un _backlog_ contient des tickets en suspens sur lesquels une équipe devra travailler. Au démarrage d'une itération, on sélectionne les tickets dans le _backlog_ pour les basculer dans "Sélectionné pour le développement" ou dans "En cours".
+
+Le flux de travail (_workflow_) par défaut :
+
+image:jira-creer-projet-workflow-defaut.png[]
+
+Il est possible d'ajouter des règles pour gérer automatiquement le flux de travail (_workflow_) :
+
+image:jira-tvaira-automation-1.png[]
+
+Par exemple, pour faire le lien avec Git :
+
+image:jira-tvaira-automation-2.png[]
+
+.Kanban vs Scrum
+[TIP]
+====
+Kanban et Scrum sont des _frameworks_ Agile populaires auprès des développeurs de logiciels.
+
+Il y a cependant des différences clés :
+
+- Les sprints Scrum ont des dates de début et de fin, alors que Kanban est un processus continu.
+- Dans Scrum, les rôles de l'équipe sont clairement définis (_Product Owner_, _Scrum Master_, équipe de développement), contrairement à Kanban où il n'y a pas de rôles formels. Les deux équipes sont auto-organisées.
+- Un tableau Kanban est utilisé tout au long du cycle de vie d'un projet, alors qu'un tableau Scrum est nettoyé et recyclé après chaque sprint.
+- Un tableau Scrum possède un nombre de tâches définies ainsi que des échéances strictes pour les effectuer.
+- Les tableaux Kanban sont plus flexibles en termes de tâches et d'échéances. Les tâches peuvent être hiérarchisées à nouveau, réassignées ou mises à jour si besoin.
+====
+
+Les tâches (un *ticket* dans Jira) sont représentées visuellement sur le tableau Kanban, ce qui permet à l'équipe de suivre l'état du travail à tout moment. Les colonnes du tableau représentent chaque étape du _workflow_, des tâches à faire à celles qui sont terminées.
+
+Les tickets Jira, également appelés « tâches », suivent chaque travail qui doit passer par les différentes étapes du workflow jusqu'à son achèvement. Les tickets sont des éléments de *travail individuel* qui sont assignés aux membres de l'équipe.
+
+Les différents types de ticket dans Jira :
+
+image:jira-types-tickets.png[]
+
+https://www.atlassian.com/fr/agile/tutorials/epics[Epics]:: Une « epic » (épopée) est un vaste ensemble de tâches qui peuvent être subdivisées en plus petites unités. Ces unités, appelées « stories » (histoire) ou « user stories », représentent les exigences ou besoins du point de vue de l'utilisateur.
+
+Il est possible de créer des _epics_ de trois manières dans Jira : la feuille de route, le _backlog_ et le bouton global "Créer un ticket". Après avoir créé une _epic_, on peut y ajouter des _stories_ ou des tickets enfant.
+
+[IMPORTANT]
+====
+Les _stories_, les bugs et les tâches décrivent un bloc de travail, alors que les _epics_ sont utilisées pour décrire un groupe de tickets.
+====
+
+Feuilles de route:: Les feuilles de route créent une représentation visuelle de toutes les _epics_ sur lesquelles une équipe travaille. Une feuille de route est une source de référence partagée qui décrit la vision, l'orientation, les priorités et l'avancement d'un produit ou d'une équipe au fil du temps.
+
+image:jira-feuille-de-route.png[]
+
+Versions:: Dans Jira, les versions représentent des points dans le temps pour un projet. Elles aident à organiser les tâches grâce à des étapes importantes à suivre. Il est possible d'assigner les tickets à une version spécifique et organiser les itérations en fonction des tâches réalisées dans cette version. Les noms de version correspondent généralement à des chiffres, par exemple, `1.0` ou `2.1.1`.
+
+image:jira-versions-1.png[]
+
+image:jira-versions-2.png[]
+
+=== Le développement collaboratif
+
+==== Pull Request et Révision de code
+
+Les _Pull Requests_ sont une fonctionnalité facilitant la collaboration des développeurs sur un projet. Cela permet à un développeur d'informer les membres de l'équipe qu'il a terminé un « travail » (une fonctionnalité, une version livrable, un correctif, ...) et de proposer sa contribution au dépôt central.
+
+[NOTE]
+====
+_Pull Request_ peut être traduit par « Proposition de révision » (PR) : c'est-à-dire une demande de modification ou de contribution.
+====
+
+Le principe est le suivant :
+
+- Une fois que sa branche de suivi est prête, le développeur crée ou ouvre (_Open_) une _Pull Request_.
+
+- Tous les développeurs du projet seront informées du fait qu'ils doivent *réviser le code* puis le *fusionner* (_merge_) dans la branche principale (`main` ou `master`) ou dans une autre branche.
+
+Pendant cette révision de code, les développeurs peuvent discuter de la fonctionnalité (commenter le code, poser des questions, ...) et proposer des adaptations de la fonctionnalité en publiant des _commits_ de suivi.
+
+image:pull-request.png[]
+
+Les _Pull Requests_ offrent cette fonctionnalité dans une *interface Web* à côté des dépôts GitHub ou Bitbucket. Cette interface affiche une comparaison des changements, permet l'échange entre développeurs et fournit une méthode simple pour réaliser la fusion (_merge_) du code quand il est prêt.
+
+[[ancre-gitflow]]
+==== Gitflow
+
+[NOTE]
+====
+Un _workflow git_ est une méthode, un processus de travail, une recette ou une recommandation sur la façon d'utiliser `git` pour accomplir un travail de manière cohérente et productive. Il n'existe pas de processus standardisé sur la façon d'interagir avec `git`. Il est important de s'assurer que l'équipe de projet est d'accord sur la façon dont le flux de modifications sera appliqué. Un _workflow git_ doit donc être défini.
+
+Lien : https://www.atlassian.com/fr/git/tutorials/comparing-workflows[Comparaison des workflow git]
+====
+
+Le _workflow_ *Gitflow* définit un modèle de branchement strict conçu autour de la version du projet. Ce _workflow_ n'ajoute pas de nouveaux concepts ou commandes. Gitflow permet de gérer les bugs (_issues_), les nouvelles fonctionnalités (_features_) et les versions (_releases_) en attribuant des rôles très spécifiques à différentes branches et définit comment et quand elles doivent interagir.
+
+image:gitflow.png[title="Le workflow Gitflow"]
+
+Les rôles des branches sont les suivants :
+
+- pour les branches permanentes :
+
+  * La branche `master` stocke l'historique des versions officielles. Tous les _commits_ de cette branche sont étiquetés avec un numéro de version (_tags_).
+  * La branche `develop` est créée à partir de la branche `master`. Elle sert de branche d'intégration pour les fonctionnalités. Cette branche contiendra l'historique complet du projet.
+
+- pour les branches temporaires :
+
+  * Les branches `features-xxxx` permettent de travailler sur des nouvelles fonctionnalités. Elles sont créées directement à partir de la branche `develop` et une fois le travail fini, fusionnées vers la branche `develop`.
+  * Les branches `release-xxxx` permettent de travailler sur une livraison (généralement des tâches dédiées à la documentation). On les crée à partir de `develop` puis on les fusionne dans `master` en leur attribuant un numéro de version (_tag_).
+  * Les branches `hotfix-xxxx` permettent de publier rapidement (_hot_) une correction (_fix_) depuis la branche `master`. Ces branches seront ensuite fusionnées vers la branche `master` et `develop`.
+
+[IMPORTANT]
+====
+En projet BTS SN, les branches (_feature_, _release_ et _hotfix_) seront créées dans Jira à partir d'un ticket. Les fusions seront réalisées lors d'une revue de code en utilisant les _Pull Requests_ dans GitHub ou Bitbucket.
+====
+
+*Réalisation d'une fonctionnalité :*
+
+image:gitflow-feature-2.png[]
+
+*Réalisation d'une _release_ :*
+
+image:gitflow-release.png[]
+
+*Correction d'un _bug_ :*
+
+image:gitflow-hotfix.png[]
+
+[IMPORTANT]
+====
+Une branche représente une ligne de développement indépendante. Lorsqu'elle désigne un travail bien identifié du projet (une fonctionnalité, une _release_ ou un correctif), il est préférable (obligatoire) que cela reste visible dans le graphe d'historique, même lorsque la branche est supprimée. Pour éviter que Git utilise par défaut une avance rapide (_Fast Forward_) si c'est possible, il faudra réaliser un _commit_ de fusion avec l'option `--no-ff`.
+====
+
+==== Branche de suivi
+
+Une branche de suivi (_tracking branch_) est une branche locale qui est en relation directe avec une branche distante (_upstream branch_).
+
+*1 . Nettoyer son historique local avant de publier*
+
+Avant de faire un `git push` sur une branche de suivi, il faut eut être nettoyer son historique local (une série de _commits_ dans la branche) afin de pouvoir proposer quelque chose de propre et d'utilisable. Avant de publier la branche, il est conseillé d'effectuer une rebasage interactif avec `git rebase -i`. On a alors une totale liberté pour nettoyer, réécrire, annuler, regrouper les _commits_ locaux avant de les partager (`git push`) sur le dépôt distant.
+
+Sur la branche actuelle depuis la dernière synchronisation : `git rebase -i @{upstream}` (ou `git rebase -i origin/feature` ou `git rebase -i HEAD~n`).
+
+.Par exemple :
+image:git-rebasage-interactif.png[]
+
+[NOTE]
+====
+Lorsque l'on développe seul, une branche de suivi peut servir de sauvegarde sur un dépôt distant. Dans le cadre d'un travail collaboratif, cela devient une branche de partage.
+====
+
+*2 . Travailler à plusieurs sur une branche de fonctionnalité*
+
+Il est possible que le `git push` soit refusé en raison d'une branche de suivi obsolète (un travail a été poussé entre-temps) : entre la dernière synchronisation entrante (`git pull`) et le moment où on souhaite effectuer un `git push`, un autre développeur a publié des changements (des _commits_). La branche distante (par exemple `origin/feature`) est donc maintenant plus avancée que sa copie locale.
+
+Un `git pull` provoquerait une fusion avec une divergence mais on souhaite conserver un historique linéaire au sein d'une branche : car ce n'est réalité qu'un problème de séquencement dans le travail sur la branche.
+
+On va demander à `git pull` de faire un _rebase_ au lieu d'une fusion (_merge_) en utilisant `git pull --rebase`.
+
+[NOTE]
+====
+La commande `git rebase` permet de changer la « base » d'une branche, c'est-à-dire son _commit_ d'origine. Elle rejoue une série de _commits_ sur une nouvelle base.
+====
+
+=== Cycle de travail
+
+.Cycle de travail
+****
+- Cloner le dépôt
+
+''''
+
+À chaque itération (produisant une nouvelle version) :
+
+- Créer une version dans Jira
+
+- Mettre à jour la Feuille de route dans Jira
+
+  * Créer une _Epic_ pour l'itération et l'associer à la version
+  * Créer les tâches (tickets enfants) dans cette _Epic_ et les associer à la version
+
+- Pour chaque fonctionnalité de l'itération :
+
+  * Sélectionner une tâche dans Jira
+  * Créer une branche `feature` à partir de `develop`
+  * Implémenter la fonctionnalité sur la branche
+  * Créer une _Pull Request_ vers `develop` lorsque la fonctionnalité est prête pour validation
+  * Approuver la _Pull Request_ si la fonctionnalité passe la révision de code (notamment respect des règles de codage et bonnes pratiques)
+  * Fusionner la _Pull Request_ dans `develop` avec l'option `--no-ff`
+  * Supprimer la branche locale et distante
+  * Vérifier que la tâche est marquée "Terminée" dans Jira
+
+''''
+
+- Finaliser une version :
+
+  * Sélectionner l'_Epic_ pour l'itération dans Jira
+  * Créer une branche `release` à partir de `develop`
+  * Finaliser la _release_ sur la branche
+  * Créer une _Pull Request_ vers `main` lorsque la _release_ est prête pour validation
+  * Approuver la _Pull Request_ si la _release_ passe la révision de code (notamment respect des règles de codage et bonnes pratiques)
+  * Fusionner la _Pull Request_ dans `main` avec l'option `--no-ff`
+  * Créer un _tag_ et le publier sur la branche `main`
+  * Créer une _Pull Request_ vers `develop`
+  * Fusionner la _Pull Request_ dans `develop` avec l'option `--no-ff`
+  * Supprimer la branche locale et distante
+  * Vérifier que l'_Epic_ est marquée "Terminée" dans Jira
+  * Livrer la version dans Jira
+
+''''
+
+- Corriger un défaut dans une version :
+
+  * Créer un ticket _bug_ dans l'_Epic_ concernée et l'associer à une nouvelle version `X.Y.Z` dans Jira
+  * Sélectionner le ticket _bug_ dans Jira
+  * Créer une branche `hotfix` à partir de `main`
+  * Implémenter la correction sur la branche
+  * Créer une _Pull Request_ vers `main` lorsque le correctif est prêt pour validation
+  * Approuver la _Pull Request_ si le correctif passe la révision de code
+  * Fusionner la _Pull Request_ dans `main` avec l'option `--no-ff`
+  * Créer un _tag_ et le publier sur la branche `main`
+  * Créer une _Pull Request_ vers `develop`
+  * Fusionner la _Pull Request_ dans `develop` avec l'option `--no-ff`
+  * Supprimer la branche locale et distante
+  * Vérifier que l'_bug_ est marqué "Terminé" dans Jira
+  * Livrer la version corrigée
+****
+
+=== Jira et GitHub
+
+[red]+Cette partie décrit un exemple de développement de projet avec Jira connecté à un dépôt GitHub. Il reprend le cycle de travail défini précédemment.+
+
+Au démarrage, il faut *cloner le dépôt* GitHub :
+
+.GitHub :
+----
+$ git clone git@github.com:btssn-lasalle84/mp1-teamX.git
+
+$ cd mp1-teamX/
+----
+
+À chaque *itération* (produisant une nouvelle version) :
+
+- *Création d'une version dans Jira*
+
+image:jira-creer-version.png[]
+
+image:jira-creer-version-nom.png[]
+
+image:jira-creer-version-liste.png[]
+
+- *Mise à jour de la Feuille de route*
+
+  * *Création d'une _Epic_ (l'itération)* : Réalisation de la version `x.x`
+
+image:jira-feuille-route-creer-epic.png[]
+
+Il faut l'associer à la version créée :
+
+image:jira-feuille-route-creer-epic-version.png[]
+
+  * *Création des tâches* (tickets enfants) pour chaque fonctionnalité associée à la version
+
+image:jira-feuille-route-creer-epic-ticket-enfant.png[]
+
+Par exemple :
+
+image:jira-feuille-route-creer-epic-tickets.png[]
+
+- *Sélection d'une tâche* puis *création de la branche* (Type `feature` à partir de `develop`)
+
+image:jira-ticket-github-1.png[]
+
+On récupère (copier) la commande Git :
+
+image:jira-ticket-github-2.png[]
+
+- *Implémentation de la fonctionnalité sur la branche*
+
+----
+$ git fetch && git checkout feature/MP1T0-2-initialisation-du-projet
+Depuis github.com:btssn-lasalle84/mp1-team0
+ * [nouvelle branche] feature/MP1T0-2-initialisation-du-projet -> origin/feature/MP1T0-2-initialisation-du-projet
+La branche 'feature/MP1T0-2-initialisation-du-projet' est paramétrée pour suivre la branche distante 'feature/MP1T0-2-initialisation-du-projet' depuis 'origin'.
+Basculement sur la nouvelle branche 'feature/MP1T0-2-initialisation-du-projet'
+
+$ vim projet.txt
+fonc 1 : vide
+fonc 2 : vide
+fonc 3 : vide
+fonc 4 : vide
+fonc 5 : vide
+
+$ git add projet.txt
+----
+
+Au minimum, il faut inclure la clé du ticket au début du message de _commit_ pour faire lien avec Jira :
+
+----
+$ git commit -m "MP1T0-2 Ajout du fichier projet.txt"
+----
+
+[IMPORTANT]
+====
+Avant de faire le `git push`, il est possible de ré-organiser ses _commits_ locaux avec `git rebase -i @{upstream}`.
+====
+
+Dans le cadre d'un travail collaboratif, on "publie" la branche sur le dépôt distant :
+
+----
+$ git push
+Décompte des objets: 3, fait.
+Delta compression using up to 12 threads.
+Compression des objets: 100% (3/3), fait.
+Écriture des objets: 100% (3/3), 322 bytes | 322.00 KiB/s, fait.
+Total 3 (delta 0), reused 0 (delta 0)
+To github.com:btssn-lasalle84/mp1-team0.git
+   5401f1a..9be3d62  feature/MP1T0-2-initialisation-du-projet -> feature/MP1T0-2-initialisation-du-projet
+----
+
+- *Création d'une _Pull Request_* lorsque la fonctionnalité est prête pour validation
+
+image:jira-open-pr.png[]
+
+[IMPORTANT]
+====
+Il est possible de continuer à travailler sur la branche. Dans le cadre d'un travail collaboratif, il sera peut-être nécessaire de mettre à jour la branche avec un `git pull --rebase`.
+====
+
+Lorsque la _Pull Request_ sera approuvée, on pourra faire la fusion (avec l'option `--no-ff`) :
+
+image:jira-merge-pr.png[]
+
+On obtient :
+
+image:jira-close-pr.png[]
+
+Une fois la fusion réalisée, on peut faire la mise à jour de la branche `develop` :
+
+----
+$ git checkout develop
+$ git pull
+----
+
+Avec Gitflow, seules les branches `main` et `develop` sont permanentes. Les branches `feature` peuvent être supprimées :
+
+----
+$ git branch -d feature/MP1T0-2-initialisation-du-projet
+$ git push origin --delete feature/MP1T0-2-initialisation-du-projet
+----
+
+Dans Jira, le ticket est passé automatiquement à l'état "Terminé" (sinon le faire manuellement) :
+
+image:jira-ticket-kanban-termine.png[]
+
+Avec des informations sur le développement :
+
+image:jira-ticket-termine.png[]
+
+//image:jira-ticket-pr-close.png[]
+
+- *Finalisation d'une _release_* puis *création de la branche* (Type `release` à partir de `develop`)
+
+Lorsque toutes les tâches de l'itération sont terminées :
+
+image:jira-tickets-termines.png[]
+
+On sélectionne le ticket _Epic_ (représentant l'itération réalisée) et on crée une branche `release` à partir de la branche `develop` :
+
+image:jira-epic-github.png[]
+
+- *Implémentation de la _release_ sur la branche*
+
+On récupère la branche :
+
+----
+$ git fetch && git checkout release/MP1T0-1-version-1-0
+Depuis github.com:btssn-lasalle84/mp1-team0
+ * [nouvelle branche] release/MP1T0-1-version-1-0 -> origin/release/MP1T0-1-version-1-0
+La branche 'release/MP1T0-1-version-1-0' est paramétrée pour suivre la branche distante 'release/MP1T0-1-version-1-0' depuis 'origin'.
+Basculement sur la nouvelle branche 'release/MP1T0-1-version-1-0'
+----
+
+On prépare une version livrable, par exemple la mise à jour du `README.md` :
+
+----
+$ vim README.md
+$ git add README.md
+$ git commit -m "MP1T0-1 Finalisation de la version 1.0"
+[release/MP1T0-1-version-1-0 136f392] MP1T0-1 Finalisation de la version 1.0
+ 1 file changed, 3 insertions(+)
+
+$ git push
+Décompte des objets: 3, fait.
+Delta compression using up to 12 threads.
+Compression des objets: 100% (2/2), fait.
+Écriture des objets: 100% (3/3), 331 bytes | 331.00 KiB/s, fait.
+Total 3 (delta 0), reused 0 (delta 0)
+To github.com:btssn-lasalle84/mp1-team0.git
+   92ea1cc..136f392  release/MP1T0-1-version-1-0 -> release/MP1T0-1-version-1-0
+----
+
+- *Création d'une _Pull Request_* lorsque la _release_ est prête pour validation dans la branche `main`
+
+image:jira-open-pr-release.png[]
+
+Une fois la fusion réalisée, il faut créer un _tag_ dans `main` pour cette _release_ et le publier sur le dépôt distant :
+
+----
+$ git checkout main
+$ git pull
+$ git tag -a -m "Version 1.0" 1.0
+$ git push --tags
+----
+
+image:jira-release-tag.png[]
+
+Maintenant, il faut intégrer les changements éventuels à la branche `develop` pour qu'elle soit à jour pour continuer le développement. On crée une autre _Pull Request_ :
+
+image:jira-open-pr-release-develop.png[]
+
+On valide la fusion et on met à jour le dépôt local :
+
+----
+$ git checkout develop
+$ git pull
+----
+
+Pour finir, on supprime la branche `release` :
+
+----
+$ git branch -d release/MP1T0-1-version-1-0
+$ git push origin --delete release/MP1T0-1-version-1-0
+----
+
+Dans Jira, la version est automatiquement "Terminé" :
+
+image:jira-version-kanban.png[]
+
+image:jira-version-feuille-route.png[]
+
+On peut donc livrer la version :
+
+image:jira-version-livrer.png[]
+
+image:jira-version-lancer.png[]
+
+La version est maintenant à l'état "LIVRÈE" :
+
+image:jira-version-livree.png[]
+
+- *Correction d'un _bug_* (Type `hotfix` à partir de `main`)
+
+Malheureusement, il est fort possible que le client remonte des dysfonctionnalités. Dans ce cas, il faudra réaliser un correctif qui aboutira à une nouvelle version (`1.1` par exemple).
+
+Il faut créer un ticket _bug_ dans (l'_Epic_ de) la version `1.0` :
+
+image:jira-creer-bug.png[]
+
+Il faut maintenant créer et associer une nouvelle version (ici `1.1`) :
+
+image:jira-ticket-bug-version-corrigee.png[]
+
+Le ticket apparaît dans le tableau Kanban :
+
+image:jira-bug-kanban.png[]
+
+On le sélectionne pour créer une branche de type `hotfix` à partir de `main` :
+
+image:jira-ticket-bug-branche.png[]
+
+Le ticket _bug_ apparaît à l'état en cours :
+
+image:jira-version-corrigee.png[]
+
+On récupère la branche :
+
+----
+$ git fetch && git checkout hotfix/MP1T0-5-defaut-dans-fonc-2
+----
+
+On travaille sur le correctif :
+
+----
+$ vim projet.txt
+$ git add projet.txt
+$ git commit -m "MP1T0-5 Correction fonc 2"
+$ git push
+----
+
+Création d'une _Pull Request_ lorsque le correctif est prêt pour validation dans la branche `main` :
+
+image:jira-open-pr-hotfix.png[]
+
+Une fois la fusion réalisée, il faut créer un _tag_ dans `main` pour cette _release_ et le publier :
+
+----
+$ git checkout main
+$ git pull
+$ git tag -a -m "Version 1.1" 1.1
+$ git push --tags
+----
+
+image:jira-release-tags.png[]
+
+Pour finir, il faut intégrer le correctif à la branche `develop` en créant une _Pull Request_ :
+
+image:jira-open-pr-hotfix-develop.png[]
+
+On valide la fusion et on met à jour le dépôt local :
+
+----
+$ git checkout develop
+$ git pull
+----
+
+Pour finir, on supprime la branche `hotfix` :
+
+----
+$ git branch -d hotfix/MP1T0-5-defaut-dans-fonc-2
+$ git push origin --delete hotfix/MP1T0-5-defaut-dans-fonc-2
+----
+
+Le dépôt distant :
+
+image:jira-github-branche-develop.png[]
+
+Dans Jira, on peut livrer la version `1.1` :
+
+image:jira-versions-livrees.png[]
+
+L'historique du projet en mode graphique :
+
+image:jira-historique-graph.png[]
+
+=== Jira et Bitbucket
+
+On sélectionne un ticket (ici une fonctionnalité) :
+
+image:jira-bitbucket-ticket-1.png[]
+
+On crée la branche (Gitflow) :
+
+image:jira-bitbucket-ticket-2.png[]
+
+On récupère la branche (copier/coller) :
+
+image:jira-bitbucket-ticket-3.png[]
+
+----
+$ git fetch && git checkout feature/MP1T1-2-initialisation-du-projet
+Password for 'https://btssn-avignon-admin@bitbucket.org': 
+Depuis https://bitbucket.org/btssn-avignon/miniprojet1-team1
+ * [nouvelle branche] feature/MP1T1-2-initialisation-du-projet -> origin/feature/MP1T1-2-initialisation-du-projet
+La branche 'feature/MP1T1-2-initialisation-du-projet' est paramétrée pour suivre la branche distante 'feature/MP1T1-2-initialisation-du-projet' depuis 'origin'.
+Basculement sur la nouvelle branche 'feature/MP1T1-2-initialisation-du-projet'
+
+$ vim projet.txt
+
+$ git add projet.txt
+----
+
+Au minimum, il faut inclure la clé du ticket au début du message de _commit_ pour faire lien avec Jira :
+
+----
+$ git commit -m "MP1T1-2 Ajout du fichier projet.txt"
+
+$ git push
+Décompte des objets: 3, fait.
+Delta compression using up to 12 threads.
+Compression des objets: 100% (2/2), fait.
+Écriture des objets: 100% (3/3), 292 bytes | 292.00 KiB/s, fait.
+Total 3 (delta 0), reused 0 (delta 0)
+remote: 
+remote: Create pull request for feature/MP1T1-2-initialisation-du-projet:
+remote:   https://bitbucket.org/btssn-avignon/miniprojet1-team1/pull-requests/new?source=feature/MP1T1-2-initialisation-du-projet&t=1
+remote: 
+To https://bitbucket.org/btssn-avignon/miniprojet1-team1.git
+   ddc49ad..40cb4b1  feature/MP1T1-2-initialisation-du-projet -> feature/MP1T1-2-initialisation-du-projet
+----
+
+Deux situations possibles :
+
+- fusion locale dans la branche `develop` puis on publie sur le dépôt central
+
+----
+$ git checkout develop
+
+$ git pull
+
+$ git merge --no-ff feature/MP1T1-2-initialisation-du-projet
+Merge made by the 'recursive' strategy.
+ projet.txt | 6 ++++++
+ 1 file changed, 6 insertions(+)
+ create mode 100644 projet.txt
+
+$ git push
+----
+
+- création d'une _Pull Request_ dans Bitbucket (avec le lien fourni après le `push`)
+
+image:jira-bitbucket-open-pr.png[]
+
+La _Pull Request_ dans Bitbucket :
+
+image:jira-bitbucket-merge-pr.png[]
+
+On fusionne :
+
+image:jira-bitbucket-close-pr.png[]
+
+L'historique :
+
+image:jira-bitbucket-historique-2.png[]
+
+À la fin, mise à jour :
+
+----
+$ git checkout develop
+$ git pull
+$ cat projet.txt
+----
+
+Avec Gitflow, seules les branches `main` et `develop` sont permanentes. Les autres branches peuvent être supprimées :
+
+----
+$ git branch -d feature/MP1T1-2-initialisation-du-projet
+$ git push origin --delete feature/MP1T1-2-initialisation-du-projet
+----
+
+Dans Jira, le ticket est passé automatiquement à l'état "Terminé" :
+
+image:jira-bitbucket-ticket-kanban-termine.png[]
+
+Avec des informations sur le développement :
+
+image:jira-bitbucket-ticket-termine-2.png[]
+
+***
+
+ifdef::backend-html5[]
+Site : {home}[tvaira.free.fr]
+endif::[]
+
+ifdef::backend-pdf[]
+{author} - <{email}> - version {revnumber} - {revdate} - {home}[tvaira.free.fr]
+endif::[]

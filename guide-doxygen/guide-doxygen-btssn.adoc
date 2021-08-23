@@ -1,0 +1,769 @@
+= Documentation du code avec Doxygen
+:author: Thierry Vaira
+:email: tvaira@free.fr
+:revnumber: v1.4
+:revdate: 23/08/2021
+:revremark: 
+:sectnums:
+:toc: left
+:toclevels: 4
+:toc-title: Sommaire
+:description: Documenter son code source avec Doxygen
+:keywords: doxygen
+:imagesdir: ./images/
+:sourcedir: ./src/
+:source-highlighter: highlightjs
+:highlightjs-theme: rainbow
+:stem:
+
+////
+:stem:
+////
+
+ifdef::backend-html5[]
+++++
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+++++
+endif::[]
+
+:icons: font
+
+:home: http://tvaira.free.fr/
+
+ifdef::backend-pdf[]
+{author} - <{email}> - version {revnumber} - {revdate} - {home}[tvaira.free.fr]
+endif::[]
+
+== Doxygen
+
+__Doxygen__ est un système de documentation pour C, C++, Java, Python, Php et autres langages. Il permet de générer la documentation des développements :
+
+- à partir des commentaires insérés dans le code source
+- à partir de la structure du code lui même
+
+La documentation peut être produite dans des formats variés tels que du HTML, du Latex, du RTF ou du XML.
+
+http://www.doxygen.nl/[Doxygen] est un logiciel libre, publié sous licence GPL V2.0.
+
+Liens :
+
+- http://www.doxygen.nl/[Site officiel]
+
+- http://www.doxygen.nl/manual/index.html[Documentation]
+
+- http://www.doxygen.nl/manual/faq.html[FAQ]
+
+== Installation
+
+Ubuntu :
+
+----
+$ sudo apt-get install doxygen doxygen-gui doxygen-doc
+----
+
+Pour les graphiques :
+
+----
+$ sudo apt-get install graphviz
+----
+
+Voir aussi : https://doc.ubuntu-fr.org/doxygen[doc.ubuntu-fr.org/doxygen]
+
+## Utilisation
+
+Pour lancer l'interface graphique de http://www.doxygen.nl/[Doxygen], ouvrez un terminal et entrez la commande suivante :
+
+----
+$ doxywizard &
+----
+
+L'onglet *Wizard* vous permettra :
+
+- de créer un projet
+- de sélectionner le dossier contenant les sources ou celui accueillant la documentation
+- de sélectionner le format de sortie : HTML, Latex, RTF, pages man, XML, PDF, Postscript.
+- de générer des diagrammes
+
+Un onglet *Expert* permet d'accéder aux options avancées.
+
+Pour générer la documentation du projet, il ne reste plus qu'à cliquer sur *Run*.
+
+Principe : http://www.doxygen.nl/[Doxygen] amène à distinguer deux types de commentaires :
+
+* Les commentaires internes ou "privés" : ces commentaires sont destinés aux développeurs et restent dans le code source. Ils ne seront donc pas extraits par http://www.doxygen.nl/[Doxygen].
+
+[source,cpp]
+.Des commentaires pour développeurs
+----
+// Un commentaire privé sur une seule ligne
+
+/*
+ * Un commentaire privé sur plusieurs lignes
+ */
+----
+
+* Les commentaires externes ou "publics" : ces commentaires sont destinés à la documentation et seront donc extraits par http://www.doxygen.nl/[Doxygen].
+
+[source,cpp]
+.Des commentaires pour Doxygen
+----
+#define NB 42 //!< Un nombre NB
+
+/**
+ * Une fonction foo
+ */
+void foo();
+----
+
+[NOTE]
+====
+Doxygen propose plusieurs syntaxes.
+====
+
+http://www.doxygen.nl/[Doxygen] est capable d'extraire tous les identifiants du code source (variables, attributs, fonctions, méthodes, structures, classes, ...) et il ne reste plus qu'à les commenter. Pour préciser le type d'informations à fournir pour la documentation, http://www.doxygen.nl/[Doxygen] utilise un ensemble de *tags* (ou http://www.doxygen.nl/manual/commands.html[commandes]) préfixés par `@` ou `\` :
+
+[source,cpp]
+----
+/**
+ * @file        exemple.h
+ * @brief       Contient la déclaration de la classe Exemple
+ * @details     La classe \c Exemple permet de montrer l'utilisation des \em tags \b Doxygen
+ * @author      Thierry vaira <thierr.vaira@gmail.com>
+ * @version     0.1
+ * @date        2020
+ * @copyright   GNU Public License.
+ */
+----
+
+[TIP]
+====
+http://www.doxygen.nl/manual/commands.html[Liste des commandes]
+====
+
+== Exemple de configuration
+
+Sélectionner le Français pour `OUTPUT_LANGUAGE` dans Expert -> Project.
+
+[NOTE]
+====
+Le format HTML est adapté à la navigation et le format PDF est notamment recommndé pour l'impression.
+====
+
+Quelques options de configuration :
+
+[.center.text-center]
+image:doxygen-1.png[float="center",align="center"]
+
+[.center.text-center]
+image:doxygen-2.png[float="center",align="center"]
+
+[.center.text-center]
+image:doxygen-3.png[float="center",align="center"]
+
+[.center.text-center]
+image:doxygen-5.png[float="center",align="center"]
+
+[.center.text-center]
+image:doxygen-6.png[float="center",align="center"]
+
+[.center.text-center]
+image:doxygen-7.png[float="center",align="center"]
+
+[.center.text-center]
+image:doxygen-8.png[float="center",align="center"]
+
+Ensuite, il faut indiquer les chemins vers les fichiers sources à inclure (et/ou à exclure) :
+
+[.center.text-center]
+image:doxygen-11.png[float="center",align="center"]
+
+[IMPORTANT]
+====
+*N'oubliez pas d'enregistrer la configuration dans un fichier `Doxyfile`.*
+====
+
+Il est peut être intéressant de générer aussi des *diagrammes*. Pour cela, on sélectionnera les options suivantes :
+
+- Dans *Source Browser* :
+
+[.center.text-center]
+image:doxygen-10.png[float="center",align="center"]
+
+Pour obtenir un document PDF `refman.pdf` :
+
+[.center.text-center]
+image:doxygen-12.png[float="center",align="center"]
+
+Ensuite :
+
+----
+$ cd ./doc/latex/
+$ make
+----
+
+== Personnalisation du rendu
+
+- *HTML* :
+
+Il faut tout d'abord générer les fichiers par défaut d'entête (_header_) et de pied de page (_footer_) :
+
+----
+$ doxygen -w html header.html footer.html stylesheet.css
+----
+
+Ensuite il est possible de les personnaliser et de configurer le fichier `Doxyfile` :
+
+[source,]
+----
+HTML_HEADER            = 
+HTML_FOOTER            = ./custom/customfooter.html
+HTML_STYLESHEET        = ./custom/customdoxygen.css
+HTML_EXTRA_FILES       = lasalle-logo.png
+----
+
+[.center.text-center]
+image:doxygen-9.png[float="center",align="center"]
+
+- *PDF* :
+
+Il faut tout d'abord générer les fichiers par défaut d'entête (_header_) et de pied de page (_footer_) :
+
+----
+$ doxygen -w latex header.tex footer.tex doxygen.sty
+----
+
+Ensuite on les personnalise et on configure le fichier `Doxyfile` :
+
+[source,]
+----
+LATEX_HEADER           = ./custom/customheader.tex
+LATEX_FOOTER           = 
+LATEX_EXTRA_STYLESHEET = 
+----
+
+[.center.text-center]
+image:doxygen-13.png[float="center",align="center"]
+
+Il est aussi possible d'ajouter son _package_ personnalisé :
+
+[source,]
+----
+EXTRA_PACKAGES         = custompackage
+LATEX_EXTRA_FILES      = ./custom/custompackage.sty
+----
+
+Et compléter son _package_ personnalisé :
+
+[source,]
+----
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{custompackage}
+
+...
+----
+
+== Exemples
+
+Exemples de fichier `Doxyfile` pour le projet : http://tvaira.free.fr/projets/activites/doxygen-projet-cpp.zip[doxygen-projet-cpp.zip] et http://tvaira.free.fr/projets/activites/doxygen-projet-java.zip[doxygen-projet-java.zip]
+
+Exemple de rendu HTML : pour http://tvaira.free.fr/projets/activites/doc/cpp/html/index.html[C++] ou pour http://tvaira.free.fr/projets/activites/doc/java/html/index.html[Java]
+
+Exemple de rendu PDF : pour http://tvaira.free.fr/projets/activites/doc/cpp/latex/refman.pdf[C++] ou pour http://tvaira.free.fr/projets/activites/doc/java/latex/refman.pdf[Java]
+
+Exemple de rendu HTML : http://tvaira.free.fr/projets/exemple-dossier-estock/html/index.html[Revue 2 (projet BTS SNIR)]
+
+---
+
+[NOTE]
+====
+http://www.doxygen.nl/[Doxygen] propose le tag `@fn` pour identifier une fonction ou une méthode. Il est généralement inutile de le définir car http://www.doxygen.nl/[Doxygen] le fera automatiquement si le commentaire de documentation est placé devant la fonction ou méthode (comme indiqué dans les exemples ci-dessous).
+====
+
+* les constantes et/ou macros :
+
+[source,cpp]
+----
+/**
+ * @def NB
+ * @brief Définit le nombre 42 !
+*/
+#define NB 42 //!< Un nombre NB
+----
+
+* les types énumérés :
+
+[source,cpp]
+----
+/**
+ * @enum TEnum
+ * @brief Description du type énuméré ...
+ *
+ * @var TEnum Val1
+ * @brief Description de Val1 ...
+ */
+enum TEnum //! Un type énuméré ...
+{
+    Val1,
+    Val2    //!< Description de Val2 ...
+};
+----
+
+* les structures :
+
+[source,cpp]
+----
+/**
+ * @struct Etat
+ * @brief Structure ...
+ *
+ */
+struct Etat
+{
+    bool present; //!< Membre définissant ...
+};
+----
+
+* les classes :
+
+[source,cpp]
+----
+/**
+ * @class       Exemple exemple.h "exemple.h"
+ * @brief       La déclaration de la classe Exemple
+ * @details     La classe \c Exemple permet de montrer l'utilisation des \em tags \b Doxygen
+ * @author      Thierry vaira <tvaira@free.fr>
+ * @version     0.1
+ * @date        2020
+ * @note        Une note à l'attention de ceux qui lisent les notes
+ * @pre         Initialisez d'abord le système
+ * @post        L'objet est initialisé ou pas 
+ * @bug         La copie est impossible ou illégale
+ * @warning     Une mauvaise utilisation peut faire planter votre application (c'est votre faute)
+ * @attention   Il faut toujours faire attention
+ * @remark      Une remarque à faire ?
+ * @copyright   GNU Public License.
+ */
+class Exemple
+{
+};
+----
+
+* les attributs :
+
+[source,cpp]
+----
+class Exemple
+{
+    private:
+        int a; //!< a est ...
+};
+----
+
+* les méthodes :
+
+[source,cpp]
+----
+/**
+ * @brief Constructeur par défaut de la classe Exemple.
+ *
+ * @see   Exemple::Exemple(int a)
+ */
+Exemple::Exemple() : a(0)
+{
+}
+
+/**
+ * @brief Constructeur de la classe Exemple.
+ * @overload
+ * @param a la valeur initiale de l'attribut a
+ * 
+ * @see   Exemple::Exemple(int a) 
+ * @see   https://doc.qt.io/qt-5/qdatetime.html
+ */
+Exemple::Exemple(int a) : a(a)
+{
+    QDateTime maintenant = QDateTime::currentDateTime();
+    qDebug() << Q_FUNC_INFO << maintenant.toString("dd/MM/yyyy") << maintenant.toString("hh:mm:ss") << "a" << a << this;
+}
+
+/**
+ * @brief Accesseur de l'attribut a
+ * @callergraph
+ * @return a la valeur de l'attribut a
+ * @retval int la valeur de l'attribut a
+ */
+int Exemple::getA() const
+{
+    return a;
+}
+
+/**
+ * @brief Mutateur de l'attribut a
+ * @callgraph
+ * @param a ...
+ * @exception range_error Si a est négatif
+ */
+void Exemple::setA(int a)
+{
+    if(a < 0 || a > NB)
+        throw range_error("erreur plage");
+    this->a = a;
+    qDebug() << Q_FUNC_INFO << "a" << getA();
+}
+
+/**
+ * @brief Montre le sens des paramètres
+ * @param[in]       a1  ...
+ * @param[out]      a2  ...
+ * @param[in,out]   a3  ...
+ */
+void Exemple::copy(const int &a1, int &a2, int *a3)
+{
+    /**
+     * @todo Implémenter la méthode
+     */
+}
+----
+
+* les fichiers _header_ :
+
+[source,cpp]
+----
+/**
+ * @file exemple.h
+ * @brief La déclaration de la classe Exemple
+ * si besoin auteur, version et date
+ */
+----
+
+* les fichiers d'implémentation :
+
+[source,cpp]
+----
+/**
+ * @file exemple.cpp
+ * @brief La définition de la classe Exemple
+ * si besoin auteur, version et date
+ */
+----
+
+* le fichier principal (par exemple `main.cpp`) :
+
+[source,cpp]
+----
+/**
+ * @file main.cpp
+ *
+ * @brief Programme principal ...
+ * @details Crée et affiche la fenêtre principale de l'application ...
+ * @author ...
+ * @author ...
+ * @version ...
+ *
+ * @param argc
+ * @param argv[]
+ * @return int
+ *
+ */
+----
+
+* du code :
+
+[source,cpp]
+----
+/*
+ * ...
+ * Instanciation :
+ * \code{.cpp}
+ * Exemple exemple1;
+ * Exemple exemple2(5);
+ * \endcode
+ * \n
+----
+
+* des extraits de code utilisables avec `@snippet` :
+
+[source,cpp]
+----
+int main()
+{
+    //! [Test]
+    Exemple exemple1;
+    Exemple exemple2(5);
+    //! [Test]
+
+    return 0;
+}
+----
+
+Puis :
+
+[source,cpp]
+----
+/**
+ * @brief Constructeur par défaut de la classe Exemple.
+ *
+ * \b Tests :
+ * @snippet ./test.cpp Test
+ *
+ */
+Exemple::Exemple() : a(0)
+{
+}
+----
+
+* des exemples de fichier :
+
+[source,cpp]
+----
+ /**
+  * ...
+  * ...
+  * @example test.cpp
+  * @brief Test d'utilisation de la classe Exemple
+  *
+  */
+class Exemple
+{
+};
+----
+
+* des graphiques :
+
+[source,cpp]
+----
+/**
+ *   \dot
+ *  digraph example {
+ *      node [shape=box, fontname=Helvetica, fontsize=12, color=black];
+ *      a [ label="QObject" ];
+ *      b [ label="Exemple" URL="\ref Exemple" fillcolor=lightblue,style=filled];
+ *      a -> b [ arrowhead="normal", fillcolor=white,style=filled,dir=back ];
+ *  }
+ *  \enddot
+ */
+----
+
+* des images :
+
+[source,cpp]
+----
+/**
+  * ...
+  * \image html screenshot.png
+  */
+----
+
+[NOTE]
+====
+Il faut préciser le chemin (en relatif) des images avec la variable `IMAGE_PATH` dans le fichier `Doxyfile`.
+====
+
+== Pages de documentation
+
+Il est possible d'ajouter des *pages de documentation* : soit de simples fichiers soit des fichiers au format http://tvaira.free.fr/bts-sn/poo-c++/compte-rendu-tp/format-markdown.pdf[Markdown] (lire aussi http://tvaira.free.fr/projets/activites/markdown-vscode.pdf[markdown-vscode.pdf]).
+
+* une page principale :
+
+[source,cpp]
+----
+/*! \mainpage Page principale du projet XXX
+ *
+ * \tableofcontents
+ * 
+ * \section section_intro Introduction
+ *
+ *
+ * Bla bla ....
+ *
+ * \section section_tdm Table des matières
+ * - \ref page_README
+ * - \ref page_changelog
+ * - \ref page_install
+ * - \ref page_about
+ * - \ref page_licence
+ *
+ */
+
+/*! \page page_install Installation
+ *
+ * \todo rédiger le manuel d'installation
+ *
+ */
+
+...
+----
+
+[NOTE]
+====
+Il est possible de tester des _tags_ si on les a ajoutés à la variable `ENABLED_SECTIONS = todo` du fichier `Doxyfile`
+====
+
+[source,]
+----
+\if todo
+- \ref todo
+\endif
+----
+
+
+Lire :
+
+* http://tvaira.free.fr/bts-sn/poo-c++/compte-rendu-tp/format-markdown.pdf[Présentation du format Markdown]
+* http://tvaira.free.fr/projets/activites/activite-markdown-pandoc.html[Pandoc]
+* http://tvaira.free.fr/projets/activites/markdown-vscode.pdf[Markdown avec VSCode]
+
+On pourra aussi utiliser http://tvaira.free.fr/bts-sn/poo-c++/compte-rendu-tp/format-markdown.pdf[Markdown] :
+
+[source,]
+----
+\page page_README README
+
+[TOC]
+
+# Projet {#projet}
+
+## Présentation {#presentation}
+
+
+## Base de données {#bdd}
+
+~~~ {.sql}
+
+~~~
+
+## Recette {#recette}
+
+
+## Exemples {#exemples}
+
+\snippet ./test.cpp Test
+
+## Informations {#informations}
+
+\author Thierry Vaira <<thierr.vaira@gmail.com>>
+\date 2020
+\version 0.1
+\see https://svn.riouxsvn.com/projet
+----
+
+Exemples de fichier `Doxyfile` pour le projet : http://tvaira.free.fr/projets/activites/doxygen-projet-cpp.zip[doxygen-projet-cpp.zip] et http://tvaira.free.fr/projets/activites/doxygen-projet-java.zip[doxygen-projet-java.zip]
+
+Exemple de rendu HTML : pour http://tvaira.free.fr/projets/activites/doc/cpp/html/index.html[C++] ou pour http://tvaira.free.fr/projets/activites/doc/java/html/index.html[Java]
+
+Exemple de rendu PDF : pour http://tvaira.free.fr/projets/activites/doc/cpp/latex/refman.pdf[C++] ou pour http://tvaira.free.fr/projets/activites/doc/java/latex/refman.pdf[Java]
+
+Exemple de rendu HTML : http://tvaira.free.fr/projets/exemple-dossier-estock/html/index.html[Revue 2 (projet BTS SNIR)]
+
+## Règles de projet
+
+Voici les règles à respecter lors des projets, vous devez documenter :
+
+- chaque fichier (`@file`) au tout début du fichier
+- chaque constante et/ou macro
+- chaque type énuméré
+- chaque structure
+- chaque classe
+- chaque attribut dans son fichier de déclaration
+- chaque méthode dans son fichier de définition
+
+Ensuite, on ajoutera les pages de documentation au format http://tvaira.free.fr/bts-sn/poo-c++/compte-rendu-tp/format-markdown.pdf[Markdown] suivantes :
+
+- une page principal
+- une page README
+- une page Changelog
+- une page TODO
+- une page À propos
+- une page Licence
+
+Exemples de fichier `Doxyfile` pour le projet : http://tvaira.free.fr/projets/activites/doxygen-projet-cpp.zip[doxygen-projet-cpp.zip] et http://tvaira.free.fr/projets/activites/doxygen-projet-java.zip[doxygen-projet-java.zip]
+
+Exemple de rendu HTML : pour http://tvaira.free.fr/projets/activites/doc/cpp/html/index.html[C++] ou pour http://tvaira.free.fr/projets/activites/doc/java/html/index.html[Java]
+
+Exemple de rendu PDF : pour http://tvaira.free.fr/projets/activites/doc/cpp/latex/refman.pdf[C++] ou pour http://tvaira.free.fr/projets/activites/doc/java/latex/refman.pdf[Java]
+
+Exemple de rendu HTML : http://tvaira.free.fr/projets/exemple-dossier-estock/html/index.html[Revue 2 (projet BTS SNIR)]
+
+== Extras
+
+=== Diagrammes UML
+
+*Doxygen* génère les diagrammes de classes et des graphes d'appels (`@callergraph` et `@callgraph`) en utilisant https://www.graphviz.org/[Graphviz].
+
+Il est possible intégrer des diagrammes https://plantuml.com/fr/[PlantUML] dans une documention générée par http://www.doxygen.nl/[Doxygen] (http://tvaira.free.fr/projets/activites/activite-plantuml.pdf[activite-plantuml.pdf]) :
+
+[source,cpp]
+----
+/**
+ * ...
+ *
+ *  \startuml
+ *      hide footbox
+ *      skinparam BoxPadding 50
+ *      box "Diagramme de séquence"
+ *      participant Exemple
+ *      end box
+ *      [-> Exemple: setA()
+ *      Activate Exemple
+ *      Exemple->Exemple: getA()
+ *  \enduml
+ */
+----
+
+[.center.text-center]
+image:doxygen-plantuml.png[float="center",align="center"]
+
+[TIP]
+====
+Il est aussi possible d'intégrer des diagrammes PlantUML avec Markdown sous VSCode : http://tvaira.free.fr/projets/activites/markdown-vscode.pdf[markdown-vscode.pdf].
+====
+
+=== Plugin Qt Creator
+
+Il existe un plugin http://www.doxygen.nl/[Doxygen] pour Qt Creator qui permet d'intégrer dans l'EDI des fonctionnalités de documentation.
+
+Aller dans *Aide* → *À propos des plug-ins...* :
+
+[.center.text-center]
+image:plugin-qt-creator-doxygen.png[float="center",align="center"]
+
+Vous obtenez un nouveau sous-menu *Doxygen* dans le menu *Outils* :
+
+[.center.text-center]
+image:qt-creator-doxygen.png[float="center",align="center"]
+
+D'autre part, vous aurez accès à la complétion pour les commandes http://www.doxygen.nl/[Doxygen] à partir de `@` ou `\` :
+
+[.center.text-center]
+image:screenshot-qt-doxygen-1.png[float="center",align="center"]
+
+Lien : https://github.com/fpoussin/qtcreator-doxygen
+
+Pour les anciennes versions de Qt Creator : http://dev.kofee.org/projects/qtcreator-doxygen/wiki
+
+=== Intégration de Qt QML
+
+Lien : https://github.com/agateau/doxyqml
+
+== Voir aussi
+
+- http://axiomcafe.fr/tutoriel-documenter-un-code-avec-doxygen
+
+- http://franckh.developpez.com/tutoriels/outils/doxygen/
+
+- http://www.stack.nl/~dimitri/doxygen/manual/commands.html[Une liste des commandes]
+
+- https://touticphoto.fr/developpement/48-documenter-un-projet-avec-graphes-avec-doxygen-et-graphviz[Doxygen et Graphviz]
+
+
+***
+
+ifdef::backend-html5[]
+Site : {home}[tvaira.free.fr]
+endif::[]
+
+ifdef::backend-pdf[]
+{author} - <{email}> - version {revnumber} - {revdate} - {home}[tvaira.free.fr]
+endif::[]
+
+

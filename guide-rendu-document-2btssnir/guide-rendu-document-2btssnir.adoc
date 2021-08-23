@@ -1,0 +1,718 @@
+= Guide de gestion des documents en 2°année BTS SNIR
+:author: Thierry Vaira
+:email: tvaira@free.fr
+:revnumber: v0.2
+:revdate: 23/08/2021
+:revremark: 
+:sectnums:
+:toc: left
+:toclevels: 4
+:toc-title: Sommaire
+:description: Guide de gestion des documents en 2°année BTS SNIR
+:keywords: 
+:imagesdir: ./images/
+:source-highlighter: highlightjs
+:highlightjs-theme: rainbow
+:stem:
+
+////
+:highlightjs-theme: xcode
+:highlightjs-theme: androidstudio
+:highlightjs-theme: googlecode
+:highlightjs-theme: github
+:highlightjs-theme: foundation
+:highlightjs-theme: idea
+:highlightjs-theme: rainbow
+:highlightjs-theme: vs
+:highlightjs-theme: sunburst
+:highlightjs-theme: tomorrow
+:highlightjs-theme: railscasts
+:highlightjs-theme: zenburn
+////
+
+////
+$ sudo gem install coderay
+Pour :
+:source-highlighter: coderay
+
+$ sudo gem install pygments.rb
+Pour :
+:source-highlighter: pygments
+
+$ pygmentize -L styles
+////
+
+ifdef::backend-html5[]
+++++
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+++++
+:html:
+endif::[]
+
+:icons: font
+
+:home: http://tvaira.free.fr/
+
+ifdef::backend-pdf[]
+{author} - <{email}> - version {revnumber} - {revdate} - {home}[tvaira.free.fr]
+endif::[]
+
+Ce document précise l’organisation et les exigences pour la production des documents dans le cadre des Travaux pratiques, Mini-projets et Projets de BTS SNIR à LaSalle Avignon.
+
+== Travaux pratiques
+
+Les TPs de 2°année BTS SNIR sont gérés via la plate-forme https://classroom.google.com[Google Classroom].
+
+https://classroom.google.com[Google Classroom] est une plate-forme d'apprentissage gratuite dédiée aux écoles. Son but est de simplifier la création et la diffusion
+de cours et d'exercices de façon numérique.
+
+.Le logo Google Classroom
+image:Google_Classroom_Logo.png[title="Le logo Google Classroom",150,150]
+
+Lien : https://fr.wikipedia.org/wiki/Google_Classroom
+
+=== Procédure
+
+Dans https://classroom.google.com[Google Classroom] :
+
+- Vous devez récupérer la planche de TP (sujet, codes sources fournis, ressources, ...).
+- Vous devez éditer le document https://www.google.fr/intl/fr/docs/about/[Google Docs] fourni qui représente le compte-rendu du TP.
+- Vous prendrez soin de placer vos fichiers sources de votre TP dans un répertoire portant en minuscules votre nom suivi d'un point `.` et de l'initiale de votre prénom, et de me fournir une archive compressée `nom.p.zip` (autre format accepté `.tar.gz` ou `.tgz`) de ce répertoire.
+
+.Exemple de contenu pour une archive `vaira.t.zip`
+image:archive-compressee.png[title="Contenu d'une archive"]
+
+[NOTE]
+====
+Une convention de nommage permet, entre autres, d'identifier, classer naturellement les documents. La nomenclature doit être adaptée au contexte.
+====
+
+[IMPORTANT]
+====
+Tous documents rendus sans respect de la convention de nommage ne seront pas pris en compte pour la notation et seront considérés comme travail non rendu et donneront la note de 0.
+====
+
+Pour chaque TP, vous devez [red]+toujours+ :
+
+- fournir un compte-rendu
+- rendre une archive
+- respecter la date limite (généralement le lundi à 23h59)
+
+[IMPORTANT]
+====
+Tous les travaux pratiques rendus en retard donneront la note de 0.
+====
+
+.Rendre un devoir dans Google Classroom
+image:rendre-devoir.png[title="Rendre un devoir dans Google Classroom"]
+
+Le TP sera notée et corrigée directement dans Google Classroom.
+
+=== Recommandations
+
+Vous prendrez garde à :
+
+- ne pas mettre les fichiers objets (`.o` ou `.obj` suivant les systèmes) ni les fichiers exécutables ni les fichiers backup (`~` sous Linux par exemple)
+- fournir si possible un moyen de fabriquer facilement vos programmes (`.pro` ou `Makefile`)
+- de respecter l'encodage *UTF-8* pour les fichiers texte (codes sources, scripts, ...)
+
+*Le minimum attendu : on doit pouvoir fabriquer un exécutable et le lancer !*
+
+=== Critères
+
+Les points suivants (entre autres) seront considérés pour la notation :
+
+- respect de la procédure de rendu (nom, retard, encodage, ...)
+- respect des consignes indiquées sur les planches de TP (nom des fichiers, des classes, des méthodes, ...)
+- respect des règles de codage et bonnes pratiques
+
+=== Questions
+
+Si vous avez des questions sur le TP, vous préviligérez l'usage des *commentaires privés* dans https://classroom.google.com[Google Classroom].
+
+== Mini-projets et Projets
+
+Ce document précise l'organisation et les exigences pour la production des documents dans le cadre d'un projet de BTS SN.
+
+=== Gestion des documents
+
+Les documents produits pendant la phase d'un projet seront stockés sur https://www.google.com/intl/fr_tg/drive/[Google Drive] (Google One). Un espace par projet sera créé et partagé.
+
+La suite bureautique https://www.google.com/intl/fr_tg/drive/[Google Drive] sera utilisée pour produire : 
+
+- le dossier technique (https://www.google.fr/intl/fr/docs/about/[Google Docs]),
+- le dossier de suivi de projet (https://www.google.fr/intl/fr/docs/about/[Google Docs]) et les documents annexes comme les notes, organigrammes, synoptiques, notes de calcul, résultats d'essais, ... (https://www.google.fr/intl/fr/docs/about/[Google Docs], https://www.google.fr/intl/fr/sheets/about/[Google Sheets], https://app.diagrams.net/[draw.io], fichiers au format Markdown/Asciidoc, ...),
+- le diaporama (https://www.google.fr/intl/fr/slides/about/[Google Slides]),
+
+Cette suite permet le travail collaboratif afin de créer et de modifier des documents en ligne et de travailler en équipe, en temps réel.
+
+.Le logo Google Drive
+image:Google_Drive_Logo.png[title="Le logo Google Drive"]
+
+[NOTE]
+====
+https://www.google.com/intl/fr_tg/drive/[Google Drive] est un service de stockage et de partage de fichiers dans le _cloud_ lancé par la société *Google*.
+
+https://www.google.com/intl/fr_tg/drive/[Google Drive], qui regroupe https://www.google.fr/intl/fr/docs/about/[Google Docs], https://www.google.fr/intl/fr/sheets/about/[Sheets] et https://www.google.fr/intl/fr/slides/about/[Slides], Drawings, est une suite bureautique permettant de modifier des documents, des feuilles de calcul, des présentations, des dessins, des formulaires, etc.
+====
+
+Aide en ligne : https://support.google.com/
+
+Pour créer un document, il suffit de cliquer sur “Nouveau” ou utiliser le bouton droit de la souris.
+
+Lien : https://fr.wikipedia.org/wiki/Google_Drive
+
+=== Dossier technique de projet
+
+À l'issue du projet, l'équipe d'étudiants remet au centre d'examen un *dossier technique* unique représentatif de l'ensemble du projet. Ce dossier comprend une partie commune à tous les membres de l'équipe et la partie personnelle traitée par chacun d'entre eux.
+
+Dans les 30 pages au maximum qui sont allouées à chaque étudiant, et dans le cadre de son autonomie de réflexion et d'action au sein du projet, il est souhaitable qu'une partie de ce qu'il rédige puisse montrer sa participation à une réflexion commune. L'autre partie contiendra les éléments qui permettront d'évaluer son action individuelle.
+
+*Partie commune* : (de 20 à 30 pages)
+
+- introduction, situation du projet dans son contexte industriel ;
+- dossier de spécifications ;
+- dossier d'étude préliminaire et plan de tests des performances au regard du cahier des charges. Suivant la nature du projet et ses points d'entrée, certains éléments de ce dossier peuvent être présents dans les parties personnelles.
+- éléments nécessaires à la recette de la maquette ou du prototype final ;
+- résultats des essais de la maquette ou du prototype final ;
+- conclusion par rapport au cahier des charges fourni par le donneur d'ordre : test intégration, procédure et résultats de la recette.
+
+*Partie personnelle* : (de 20 à 30 pages)
+
+- situation de la partie personnelle dans l'ensemble du projet ;
+- dossier d'étude et de réalisation détaillée, essais unitaires.
+
+En fonction des spécificités du projet et des contraintes de documentation imposées par le cahier des charges, des *documents annexes* peuvent être joints sous forme électronique (annexes techniques, programmes complets, manuel d'utilisation, notice de maintenance, sources complets, ...).
+
+Une soutenance orale aura lieu en fin de projet. Elle est organisée en plusieurs phases. Dans la phase de présentation de 20 minutes, le candidat expose oralement à la fois la globalité du projet et son action personnelle dans le projet en utilisant un *diaporama*.
+
+=== Dossier de suivi de projet
+
+Au fur et à mesure du déroulement du projet, il est indispensable que les étudiants consignent les éléments des Tâches professionnelles qu'ils réalisent au sein d'un *dossier de suivi de projet* (_roadbook_). Ce dossier personnel a plusieurs utilités :
+
+- formaliser l'avancement du travail de l'étudiant (notes, organigrammes, notes de calcul, résultats d'essais, mesure, simulation, modes opératoires, éléments de procédure) ;
+- compiler les ressources utilisées (notices techniques, document constructeur, ...) ;
+- préparer les revues de projets qui seront au nombre de trois sur la durée du projet ;
+- consigner les éléments qui serviront à préparer le dossier technique de projet.
+
+Chaque membre de l'équipe de projet consigne, dans le dossier de suivi, les Tâches professionnelles qu'il réalise pour une période donnée. Les documents relatifs à la vie du projet (devis, bons de commandes, etc.) sont joints au dossier.
+
+=== Organisation
+
+Le projet s'articule autour de 3 + 1 revues :
+
+[%header,cols=4*] 
+|===
+|Jalons
+|Nom
+|Version
+|Livraison
+
+|Revue n°1
+|Revue 1
+|
+|non
+
+|Revue n°2
+|Revue 2
+|0.1
+|oui
+
+|Revue n°3
+|Revue 3
+|0.2
+|oui
+
+|Rendu dossier
+|Rendu dossier
+|1.0
+|oui
+
+|Revue finale
+|Revue finale
+|1.1
+|oui
+|===
+
+Un répertoire (dossier) par revues sera créé et partagé dans https://www.google.com/intl/fr_tg/drive/[Google Drive].
+
+.Exemple d'organisation
+image:image18.png[]
+
+=== Outils logiciels
+
+Un certain nombre d'outils logiciels sont nécessaires lors du projet :
+
+[%header,cols=2*] 
+|===
+|Logiciel
+|Production
+
+|<<Google Docs>> (Traitement de texte)
+|Dossier technique, du dossier de suivi de projet, manuel d'utilisateur et d'installation
+
+|Google Sheets (Tableur)
+|Feuille de calcul, résultats d'essais, tableau et courbe de mesures
+
+|<<Google Slides>> (PAO)
+|Diaporama
+
+|draw.io (<<Création de diagrammes>>)
+|Diagrammes, schémas, ...
+
+|<<Doxygen>> (Générateur de documentation)
+|Documentation logicielle
+
+|<<Subversion (svn)>> (Gestion de versions)
+|Code source
+
+|<<GitHub (git)>> (Gestion de versions)
+|Code source
+
+|<<Bitbucket (git)>> (Gestion de versions)
+|Code source
+
+|<<Bouml>> (Modélisation UML)
+|Diagrammes UML 
+
+|<<Jira>> (gestion de développement et de projets)
+|Tableau Kanban, ...
+
+|<<Beesbusy>> (Gestion de planification)
+|Tableau Kanban et Diagramme de Gantt
+|===
+
+PAO:: Présentation Assistée par Ordinateur
+
+[IMPORTANT]
+====
+Trello et TrelloGannt pourront être remplacés par https://www.beesbusy.com/[Beesbusy], ainsi que Subversion (svn) par Git.
+====
+
+=== Google Docs
+
+https://www.google.fr/intl/fr/docs/about/[Google Docs] est un logiciel de traitement de texte basé sur le Web.
+
+Ce traitement de texte est suffisant pour rédiger les documents du projet. La taille des fichiers est limitée à 50 MO.
+
+image:image10.png[]
+
+image:image16.png[]
+
+Le dossier technique sera structuré et devra comporter :
+
+- une table des matières (sommaire)
+- un en-tête
+- un pied de page
+
+image:image7.png[]
+
+[WARNING]
+====
+La table des matières n'est pas mise à jour automatiquement. Il faut penser à la rafraîchir avant d'imprimer ou publier le document.
+====
+
+Chaque page du dossier technique devra être clairement identifiée par :
+
+- un entête comportant : le nom de l'établissement, le nom du projet et  l'année de la session du BTS.
+- un pied de page comportant : l'identifiant du document (nom, version et date), le numéro de page et le nombre total de pages et le nom du ou des auteurs (les initiales sont acceptées).
+
+L'en-tête et le pied de page peut être différent pour la première page (page de garde) :
+
+image:image3.png[]
+
+==== Modules complémentaires
+
+Il est possible d'ajouter des modules complémentaires afin d'enrichir les fonctionnalités de https://www.google.fr/intl/fr/docs/about/[Google Docs].
+
+Pour ajouter un module, il suffit de le télécharger à partir du menu “Modules complémentaires” :
+
+image:image11.png[]
+
+image:image21.png[]
+
+Nous aurons au moins besoin :
+
+[%header,cols=2*] 
+|===
+|Besoin
+|Module
+
+|intégrer et formater du code source et des commandes du _shell_
+|*Code Blocks*
+
+|intégrer des diagrammes et des schémas
+|*draw.io*
+
+|appliquer des styles
+|*Styles*
+
+|personnaliser des styles
+|*Custom Styles*
+|===
+
+image:image14.png[]
+
+.Intégrer et formater du code source
+****
+On utilisera le module *Code Blocks* qui permet de choisir un langage (pour la colorisation syntaxique) et un thème. Il faut sélectionner le texte à formater :
+
+image:image2.png[]
+
+On l'utilisera aussi pour les lignes de commande du _shell_.
+****
+
+.Intégrer des diagrammes et des schémas
+****
+On utilisera le module https://app.diagrams.net/[draw.io] :
+
+image:image19.png[]
+
+[WARNING]
+====
+`draw.io` permet de créer des diagrames *SysML*. Il permet aussi de réaliser des diagrammes UML mais on ne l'utilisera pas pour cela !
+====
+****
+
+.Appliquer des styles
+****
+Pour la mise en forme des titres, on pourra utiliser le module *Styles* qui offre une liste de personnalisation “prête à l'emploi”.
+
+image:image9.png[]
+****
+
+.Personnaliser des styles
+****
+Il est souvent nécessaire de personnaliser la forme du texte.
+
+Dans un dossier technique, c'est indispensable : 
+
+- pour les références à des éléments du code source (classe, attribut, méthode, ...) ou à des noms de commande. On impose d'utiliser une police de type `Courier`, éventuellement en *gras* et de préférence en taille 10.
+- pour les abréviations, remarques, termes anglo-saxons. On préconise d'utiliser l'_italique_.
+
+Le module *Custom Styles* facilite la gestion de styles personnalisées :
+
+image:image13.png[]
+****
+
+.Exporter
+****
+Google Docs propose de télécharger le fichier dans plusieurs formats :
+
+image:image22.png[]
+****
+
+=== Google Slides
+
+https://www.google.fr/intl/fr/slides/about/[Google Slides] est un logiciel de PAO (Présentation Assistée par Ordinateur) qui permet de réaliser des présentations (diaporamas).
+
+Les présentations créées dans https://www.google.fr/intl/fr/slides/about/[Google Slides] sont limitées à 50 Mo, soit environ 200 diapositives.
+
+Le diaporama sera structuré et devra comporter :
+
+- une diapositive de titre
+- un sommaire
+- un pied de page
+
+Chaque diapositive devra être clairement identifiée par :
+
+- un titre
+- un pied de page comportant : le nom de la section et l'année de la session du BTS, le nom du projet, le nom et prénom de l'étudiant et le numéro de page de diapositive.
+
+Pour cela, il faudra définir un *masque de diapositive* :
+
+image:image5.png[]
+
+[TIP]
+====
+Le `#` dans le pied de page représente le numéro de diapositive.
+====
+
+Pour numéroter les diapositives, il faudra faire :
+
+image:image4.png[]
+
+image:image1.png[]
+
+Il est aussi possible de personnaliser la mise en page des diapositives. Ensuite, il suffit de l'appliquer en cliquant avec le bouton droit sur la diapositive concernée :
+
+image:image15.png[]
+
+Des thèmes pré-existants sont aussi disponibles :
+
+image:image6.png[]
+
+[TIP]
+====
+Il sera judicieux d'utiliser des effets de transition (notamment le zoom) pour améliorer la lisibilité des diagrammes.
+====
+
+==== Modules complémentaires
+
+Il est possible d'ajouter des modules complémentaires afin d'enrichir les fonctionnalités de https://www.google.fr/intl/fr/slides/about/[Google Slides].
+
+Il sera utile d'installer le module *Slides Toolbox*. Ce module offre des fonctionnalités qui facilitent la mise en forme du diaporama :
+
+image:image17.png[]
+
+image:image8.png[]
+
+=== Création de diagrammes
+
+*diagrams.net* (https://www.draw.io/[draw.io]) est un logiciel de diagramme en ligne gratuit pour créer des organigrammes, des diagrammes de processus, des organigrammes, UML, ER et des diagrammes de réseau.
+
+[IMPORTANT]
+====
+On n'utilisera pas draw.io pour les diagrammes UML mais Bouml.
+====
+
+Applications supplémentaires : Google Drive permet d'associer des applications externes à votre compte. Vous pouvez ajouter l'application `draw.io` qui vous permettra de réaliser des diagrammes et schémas directement dans Google Drive.
+
+image:image12.png[]
+
+L'application `draw.io` permet de créer directement des diagrammes et schémas dans Google Drive :
+
+image:image20.png[]
+
+Et de les insérer dans un document :
+
+image:image19.png[]
+
+=== Doxygen
+
+https://www.doxygen.nl/index.html[Doxygen] est un système de documentation pour C, C++, Java, Python, Php et autres langages. https://www.doxygen.nl/index.html[Doxygen] est un logiciel libre, publié sous licence GPL V2.0.
+
+Il permet de générer la documentation de développement d'un projet :
+
+- à partir des commentaires insérés dans le code source ;
+- à partir de la structure du code lui même. 
+
+Les options de génération de https://www.doxygen.nl/index.html[Doxygen] seront enregistrées dans un fichier `Doxyfile` faisant partie du dépôt Subversion (`svn`).
+
+La documentation sera produite avec l'outil `doxywizard` :
+
+- au format HTML : elle sera intégrée à l'archive ZIP avec le code source
+- au format PDF : elle sera imprimée et mise à disposition du jury
+
+[NOTE]
+====
+Il existe un guide dédié à l'utilisation de Doxygen en projet.
+====
+
+=== Subversion (svn)
+
+https://subversion.apache.org/[Subversion] est un outil qui permet de maintenir l'ensemble des versions d'un logiciel. Conçu à la base pour faciliter le travail de développement seul ou en équipe, il est surtout utilisé pour le code source, mais peut s'appliquer à tout type de document "texte".
+
+Le dépôt (_repository_) est l'emplacement où sont stockées toutes les informations concernant le projet géré par subversion. Il contient l'historique des versions des fichiers stockés, les journaux de chaque modification, ainsi que toutes les informations comme la date, l'auteur d'une modification etc...
+
+*Le dépôt sera hébergé sur Internet par https://riouxsvn.com/[RiouxSVN].*
+
+Sous GNU/Linux, on utilisera le client subversion `svn` en ligne de commande. Sous Windows(C), on peut utiliser le client *TortoiseSVN*. Les environnements de développement *VS Code*, *Qt Creator* et *Android Studio* intègrent des extensions pour https://subversion.apache.org/[Subversion].
+
+=== Git
+
+https://fr.wikipedia.org/wiki/Git[Git] est un logiciel de *gestion de versions décentralisé* (DVCS). C'est un logiciel libre créé par *Linus Torvalds* en 2005. Il s'agit maintenant du logiciel de gestion de versions le plus populaire devant https://fr.wikipedia.org/wiki/Apache_Subversion[Subversion] (`svn`) qu'il a remplacé avantageusement.
+
+Site officiel : https://git-scm.com/
+
+*Le dépôt sera hébergé sur Internet par https://github.com/[GitHub] ou https://bitbucket.org/[Bitbucket].*
+
+Sous GNU/Linux, on utilisera `git` en ligne de commande. Les environnements de développement *VS Code*, *Qt Creator* et *Android Studio* intègrent la prise en charge de Git.
+
+=== GitHub (git)
+
+https://fr.wikipedia.org/wiki/GitHub[GitHub] est un service web d'hébergement et de gestion de développement de logiciels, utilisant le logiciel de gestion de versions https://git-scm.com/[Git].
+
+Site officiel : https://github.com/
+
+Ressources GitHub :
+
+- https://guides.github.com/introduction/git-handbook/[Git Handbook sur Github]
+- https://docs.github.com/en/github/collaborating-with-pull-requests[Collaborating with pull requests]
+
+=== Bitbucket (git)
+
+https://bitbucket.org/[Bitbucket] est un service web d'hébergement et de gestion de développement logiciel utilisant le logiciel de gestion de versions https://git-scm.com/[Git]. Bitbucket est gratuit pour les particuliers et les petites équipes comptant jusqu'à 5 utilisateurs, avec des référentiels publics et privés illimités.
+
+Lien : https://www.atlassian.com/fr/git/tutorials[Tutoriels]
+
+=== Bouml
+
+https://www.bouml.fr/[BOUML] est un logiciel, programmé par Bruno Pagès en Qt, permettant la création de diagrammes UML.
+
+Il est multiplateforme, supporte la génération de code et la rétro-ingénierie pour les langages C++, Java, PHP et MYSQL. Parmi les  gratuiciels UML, il est jugé extrêmement efficace pour la « rétro-modélisation » (créer un modèle UML à partir de codes sources) et pour le développement _roundtrip_ (faire des aller-retour entre modèle UML et code source).
+
+Auparavant distribué gratuitement sous licence GPL (version 4.23), puis commercialisé pour les versions 5 et 6, il est de nouveau distribué gratuitement depuis la version 7 (mais pas intégralement sous licence GPL).
+
+On utilisera une https://www.bouml.fr/download.html[version 7.x en français].
+
+=== Gestion de projet
+
+==== Kanban
+
+Issue d'un mot japonais signifiant tableau, la méthode https://fr.wikipedia.org/wiki/Kanban[Kanban] a vu le jour dans les usines Toyota au milieu du XXème siècle. Cette image de tableau vient de l'utilisation des porte-étiquettes permettant d'organiser le travail dans les usines.
+
+Sa reprise pour la gestion de projet date de l'apparition des https://fr.wikipedia.org/wiki/M%C3%A9thode_agile[méthodes dites agile].
+
+La méthode https://fr.wikipedia.org/wiki/Kanban[Kanban] tire sa force de sa simplicité. En effet, toujours dans un esprit agile, cette méthode simplifie au maximum le concept d'organisation des tâches.
+
+Elle repose sur quatre étapes principales aboutissant à un tableau de quatre colonnes :
+
+- _backlog_ (_todo_) : la liste des tâches à effectuer pour l'itération ;
+- _ready_ (prêt) : la liste des tâches que vous souhaitez effectuer dans l'itération ;
+- en cours : les tâches en cours de réalisation (en général une à la fois, voire deux) ;
+- terminé : Les tâches terminées.
+
+On peut encore simplifier la méthode en ne retenant que 3 colonnes : *à faire, en cours et terminé*.
+
+==== Trello
+
+https://trello.com/[Trello] est un outil de gestion de projet en ligne, lancé en septembre 2011, et inspiré par la méthode https://fr.wikipedia.org/wiki/Kanban[Kanban] de Toyota. Il est basé sur une organisation des projets en planches listant des cartes, chacune représentant des tâches.
+
+image:trello.png[] 
+
+Lien : https://www.journalducm.com/trello-guide-utilisation/[Guide d'utilisation]
+
+Il existe des *Power-ups*, comme :
+
+* https://softwareplant.com/trello/[BigPicture]
+* https://planyway.com/[Planyway Calendar]
+
+image:bigpicture.png[]
+
+==== Trellogantt
+
+https://trellogantt.com/[Trellogantt] est un outil qui permet de réaliser des https://fr.wikipedia.org/wiki/Diagramme_de_Gantt[diagrammes de Gantt] à partir de https://trello.com/[Trello].
+
+Lien : https://trellogantt.com/blog/tutorials/[Tutoriels]
+
+image:trellogantt.png[]
+
+Voir aussi :
+
+- http://live.gnome.org/Planner[Planner] est un gestionnaire de planning et de projets (Linux). Lien : http://live.gnome.org/Planner
+- https://www.ganttproject.biz/[GanttProject] est un logiciel libre de gestion de projet écrit en Java, ce qui permet de l'utiliser sur divers système d'exploitation (Windows, Linux, MacOS). Lien : https://www.ganttproject.biz/
+- https://sourceforge.net/projects/projectlibre/[ProjectLibre] est un outil de planification de projet (Windows, Linux, MacOS). Il est le résultat d'un fork du logiciel OpenProj et s'inspire de Microsoft Project. Lien : https://sourceforge.net/projects/projectlibre/
+
+==== Beesbusy
+
+https://www.beesbusy.com/[Beesbusy] est un outil de gestion de projet français et complet pour le travail en équipe permettant un suivi de projets et une planification de tâches.
+
+La plateforme propose 3 vues différentes pour permettre de visualiser les projets en cours et d’optimiser la planification :
+
+- une vue « quoi » : vue sur les tâches sous la forme de listes (tableau https://fr.wikipedia.org/wiki/Kanban[Kanban])
+- une vue « quand » : vue sur les projets avec *diagramme de Gantt*
+- une vue « qui » : vue sur les plannings d’équipes et la répartition des tâches
+
+https://www.beesbusy.com/[Beesbusy] est proposé *gratuitement pour les enseignants et les étudiants*. Excellent !
+
+image:plan-beesbusy.png[]
+
+Présentation :
+
+- https://www.beesbusy.com/fonctionnalites/[Fonctionnalités]
+- https://www.youtube.com/watch?v=4q3PF04EFSU[Démonstration complète de Beesbusy (25 minutes)]
+- https://www.youtube.com/watch?v=9WNbVMJt_iQ[Comment utiliser Beesbusy en 5 minutes]
+
+==== Jira
+
+À l'origine, https://www.atlassian.com/software/jira[Jira] est un système de suivi de _bugs_ et de gestion des incidents (_tickets_). Il est maintenant un système de gestion de projets développé par **Atlassian**.
+
+https://www.atlassian.com/[Atlassian] est un éditeur de logiciels, basé en Australie, qui développe des produits pour la gestion de développement et de projets. Ses logiciels les plus connus sont Jira, Confluence, Bitbucket et Trello :
+
+- https://www.atlassian.com/fr/software/jira[Jira Software] constitue la plate-forme centrale pour les phases de programmation, de collaboration et de livraison. Jira Software est gratuit jusqu'à 10 utilisateurs, avec 2 Go de stockage.
+
+- https://www.atlassian.com/fr/software/confluence[Confluence] est un logiciel de wiki, utilisé comme logiciel de travail collaboratif. 
+
+- https://bitbucket.org/[Bitbucket] est un service web d'hébergement et de gestion de développement logiciel utilisant le logiciel de gestion de versions https://git-scm.com/[Git]. Bitbucket est gratuit pour les particuliers et les petites équipes comptant jusqu'à 5 utilisateurs, avec des référentiels publics et privés illimités.
+
+- https://trello.com/fr/home[Trello] est un outil de gestion de projet en ligne, inspiré par la méthode Kanban de Toyota.
+
+Ressources Atlassian :
+
+- https://www.atlassian.com/software/jira/guides[Les guides Jira]
+- https://www.atlassian.com/fr/software/jira/guides/use-cases/what-is-jira-used-for[À quoi sert Jira ?]
+- https://www.atlassian.com/fr/agile/tutorials[Découvrez Agile grâce à Jira]
+- https://www.atlassian.com/fr/git/tutorials[Tutoriels]
+
+== Bonus : Envoi de courriel
+
+=== Expéditeur
+
+L'adresse d'expéditeur ne doit pas être folklorique et doit contenir le nom et prénom (en intégralité, sans abréviation).
+
+En cas d'homonyme lors de la création de la boite email, on peut y ajouter son département, ou la notation "pro".
+
+On vérifie également que le compte de messagerie est correctement renseigné avec son nom et prénom.
+
+On peut classer les adresses de courriel en trois catégories :
+
+- Les adresses folkloriques
+- Les adresses correctes mais dont le profil (nom, prénom du compte) est mal renseigné ou incomplet.
+- Les adresses professionnelles
+
+=== Objet
+
+L'objet d'un courriel est obligatoire.
+
+Il permet au destinataire de savoir immédiatement ce que le courriel va contenir. Il peut servir également au classement automatique pour certains logiciels.
+
+Cet objet peut-être :
+
+* Folklorique, non renseigné.
+* Ne pas contenir toutes les informations nécessaires.
+* Professionnel et il contient :
+    ** La classe, le NOM, Prénom de l'expéditeur car ça reste un document à faire parvenir à un professeur.
+    ** L'objet, c'est ce que je fais parvenir (un rendu de DM, rendu d'exercice, etc.)
+    ** Le titre de l'objet Rapport de stage, Rendu DM – Nom du DM, etc.
+
+*Exemple :* `Problème erreur de segmentation dans l'exercice 3 du TP Classe PileChar`
+
+=== Corps
+
+Si l'objet peut être le titre, le corps peut être comparé à un résumé. Il doit également être professionnel.
+
+*Exemple :*
+
+----
+Bonjour Monsieur,
+
+Vous trouverez ci-joint l'archive contenant mon rattrapage pour le devoir C++ n°1.
+
+Cordialement,
+
+Thierry Vaira
+Ensignant Informatique & Réseaux
+BTS SNIR - LaSalle Avignon
+----
+
+Pour les questions techniques, n'oubliez pas de préciser :
+
+- le nom et version de votre système d'exploitation
+- le nom et version des logiciels concernés
+- les commandes et résultats obtenus (format texte conseillé)
+
+=== Pièces jointes
+
+La pièce jointe est la partie la plus importante de votre envoi.
+
+Il vous faut cependant :
+
+- Vérifier en premier lieu si on ne vous a pas demandé un fichier particulier (archive, présentation, etc.).
+- S'assurer avant de créer l'archive que vous avez bien respecté l'arborescence et la convention de nommage.
+- S'assurer de fournir le format qui a été demandé.
+- N'envoyer pas votre code source dans le corps du message (sauf si c'est demandé).
+- N'envoyer pas de multiple fichier (sauf si c'est demandé).
+- En cas d'envoi de documents multiples, il est nécessaire de regrouper les fichiers dans une archive. L'archive doit :
+    ** Être de type universelle (`zip` pour une archive).
+    ** Le nom de l'archive doit être éloquent, clair et précis.
+
+***
+
+ifdef::backend-html5[]
+Site : {home}[tvaira.free.fr]
+endif::[]
+
+ifdef::backend-pdf[]
+{author} - <{email}> - version {revnumber} - {revdate} - {home}[tvaira.free.fr]
+endif::[]
