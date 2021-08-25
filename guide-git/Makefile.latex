@@ -1,0 +1,21 @@
+all: cours-git.pdf
+
+pdf: cours-git.pdf
+
+cours-git.pdf: clean cours-git.tex
+	pdflatex cours-git
+	makeindex cours-git.idx
+	pdflatex cours-git
+	latex_count=8 ; \
+	while egrep -s 'Rerun (LaTeX|to get cross-references right)' cours-git.log && [ $$latex_count -gt 0 ] ;\
+	    do \
+	      echo "Rerunning latex...." ;\
+	      pdflatex cours-git ;\
+	      latex_count=`expr $$latex_count - 1` ;\
+	    done
+	makeindex cours-git.idx
+	pdflatex cours-git
+
+
+clean:
+	rm -f *.ps *.dvi *.aux *.toc *.idx *.ind *.ilg *.log *.out *.brf *.blg *.bbl cours-git.pdf

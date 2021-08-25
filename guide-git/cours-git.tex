@@ -1,0 +1,1174 @@
+\documentclass{beamer}
+\usepackage[T1]{fontenc}       
+\usepackage[latin1]{inputenc}    % pour les accents (mettre latin1 pour windows au lieu de utf8)
+\usepackage[frenchb]{babel}    % le documents est en français
+% \usepackage{amssymb}
+\usepackage{amsmath}           % un packages mathématiques
+\usepackage{xcolor}            % pour définir plus de couleurs 
+\usepackage{graphicx}          % pour insérer des figures
+\usepackage{textcomp}
+\usepackage{pifont}
+\usepackage{lmodern}
+
+\mode<beamer>
+{
+  \usetheme{Frankfurt}
+%   \usetheme{Warsaw}
+%   \usetheme{Goettingen}
+%   \usecolortheme{seagull}
+  \useoutertheme{infolines}
+  \usepackage{pgfpages} 
+  \pgfpagesuselayout{resize to}[a4paper, landscape]
+}
+
+\setbeamertemplate{navigation symbols}{
+%   \insertslidenavigationsymbol
+%   \insertframenavigationsymbol
+%   \insertsubsectionnavigationsymbol
+%   \insertsectionnavigationsymbol
+%   \insertdocnavigationsymbol
+  \insertbackfindforwardnavigationsymbol
+}
+
+\newcommand{\cbold}[2]{\textbf{\textcolor{#1}{#2}}}
+\definecolor{MyLightBlue}{rgb}{0.705,0.956,0.99}
+\definecolor{MyBlue}{rgb}{0.705,0.8,0.95}
+\definecolor{Bblue}{rgb}{0.0,0.0,0.6}
+\definecolor{BDef}{rgb}{0.26,0.06,0.86}
+\definecolor{BApi}{rgb}{0.4,0.0,1.0}
+\definecolor{BAppli}{rgb}{0.0,0.2,0.4}
+\definecolor{Bred}{rgb}{0.5,0.0,0.0}
+\newcommand{\ip}[1]{\cbold{Bblue}{#1}}
+\newcommand{\vip}[1]{\cbold{Bred}{#1}}
+\newcommand{\iis}[0]{\vspace{5pt}}
+
+\hypersetup{
+  pdfpagemode = ,%FullScreen,% afficher le pdf en plein écran
+  pdfauthor   = {tv},%
+  pdftitle    = {Cours Git},%
+  pdfsubject  = {gestion de versions},%
+  pdfkeywords = {},%
+  pdfcreator  = {PDFLaTeX},%
+  pdfproducer = {PDFLaTeX}%
+}
+
+\RequirePackage{listings}
+\definecolor{gris65}{gray}{0.35}
+\definecolor{gris50}{gray}{0.5}
+\definecolor{gris25}{gray}{0.75}
+\definecolor{gris15}{gray}{0.85}
+\definecolor{vert}{rgb}{0,0.43,0.15}
+\definecolor{bleu}{rgb}{0,0.34,0.68}
+\definecolor{colString}{rgb}{0.6,0.1,0.1}
+\newcounter{oldlstlisting}
+\newcounter{code}
+
+\lstnewenvironment{code}[1][]{
+    \setcounter{oldlstlisting}{\value{lstlisting}}
+    \setcounter{lstlisting}{\value{code}}
+    \renewcommand*{\lstlistingname}{Code}
+    \lstset{#1}
+}{
+    \stepcounter{code}
+    \setcounter{lstlisting}{\value{oldlstlisting}}
+}
+
+
+\lstset{ % general style for listings   
+   , columns=flexible
+   , extendedchars=true
+   , inputencoding=latin1
+   , showstringspaces=false
+   , numbers=none % left
+   , stepnumber=1
+   , numberfirstline=true
+   , tabsize=2
+%    , frame=single %leftline % single
+%     , frameround={tftt}
+%    , framerule=3pt
+%    , rulecolor=\color{gris50}
+   , breaklines=true
+   , breakautoindent=true
+   , basicstyle=\scriptsize\ttfamily
+   , numberstyle=\tiny\ttfamily
+   , framexleftmargin=1mm   
+%    , xleftmargin=6mm
+%    , linewidth=175mm
+%    , backgroundcolor=\color{gris15}
+   , captionpos=b
+   , rangeprefix=//*
+   , rangesuffix=*//
+   , includerangemarker=false
+%    , caption=\lstname
+} 
+
+\lstdefinestyle{cpp}
+{
+    emph={class,public,private,throw,struct,enum,friend,operator}
+    , emphstyle=\color{red}
+    , emph={[2]int, float, const, string, double, long, char, short, void, Q_OBJECT, signals, slots}
+    , emphstyle={[2]\bfseries\color{bleu}}
+    , morecomment=[s][\bfseries\color{gris65}]{/*}{*/}
+    , morecomment=[l][\bfseries\color{gris65}]{//}
+    , morecomment=[l][\bfseries\color{vert}]{\#}
+%     , backgroundcolor=\color{gris15}
+}
+
+\def\lstlistingname{}
+
+
+\logo{\includegraphics[width=3cm]{images/logo.png}} 
+\title[Cours Git]{Cours Git\\Gestion de versions}
+\author[tv]{Thierry Vaira}
+\institute{BTS SNIR}
+\date{{\tiny \texttt{tvaira@free.fr}~ \textcopyleft ~v0.1}} 
+
+% \addto\captionsfrench{\def\figurename{{Exemple~}}}
+
+
+\begin{document}
+
+{
+\setbeamertemplate{footline}[default]
+\frame{\titlepage} 
+}
+\logo{\includegraphics[width=1cm]{images/logo.png}} 
+\date{{\tiny \texttt{tvaira@free.fr}~\textcopyleft ~v0.1}} 
+
+% \begin{frame} 
+%   \begin{center}{\Large Sommaire }\end{center}
+%   \begin{footnotesize}\tableofcontents[hideallsubsections]\end{footnotesize}
+% \end{frame}
+
+\begin{frame}{Sommaire} 
+  \begin{columns}[t]
+  \begin{column}{5cm}
+  \begin{small}\tableofcontents[sections={1-4},hideallsubsections]\end{small}
+  \end{column}
+  \begin{column}{5cm}
+  \begin{small}\tableofcontents[sections={5-10},hideallsubsections]\end{small}
+  \end{column}
+  \end{columns}
+\end{frame}
+
+\section[Présentation]{Présentation}
+
+\begin{frame}
+  \frametitle{Présentation}
+  \vip{Git} est :
+  \begin{center}
+    \begin{itemize}
+      \item un logiciel de \ip{gestion de versions décentralisé} (DVCS)
+\iis
+      \item un logiciel libre créé par Linus Torvalds en 2005. 
+\iis
+      \item Site officiel : \url{https://git-scm.com/}
+    \end{itemize}
+  \end{center}
+  \begin{center}
+    \includegraphics[width=4cm]{images/git-logo.png} 
+  \end{center}
+  \begin{center}
+  \vspace{-0.5em}
+  \setbeamercolor{block body alerted}{fg=black,bg=gris25}  
+  \begin{minipage}{110mm}
+      \begin{alertblock}{}
+            \begin{center}
+                  \begin{small}C'est le logiciel de gestion de versions le plus populaire devant Subversion (svn) qu'il a remplacé avantageusement.\end{small}
+            \end{center}
+      \end{alertblock}
+  \end{minipage}
+  \end{center}   
+\end{frame}
+
+\begin{frame}
+  \frametitle{Quelques ressources}
+  \begin{center}
+    \begin{itemize}
+      \item Manuel de référence : \url{http://book.git-scm.com/docs}
+\iis
+      \item Pro Git (fr) : \url{http://git-scm.com/book/fr/v2}
+\iis
+      \item Git Community Book (fr) : \url{https://alexgirard.com/git-book/}
+    \end{itemize}
+  \end{center}   
+\end{frame}
+
+\section[Gestion de versions]{Gestion de versions}
+
+\begin{frame}
+  \frametitle{Système de gestion de versions (VCS)}
+  \begin{center}
+    \begin{itemize}
+      \item Le VCS (\textit{Version Control System}) gère l'ensemble des versions (\ip{\og révision \fg} ou modification) d'un ou plusieurs fichiers (généralement en texte)
+\iis
+      \item Le VCS enregistre l'évolution d'un ensemble de fichiers au cours du temps dans un \ip{historique}
+\iis
+      \item Les fichiers versionnés sont stockés sur un \ip{dépôt} (\textit{repository})
+\iis
+      \item Essentiellement utilisée dans le \ip{développement logiciel}, elle concerne surtout la gestion des codes source
+    \end{itemize}
+  \end{center}
+  \begin{center}
+  \vspace{-0.5em}
+  \setbeamercolor{block body alerted}{fg=black,bg=gris25}  
+  \begin{minipage}{110mm}
+      \begin{alertblock}{}
+            \begin{center}
+                  \begin{small}Les différentes versions (ou révisions) sont nécessairement liées à travers des modifications : une modification est un ensemble d'ajouts, de modifications, et de suppressions de données.\end{small}
+            \end{center}
+      \end{alertblock}
+  \end{minipage}
+  \end{center}   
+\end{frame}
+
+\begin{frame}
+  \frametitle{Mécanismes de base d'un VCS}
+  La gestion de version repose sur deux mécanismes de base :
+  \begin{center}
+    \begin{itemize}
+      \item un \vip{calcul de la différence} entre deux versions
+\iis
+        \begin{itemize}
+            \item \texttt{diff} : Compare des fichiers ligne à ligne
+            \item \texttt{patch} : Utilise la différence entre deux fichiers pour passer d'une version à l'autre
+        \end{itemize}    
+\iis
+      \item un \vip{gestionnaire d'historique des \textit{diff}} pour conserver les modifications
+    \end{itemize}
+  \end{center}
+Le principe est le suivant : on passera de la version \texttt{N} à la version \texttt{N+1} en appliquant une modification \texttt{M}. Un logiciel de gestion de versions applique ou retire ces modifications une par une pour fournir la version du fichier voulue.  
+\end{frame}
+
+\begin{frame}
+  \frametitle{VCS vs DVCS}
+  Un \ip{système de gestion de version} ou \textbf{VCS} (\textit{Version Control System}) :
+    \begin{itemize}
+      \item maintient l'ensemble des versions d'un logiciel ;    
+      \item conserve l'historique (les révisions successives) du projet dans un seul dépôt (\textit{repository}) qui fait référence : possibilités de revenir en arrière, de voir les changements ;
+      \item facilite la collaboration entre les intervenants : chacun travaille avec son environnement, plusieurs personnes travaillent sur les mêmes fichiers simultanément ;
+      \item fournit des outils pour gérer le tout.
+    \end{itemize}
+\iis    
+  Un \textbf{DVCS} (\textit{Distributed Version Control}) offre les mêmes services qu'un VCS sur une \ip{architecture décentralisée} (ou distribuée).
+\end{frame}
+
+\begin{frame}
+  \frametitle{Git vs Subversion}
+  \begin{center}
+    \includegraphics[width=9cm]{images/git-vs-svn.png}
+  \end{center}   
+\end{frame}
+
+\begin{frame}
+  \frametitle{Fonctionnement interne}
+Le \ip{dépôt Git} contient l'historique des instantanés (\textit{commits}). C'est une base de "données" (d'objets) qui peut contenir \ip{quatre types d'objets} :
+    \begin{itemize}
+      \item L'objet \vip{blob} (\textit{binary large object}) représente le contenu d'un fichier (chaque révision d'un fichier = objet \textit{blob} unique).
+    \iis
+      \item L'objet \vip{tree} décrit une arborescence de fichiers. Il est constitué d'une liste d'objets de type \textit{blobs} (avec les informations tel que le nom du fichier et les permissions). Il peut contenir d'autres objets \textit{trees} pour représenter les sous-répertoires.
+    \iis
+      \item L'objet \vip{commit} correspond à une arborescence de fichiers (\textit{tree}) enrichie de métadonnées comme un message de description, le nom de l'auteur, etc. 
+    \iis
+      \item L'objet \vip{tag} est une manière de nommer arbitrairement un \textit{commit} spécifique pour l'identifier plus facilement.
+    \end{itemize}
+Git utilise des \ip{index} (une somme de contrôle calculée avec la fonction de hachage \ip{SHA-1}) pour référencer les objets de la base.    
+\end{frame}
+
+\begin{frame}
+  \frametitle{Historique}
+Git stocke un instantané (un \textit{commit}) de la représentation de tous les fichiers du projet dans une structure hiérarchisée. L'instantané pointe également vers un ou plusieurs \ip{objets \textit{commits} parents}.
+  \begin{center}
+    \includegraphics[width=9cm]{images/git-exemple-historique-objets.png}
+  \end{center}   
+\end{frame}
+
+\section[Utilisation]{Utilisation}
+
+\begin{frame}
+  \frametitle{Les commandes}
+  \begin{center}
+    \begin{itemize}
+\item Git est un ensemble de commandes indépendantes dont les principales sont : \texttt{git init}, \texttt{git clone}, \texttt{git add}, \texttt{git status}, \texttt{git diff}, \texttt{git commit}, \texttt{git checkout}, \texttt{git merge}, \texttt{git log} etc.
+\iis
+      \item Liens :
+        \begin{itemize}
+\item \url{https://training.github.com/downloads/fr/github-git-cheat-sheet/}
+\item \url{https://ndpsoftware.com/git-cheatsheet.html}
+\item \url{https://www.julienkrier.fr/articles/git-cheat-sheet}
+        \end{itemize}
+\iis        
+      \item Demander de l'aide : \texttt{man git}, \texttt{git help}, \texttt{git help <commande>}
+    \end{itemize}
+  \end{center}   
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Premier pas}
+\begin{itemize}
+\item Installation
+\begin{center}
+      \begin{exampleblock}{Sous GNU/Linux Ubuntu}
+            \begin{code}[language=c++,style=cpp,basicstyle=\scriptsize\ttfamily]
+$ sudo apt-get install git gitk
+$ git --version
+git version X.Y.Z
+            \end{code}
+      \end{exampleblock}
+\end{center}      
+\item Configuration
+\begin{center}
+      \begin{exampleblock}{}
+            \begin{code}[language=c++,style=cpp,basicstyle=\scriptsize\ttfamily]
+$ git config --global user.name "<votre nom>"
+$ git config --global user.email "<votre email>"
+$ git config --global core.editor vim
+$ git config --global color.diff auto
+$ git config --global color.status auto
+$ git config --global color.branch auto
+$ cat $HOME/.gitconfig
+$ git config --list
+            \end{code}
+      \end{exampleblock}
+\end{center}         
+   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{En résumé}
+  \begin{center}
+    \begin{itemize}
+\item La fonction principale de Git est de suivre les différentes versions d'un projet. 
+\item Un projet est un ensemble de fichiers.
+\item Le \textit{commit} (ou instantané) est l'élément central de Git.
+\item Un \textit{commit} représente un ensemble cohérent de modifications sur le projet.
+    \end{itemize}
+  \end{center}   
+\end{frame}
+
+\begin{frame}
+  \frametitle{Les zones}
+On distingue trois zones :  
+  \begin{center}
+    \includegraphics[width=11cm]{images/git-zones.png}
+  \end{center}   
+\end{frame}
+
+\begin{frame}
+  \frametitle{Les différentes zones}
+  \begin{center}
+    \begin{itemize}
+\item le \vip{répertoire de travail} (\textit{working directory}) : un répertoire du système de fichiers qui contient une extraction unique d'une version du projet pour pouvoir travailler
+\iis
+\item l'\vip{index} ou \og zone de transit \fg (\textit{staging area}) : un simple fichier (\texttt{.git/index}) qui stocke les informations concernant ce qui fera partie du prochain instantané (\textit{commit})
+\iis
+\item le \vip{dépôt local} (\textit{local repository}) : un répertoire caché (\texttt{.git/}) qui stocke tout l'historique des instantannés (\textit{commits}) et les méta-données du projet
+\iis
+\item On peut considérer qu'il existe une quatrième zone nommée "remise" qui s'utilise avec la commande \texttt{git stash}.
+    \end{itemize}
+  \end{center}   
+\end{frame}
+
+\begin{frame}
+  \frametitle{Les états d'un fichier}
+Les différents états d'un fichier :
+  \begin{center}
+    \includegraphics[width=12cm]{images/git-fichier.png}
+  \end{center}   
+\end{frame}
+
+\begin{frame}
+  \frametitle{Les différents états d'un fichier}
+  \begin{center}
+    \begin{itemize}
+\item \vip{non suivi} ou non versionné (\textit{untracked}) : aucun instantané existe pour ce fichier
+\iis
+\item \vip{non modifié} (\textit{unmodified}) : non modifié depuis le dernier instantané
+\iis
+\item \vip{modifié} (\textit{modified}) : modifié depuis le dernier instantané mais n'a pas été indexé
+\iis
+\item \vip{indexé} (\textit{staged}) : modifié et ajouté dans la zone d'index
+\iis
+\item \vip{validé} (\textit{committed}) : une version particulière d'un fichier
+\iis
+    \end{itemize}
+  \end{center}
+  \begin{center}
+  \vspace{-0.5em}
+  \setbeamercolor{block body alerted}{fg=black,bg=gris25}  
+  \begin{minipage}{110mm}
+      \begin{alertblock}{}
+            \begin{center}
+                  \begin{small}Pour obtenir l'état des fichiers du répertoire de travail (\textit{working directory}), on utilise (très souvent) la commande \texttt{git status}\end{small}
+            \end{center}
+      \end{alertblock}
+  \end{minipage}
+  \end{center}   
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Initialiser un dépôt git}
+\begin{itemize}
+\item Création d'un répertoire
+\begin{center}
+      \begin{exampleblock}{}
+            \begin{code}[language=c++,style=cpp,basicstyle=\scriptsize\ttfamily]
+$ mkdir tp-git-sequence-1
+mkdir: création du répertoire 'tp-git-sequence-1'
+
+$ cd ./tp-git-sequence-1
+            \end{code}
+      \end{exampleblock}
+\end{center}      
+\item Initialisation d'un dépôt git
+\begin{center}
+      \begin{exampleblock}{}
+            \begin{code}[language=c++,style=cpp,basicstyle=\scriptsize\ttfamily]
+$ git init
+Dépôt Git vide initialisé dans $HOME/tp-git-sequence-1/.git/
+
+$ ls -al
+...
+drwxrwxr-x  7 tv tv 4096 juil. 28 10:58 .git
+
+# Pour l'instant, aucun fichier n'est encore versionné.
+            \end{code}
+      \end{exampleblock}
+\end{center}         
+   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Travailler avec git}
+\begin{itemize}
+\item on édite des fichiers dans le répertoire de travail (\textit{working directory}) ;
+\item on indexe les fichiers modifiés, ce qui ajoute des instantanés de ces fichiers dans la zone d'index (\textit{staging area}) ;
+\item on valide les modifications, ce qui a pour effet de basculer les instantanés des fichiers de l'index dans le dépôt local (\textit{local repository}).
+    \end{itemize}
+  \begin{center}
+    \includegraphics[width=11cm]{images/git-travail.png}
+  \end{center}   
+\end{frame}
+
+\begin{frame}
+  \frametitle{Opérations sur les fichiers}
+\begin{itemize}
+\item Ignorer des fichiers : il faut les ajouter dans un fichier spécial \texttt{.gitignore}
+\end{itemize}
+\begin{center}
+  \vspace{-0.5em}
+  \setbeamercolor{block body alerted}{fg=black,bg=gris25}  
+  \begin{minipage}{110mm}
+      \begin{alertblock}{}
+            \begin{center}
+                  \begin{small}Pour nettoyer son répertoire de travail, on peut utiliser la commande \texttt{git clean} qui permet de supprimer les fichiers non-suivis qui ne sont pas ignorés.\end{small}
+            \end{center}
+      \end{alertblock}
+  \end{minipage}
+  \end{center}
+\begin{itemize}
+\item Effacer des fichiers : commandes \texttt{git rm} et \verb!git rm ---cached!
+\iis
+\item Déplacer/Renommer des fichiers : commande \texttt{git mv}
+\end{itemize}  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Visualiser des différences}
+La commande \texttt{git diff} (voir aussi \texttt{git difftool}) pour visualiser les lignes exactes qui ont été ajoutées, modifiées ou effacées :
+\begin{itemize}
+\item Voir les différences avec l'index
+\begin{center}
+      \begin{exampleblock}{}
+            \begin{code}[language=c++,style=cpp,basicstyle=\scriptsize\ttfamily]
+$ git diff
+            \end{code}
+      \end{exampleblock}
+\end{center}      
+\item Voir les différences avec le dernier \textit{commit}
+\begin{center}
+      \begin{exampleblock}{}
+            \begin{code}[language=c++,style=cpp,basicstyle=\scriptsize\ttfamily]
+$ git diff --staged
+            \end{code}
+      \end{exampleblock}
+\end{center}         
+   \end{itemize}
+La commande \texttt{git diff <commit>} sert à visualiser les modifications présentes dans le répertoire de travail par rapport au \texttt{<commit>} indiqué.   
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Visualiser l'historique}
+Après avoir créé plusieurs instatanés (\textit{commits}), il est possible de consulter l'historique avec la commande \texttt{git log}. C'est une commande importante et puissante disposant de nombreuses options :
+\begin{itemize}
+\item \verb!git log -<nombre>! Limiter le nombre de \textit{commits}
+\item \verb!git log --oneline! Affiche chaque \textit{commit} sur une seule ligne
+\item \verb!git log -p! Affiche la différence complète de chaque \textit{commit}
+\item \verb!git log --graph --decorate! Affiche sous forme de graphe
+\item \verb!git log --stat! Affiche avec des statistiques
+\item \verb!git log -- <fichier>! Affiche uniquement les \textit{commits} du fichier
+\item \verb!git log <depuis>..<jusqu'à>! Affiche les validations qui se produisent entre deux \textit{commits} en utilisant une référence
+\end{itemize}
+Voir aussi :
+\begin{itemize}
+\item \texttt{git blame <fichier>} Affiche qui a modifié le fichier et quand
+\item \texttt{git show <objet>} Affiche un objet du dépôt
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Annuler des actions}
+\begin{itemize}
+\item \verb!git commit --amend! pour modifier le dernier \textit{commit}
+\item \verb!git reset HEAD <fichier>! pour désindexer un fichier
+\item \verb!git checkout -- <fichier>! pour annuler les modifications dans la copie de travail
+\item \texttt{git revert} pour inverser un \textit{commit}
+\iis
+\item Voir aussi :
+\begin{itemize}
+\item \verb!git reset --soft HEAD~! pour annuler le dernier \texttt{git commit}
+\item \verb!git reset --mixed HEAD~! pour annuler le dernier \texttt{git add} et \texttt{git commit}
+\item \verb!git reset --hard HEAD~! pour annuler les modifications dans la copie de travail et le dernier \texttt{git add} et \texttt{git commit}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Étiqueter des versions}
+Git utilise deux types principaux d'étiquettes (\textit{tags}) :
+\begin{itemize}
+\item \vip{légère} : un pointeur sur un \textit{commit} spécifique
+\item \vip{annotée} (avec l'option \texttt{-a}) : un objet \textit{tag} dans la base de données
+\end{itemize}
+\begin{center}
+      \begin{exampleblock}{}
+            \begin{code}[language=c++,style=cpp,basicstyle=\scriptsize\ttfamily]
+$ git tag -a 1.0 -m 'La version 1.0'
+
+$ git tag
+1.0
+
+$ git show 1.0
+            \end{code}
+      \end{exampleblock}
+\end{center}
+Il est possible d'étiqueter après coup en spécifiant le \textit{commit} : \texttt{git tag -a v1.2 <commit>}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Publier une version}
+
+\begin{itemize}
+\item Pour publier une version, il est nécessaire de créer une archive à partir d'un \textit{commit} (généralement une étiquette de version).
+\item La commande dédiée à cette action est \texttt{git archive} :
+\end{itemize}
+\begin{center}
+      \begin{exampleblock}{}
+            \begin{code}[language=c++,style=cpp,basicstyle=\scriptsize\ttfamily]
+# Modèle :
+# git archive --prefix=src-directory-name tag --format=zip > `git describe master`.zip
+
+$ git archive --prefix='tp-git-sequence-1-vaira/' 1.0 | gzip > tp-git-sequence-1-vaira.tar.gz
+$ git archive --prefix='tp-git-sequence-1-vaira/' 1.0 --format=zip > tp-git-sequence-1-vaira.zip
+            \end{code}
+      \end{exampleblock}
+\end{center}
+Il est possible de copier un dépôt avec la commande : \texttt{cp -Rf <source> <destination>}. Git fournit surtout la commande \texttt{git clone} pour cela.
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Utiliser le mode interactif}
+Git propose quelques scripts qui "guident" les opérations en ligne de commande avec l'option \texttt{-i} ou \verb!--interactive!. Le mode interactif s'utilise principalement avec les commandes :
+\begin{itemize}
+\item \verb!git add --interactive! : pour choisir les fichiers ou les parties d'un fichier à incorporer à un \textit{commit}
+\iis
+\item \verb!git clean --interactive! : pour choisir les fichiers qui seront supprimés du répertoire de travail
+\iis
+\item \verb!git rebase --interactive! : pour choisir les \textit{commits} à "rejouer"
+\begin{itemize}
+\item Réordonner les \textit{commits}
+\item Écraser un \textit{commit}
+\item Diviser un \textit{commit}
+\item Supprimer un \textit{commit}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{En résumé}
+\begin{itemize}
+\item Éditer des fichiers : \ip{\texttt{vim}} ou un EDI/IDE
+\iis
+\item Ajouter les changement : \ip{\texttt{git add <fichier>}}
+\iis
+\item Valider les changements : \ip{\texttt{git commit -m "Message"}}
+\end{itemize}
+\iis
+
+Les commandes que l'on utilise tout le temps :
+\begin{itemize}
+\item \texttt{git status}
+\iis
+\item \texttt{git log ...}
+\end{itemize}
+\end{frame}
+
+\section[Les branches]{Les branches}
+
+\begin{frame}[containsverbatim]
+\frametitle{Les branches}
+\begin{itemize}
+\item Créer une branche signifie diverger de la ligne principale de développement et continuer à travailler sans impacter cette ligne.
+\item Une branche représente une \ip{ligne de développement indépendante}.
+\item Mais techniquement, une branche dans Git est simplement un pointeur déplaçable vers un \textit{commit}.
+\item À chaque validation, le pointeur de la branche avance automatiquement pour pointer vers le dernier des \textit{commits} réalisés.
+\item Le pointeur de la tête de la branche actuelle se nomme \texttt{HEAD}
+\end{itemize}
+\begin{center}
+  \vspace{-0.5em}
+  \setbeamercolor{block body alerted}{fg=black,bg=gris25}  
+  \begin{minipage}{110mm}
+      \begin{alertblock}{}
+            \begin{center}
+                  \begin{small}La branche \texttt{master} ou \texttt{main} n'est pas une branche spéciale. Elle est identique à toutes les autres branches. La seule raison pour laquelle chaque dépôt en a une est que la commande \texttt{git init} la crée par défaut.\end{small}
+            \end{center}
+      \end{alertblock}
+  \end{minipage}
+  \end{center}   
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Créer et basculer de branche}
+\begin{itemize}
+\item Créer une nouvelle branche : \texttt{git branch <nom-branche>} (cela crée simplement un nouveau pointeur vers le \textit{commit} courant)
+\item Basculer sur une branche existante : \texttt{git checkout <nom-branche>} (cela déplace \texttt{HEAD} pour le faire pointer vers la branche)
+\item En une seule commande : \texttt{git checkout -b <nouvelle-branche>}
+\end{itemize}
+\begin{center}
+  \vspace{-0.5em}
+  \setbeamercolor{block body alerted}{fg=black,bg=gris25}  
+  \begin{minipage}{110mm}
+      \begin{alertblock}{}
+            \begin{center}
+                  \begin{small}Il est important de noter que lorsque l'on change de branche avec Git, les \underline{fichiers du répertoire de travail sont modifiés}. Si la copie de travail ou la zone d'index contiennent des modifications non validées qui sont en conflit avec la branche à extraire, Git n'autorisera pas le changement de branche. Le mieux est donc d'avoir une copie de travail propre au moment de changer de branche.\end{small}
+            \end{center}
+      \end{alertblock}
+  \end{minipage}
+  \end{center}   
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Fusionner une branche}
+\begin{itemize}
+\item Une fois le travail réalisé (terminé et testé) dans la branche, il est prêt à être \ip{fusionné} dans la branche \texttt{master}. On réalise ceci au moyen de la commande \texttt{git merge}.
+\begin{center}
+    \includegraphics[width=9cm]{images/branche.png}
+\end{center}   
+\item À présent que le travail a été fusionné, on n'a plus besoin de la branche. On peut la supprimer avec la commande \texttt{git branch -d <nom-branche>}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Travailler avec les branches}
+Cela permet :
+\begin{itemize}
+\item de gérer plusieurs branches en parallèle et ainsi de cloisonner les travaux et d'éviter ainsi de mélanger des modifications du code source qui n'ont rien à voir entre elles.
+\item de conserver une version du logiciel prête à être livrée à tout instant puisqu'on ne fusionne que lorsque le développement d'une branche est bien terminé.
+\end{itemize}
+\begin{center}
+  \vspace{-0.5em}
+  \setbeamercolor{block body alerted}{fg=black,bg=gris25}  
+  \begin{minipage}{110mm}
+      \begin{alertblock}{}
+            \begin{center}
+                  \begin{small}Dans Git, créer, développer, fusionner et supprimer des branches plusieurs fois par jour est un travail "normal". Un dépôt Git peut maintenir de nombreuses branches de développement.\end{small}
+            \end{center}
+      \end{alertblock}
+  \end{minipage}
+\end{center}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Différentes types de branches}
+On peut distinguer plusieurs types de branches :
+\begin{itemize}
+\item les \ip{branches au long cours} (\vip{permanentes}) : ce sont des branches ouvertes en permanence pour les différentes phases du cycle de développement.
+\item les \ip{branches thématiques} (\vip{temporaires}) : une branche thématique est une branche ayant une courte durée de vie créée et utilisée pour une \textbf{fonctionnalité} ou une \textbf{tâche particulière} (un correctif par exemple). On y réalise quelques \textit{commits} et on supprime la branche immédiatement après l'avoir fusionnée dans la branche principale. Les branches thématiques sont utiles quelle que soit la taille du projet.
+\item Voir aussi : les branches de suivi
+\end{itemize}
+\begin{center}
+  \vspace{-0.5em}
+  \setbeamercolor{block body alerted}{fg=black,bg=gris25}  
+  \begin{minipage}{110mm}
+      \begin{alertblock}{}
+            \begin{center}
+                  \begin{small}De nombreux développeurs travaillent avec Git en utilisant une méthode de développement basée sur les branches (par exemple Gitflow).\end{small}
+            \end{center}
+      \end{alertblock}
+  \end{minipage}
+\end{center}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Graphe d'historique}
+\begin{center}
+    \includegraphics[width=12cm]{images/git-branch-divergence-merge.png}
+\end{center}   
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Le pointeur de référence \texttt{HEAD}}
+\begin{itemize}
+\item \verb!HEAD! est une référence symbolique pointant vers l'endroit (un \textit{commit}) où l'on se trouve dans l'historique. Si on fait un \textit{commit}, \verb!HEAD! se déplacera. 
+\item \verb!HEAD~! désigne le premier ancêtre de la pointe de la branche actuelle. \verb!HEAD~! est l'abréviation de \verb!HEAD~1!. \verb!HEAD~n! désigne le n-ième ancêtre.
+\item \verb!HEAD^! désigne le premier parent immédiat de la pointe de la branche actuelle. \verb!HEAD^! est l'abréviation de \verb!HEAD^1!. \verb!HEAD^2! désigne le deuxième parent lorsqu'il y a un \textit{commit} de fusion.
+\item Pour un \textit{commit} avec un seul parent, \verb!HEAD~! et \verb!HEAD^! signifient la même chose.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Exemple : \texttt{HEAD}}
+\begin{center}
+    \includegraphics[width=10cm]{images/git-head-parents.png}
+\end{center}   
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{En résumé}
+\begin{itemize}
+\item Créer une branche thématique et basculer dessus : \ip{\texttt{git branch <branche>}} puis \ip{\texttt{git checkout <branche>}} (ou \ip{\texttt{git checkout -b <branche>}})
+    \begin{itemize}
+    \item Éditer des fichiers : \ip{\texttt{vim}} ou un EDI/IDE
+    \iis
+    \item Ajouter les changement : \ip{\texttt{git add <fichier>}}
+    \iis
+    \item Valider les changements : \ip{\texttt{git commit -m "Message"}}
+    \end{itemize}
+\iis
+\item Basculer sur la branche principale et fusionner la branche thématique : \ip{\texttt{git checkout master}} puis \ip{\texttt{git merge <branche>}}
+\iis
+\item Supprimer la branche thématique : \ip{\texttt{git branch -d <branche>}}
+\end{itemize}
+\iis
+
+Les commandes que l'on utilise tout le temps :
+\begin{itemize}
+\item \texttt{git status}
+\item \texttt{git log ...}
+\item \texttt{git branch ...}
+\end{itemize}
+\end{frame}
+
+\section[Git hébergé]{Git hébergé}
+
+\begin{frame}[containsverbatim]
+\frametitle{Git hébergé}
+Il est possible d'héberger des projets Git sur un site externe dédié à l'hébergement. Quelques hébergeurs :
+\begin{itemize}
+\item \ip{GitHub} est un service web d'hébergement (lancé en 2008) et de gestion de développement de logiciels, utilisant le logiciel de gestion de versions Git. Site officiel : \url{https://github.com/}
+\item \ip{GitLab} est un logiciel libre de forge basé sur Git proposant les fonctionnalités de wiki, un système de suivi des bugs, l'intégration continue et la livraison continue. Site officiel : \url{https://about.gitlab.com/}
+\item \ip{Bitbucket Cloud} est un service web d'hébergement et de gestion de développement logiciel utilisant le logiciel de gestion de versions Git. Site officiel : \url{https://bitbucket.org/}
+\end{itemize}
+\begin{center}
+  \vspace{-0.5em}
+  \setbeamercolor{block body alerted}{fg=black,bg=gris25}  
+  \begin{minipage}{110mm}
+      \begin{alertblock}{}
+            \begin{center}
+                  \begin{small}Liste : \url{https://git.wiki.kernel.org/index.php/GitHosting}\end{small}
+            \end{center}
+      \end{alertblock}
+  \end{minipage}
+\end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Notion de dépôt distant}
+Un \ip{dépôt distant} est un dépôt hébergé sur un serveur, généralement sur Internet.
+  \begin{center}
+    \includegraphics[width=11cm]{images/git-depot-distant.png}
+  \end{center}   
+\begin{center}
+  \vspace{-0.5em}
+  \setbeamercolor{block body alerted}{fg=black,bg=gris25}  
+  \begin{minipage}{110mm}
+      \begin{alertblock}{}
+            \begin{center}
+                  \begin{small}Un dépôt distant peut servir à la sauvegarde et/ou au partage du code d'un projet.\end{small}
+            \end{center}
+      \end{alertblock}
+  \end{minipage}
+\end{center}  
+\end{frame}
+
+\begin{frame}
+  \frametitle{Interagir avec un dépôt distant}
+Des commandes spécifiques seront utilisées pour synchroniser les dépôts local et distant :
+\begin{itemize}
+\item \texttt{git clone} permet d'obtenir une copie d'un dépôt Git existant.
+\item \texttt{git push} publie ("pousse") les nouveaux \textit{commits} du dépôt local sur le dépôt distant.
+\item \texttt{git fetch} récupère l'ensemble des \textit{commits} présents sur le le dépôt distant et met à jour le dépôt local. Elle ne modifie pas le répertoire de travail.
+\item \texttt{git pull} consiste essentiellement en \texttt{git fetch} suivi par  \texttt{git merge}. Le répertoire de travail peut donc être modifié.
+\end{itemize}
+  \begin{center}
+    \includegraphics[width=11cm]{images/git-depot-distant-commandes.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Interagir avec GitHub}
+Il est possible d'interagir avec un dépôt sur GitHub de plusieurs manières :
+\begin{itemize}
+\item L'URL d'accès au dépôt en \ip{SSH} sera de la forme : \ip{\texttt{git@github.com:<utilisateur>/<depot>.git}}\\
+\url{https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/connecting-to-github-with-ssh}
+\item L'URL d'accès au dépôt en \ip{HTPS} sera de la forme : \ip{\texttt{https://github.com/<utilisateur>/<depot>.git}}\\
+\url{https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token}
+\item La commande \ip{\texttt{gh}} permet l'utilisation de GitHub en la ligne de commande (CLI) : \texttt{gh repo clone <utilisateur>/<depot>.git}\\
+\url{https://cli.github.com/}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Cloner un dépôt distant}
+\begin{center}
+      \begin{exampleblock}{}
+            \begin{code}[language=c++,style=cpp,basicstyle=\scriptsize\ttfamily]
+$ git clone URL
+            \end{code}
+      \end{exampleblock}
+\end{center}
+\vspace{-1.5em}
+
+La commande \texttt{git clone} effectuera les actions suivantes :
+\begin{itemize}
+\item créé un répertoire du nom du dépôt existant, initialisé avec un répertoire \texttt{.git} à l'intérieur,
+\item nomme automatiquement le serveur distant (\textit{remote}) \texttt{origin},
+\item tire l'historique,
+\item crée un pointeur sur l'état actuel de la branche \texttt{main} et l'appelle localement \texttt{origin/main}
+\item crée également une branche locale \texttt{main} qui démarre au même endroit que la branche \texttt{main} distante
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Cloner un dépôt distant}
+  \begin{center}
+    \includegraphics[width=12cm]{images/git-clone.png}
+  \end{center}   
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Associer un dépôt distant existant}
+Un dépôt distant (\textit{remote repository}) doit exister sur GitHub par exemple :
+\begin{center}
+      \begin{exampleblock}{}
+            \begin{code}[language=c++,style=cpp,basicstyle=\scriptsize\ttfamily]
+$ mkdir <depot>
+$ cd ./<depot>
+$ git init
+
+$ git remote add origin git@github.com:<utilisateur>/<depot>.git
+$ git branch -M main
+$ git push -u origin main
+
+$ git remote -v
+origin	git@github.com:<utilisateur>/<depot>.git (fetch)
+origin	git@github.com:<utilisateur>/<depot>.git (push)
+            \end{code}
+      \end{exampleblock}
+\end{center}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Branche de suivi}
+Une \ip{branche de suivi} (\textit{tracking branch}) est une branche locale qui est en relation directe avec une branche distante (\textit{upstream branch}).
+\iis
+
+Les branches de suivi peuvent servir :
+\begin{itemize}
+\item à sauvegarder son travail sur la branche dans un dépôt distant
+\iis
+\item partager son travail sur la branche avec d'autres développeurs
+\iis
+\end{itemize}
+Voir aussi les options \verb!--track!, \texttt{-u} ou \verb!--set-upstream-to!, \verb!--set-upstream! des commandes \texttt{checkout}, \texttt{branch} et \texttt{push}.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Branche de suivi}
+  \begin{center}
+    \includegraphics[width=12cm]{images/git-push-branch.png}
+  \end{center}   
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{\textit{Pull Request} et Révision de code}
+\ip{\textit{Pull Request}} peut être traduit par « \vip{Proposition de révision} » (PR) : c'est-à-dire une demande de modification ou de contribution.
+\iis
+
+Les \textit{Pull Requests} sont :
+\begin{itemize}
+\item une fonctionnalité facilitant la collaboration des développeurs sur un projet.
+\item un mécanisme permettant à un développeur d'informer les membres de l'équipe qu'il a terminé un \og travail \fg (une fonctionnalité, une version livrable, un correctif, ...) et de proposer sa contribution au dépôt central.
+\item une notifaction aux développeurs pour qu'ils révisent le code puis le fusionnent (\textit{merge}).
+\end{itemize}
+Pendant une \ip{révision de code}, les développeurs peuvent discuter de la fonctionnalité (commenter le code, poser des questions, ...) et proposer des adaptations de la fonctionnalité en publiant des \textit{commits} de suivi.
+\end{frame}
+
+\begin{frame}
+  \frametitle{\textit{Pull Request}}
+  \begin{center}
+    \includegraphics[width=12.5cm]{images/pull-request.png}
+  \end{center}   
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Travail collaboratif}
+Attention :
+\begin{itemize}
+\item Nettoyer son historique local avant de publier en effectuant un rebasage interactif avec \texttt{git rebase -i @{upstream}}
+\iis
+\item Travailler à plusieurs sur une branche de fonctionnalité : faire \verb!git pull --rebase! sur une branche de suivi obsolète
+\iis
+\item Supprimer (si besoin) toutes ses modifications et commits locaux et récupérer un dépôt distant « propre » : \verb!git fetch origin && git reset --hard origin/main!
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Rebasage interactif}
+  \begin{center}
+    \includegraphics[width=8cm]{images/git-rebasage-interactif.png}
+  \end{center}   
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Stratégies de fusion}
+\begin{itemize}
+\item \ip{Avance rapide (\textit{Fast Forward})} : c'est la fusion utilisée \textbf{par défaut} par \texttt{git merge} si c'est possible. Git déplace (vers l'avant) les \textit{commits} de la branche \textit{feature} vers la branche destination \textit{main} si il n'y a pas eu de nouveaux \textit{commits} sur cette branche. On peut réaliser cette fusion avec l'option \vip{\verb!---ff-only!}.
+\iis
+\item \ip{\textit{Commit} de fusion (\textit{merge commit})} : lorsque l'historique de développement a divergé, \texttt{git merge} réalise une fusion à trois sources (\textit{three-way merge}) en utilisant les deux \textit{commits} au sommet des deux branches (\texttt{C4} et \texttt{C5}) ainsi que leur plus proche ancêtre commun (\texttt{C2}) pour créer un nouveau \textit{commit} (\texttt{C6}). On peut réaliser cette fusion avec l'option \vip{\verb!---no-ff!}.
+\iis
+\item \ip{\textit{Squash}} : on obtient un nouveau \textit{commit} qui regroupe tous les \textit{commits} de la branche. Pour réaliser cette fusion, il faut ajouter l'option \vip{\verb!---squash!}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Avance rapide (\textit{Fast Forward})}
+  \begin{center}
+    \includegraphics[width=5.5cm]{images/git-fusion-ff.png}
+  \end{center}   
+\end{frame}
+
+\begin{frame}
+  \frametitle{\textit{Commit} de fusion}
+  \begin{center}
+    \includegraphics[width=7cm]{images/git-fusion-commit.png}
+  \end{center}   
+\end{frame}
+
+\begin{frame}
+  \frametitle{\textit{Squash}}
+  \begin{center}
+    \includegraphics[width=7cm]{images/git-fusion-squash.png}
+  \end{center}   
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Conflit de fusion}
+\begin{itemize}
+\item Il est possible qu'une fusion (\textit{merge}) ne puisse pas être réalisée automatiquement par Git.
+\iis
+\item Cela arrive lorsqu'une même partie d'un fichier a été modifiée dans deux branches distinctes.
+\iis
+\item Lorsque Git rencontre un conflit au cours d'une fusion, il l'indique dans les fichiers concernés avec des \ip{délimiteurs} (\verb!<<<<<<<!, \verb!=======! et \verb!>>>>>>>!) qui marquent les deux côtés du conflit.
+\iis
+\item Pour résoudre le conflit, il faut choisir une partie ou l'autre ou bien fusionner les deux contenus "à la main".
+\iis
+\item On peut ensuite terminer la fusion (suivre les indications de \texttt{git status}) en faisant un \texttt{git commit}.
+\end{itemize}
+\end{frame}
+
+\section[Projet collaboratif]{Projet collaboratif}
+
+\begin{frame}[containsverbatim]
+\frametitle{workflow git}
+\begin{itemize}
+\item Un \ip{\textit{workflow} Git} est une méthode, un processus de travail, une recette ou une recommandation sur la façon d'utiliser Git pour accomplir un travail de manière cohérente et productive.
+\iis
+\item Il n'existe pas de processus standardisé sur la façon d'interagir avec Git. 
+\iis
+\item Il est important de s'assurer que l'équipe de projet est d'accord sur la façon dont le flux de modifications sera appliqué. Un \textit{workflow} Git doit donc être défini.
+\iis
+\item Il existe plusieurs \textit{workflow} Git connus qui peuvent être utilisés : \textit{workflow} centralisé, \textit{workflow} de branche de fonctionnalité, \textit{workflow} \textbf{Gitflow}, etc.
+\end{itemize}
+\url{www.atlassian.com/fr/git/tutorials/comparing-workflows}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Gitflow}
+\begin{itemize}
+\item Le \textit{workflow} \ip{Gitflow} définit un modèle de branchement strict conçu autour de la version du projet.  
+\iis
+\item Ce \textit{workflow} n'ajoute pas de nouveaux concepts ou commandes.
+\iis
+\item \ip{Gitflow} permet de gérer les bugs (\textit{issues}), les nouvelles fonctionnalités (\textit{features}) et les versions (\textit{releases}) en attribuant des rôles très spécifiques à différentes branches et définit comment et quand elles doivent interagir.
+\end{itemize}
+\begin{center}
+  \vspace{-0.5em}
+  \setbeamercolor{block body alerted}{fg=black,bg=gris25}  
+  \begin{minipage}{110mm}
+      \begin{alertblock}{}
+            \begin{center}
+                  \begin{small}Il existe des extensions \texttt{git-flow} à Git pour intégrer le \textit{workflow} Gitflow.\end{small}
+            \end{center}
+      \end{alertblock}
+  \end{minipage}
+\end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Modèle de branches}
+  \begin{center}
+    \includegraphics[width=12cm]{images/gitflow.png}
+  \end{center}   
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Rôles des branches}
+\begin{itemize}
+\item pour les \vip{branches permanentes} :
+\begin{itemize}
+\item La \ip{branche \textit{master}} stocke l'historique des versions officielles. Tous les \textit{commits} de cette branche sont étiquetés avec un numéro de version (\textit{tags}).
+\item La \ip{branche \textit{develop}} est créée à partir de la branche \textit{master}. Elle sert de branche d'intégration pour les fonctionnalités. Cette branche contiendra l'historique complet du projet.
+\iis
+\end{itemize}
+\item pour les \vip{branches temporaires} :
+\begin{itemize}
+\item Les \ip{branches \textit{features-xxxx}} permettent de travailler sur des nouvelles fonctionnalités. Elles sont créées directement à partir de la branche \textit{develop} et une fois le travail fini, fusionnées vers la branche \textit{develop}.
+\item Les \ip{branches \textit{release-xxxx}} permettent de travailler sur une livraison (généralement des tâches dédiées à la documentation). On les crée à partir de \textit{develop} puis on les fusionne dans \textit{master} en leur attribuant un numéro de version (\textit{tag}).
+\item Les \ip{branches \textit{hotfix-xxxx}} permettent de publier rapidement (\textit{hot}) une correction (\textit{fix}) depuis la branche \textit{master}. Ces branches seront ensuite fusionnées vers la branche \textit{master} et \textit{develop}.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Réalisation d'une fonctionnalité}
+  \begin{center}
+    \includegraphics[width=12cm]{images/gitflow-feature-2.png}
+  \end{center}   
+\end{frame}
+
+\begin{frame}
+  \frametitle{Réalisation d'une \textit{release}}
+  \begin{center}
+    \includegraphics[width=12cm]{images/gitflow-release.png}
+  \end{center}   
+\end{frame}
+
+\begin{frame}
+  \frametitle{Correction d'un \textit{bug}}
+  \begin{center}
+    \includegraphics[width=12cm]{images/gitflow-hotfix.png}
+  \end{center}   
+\end{frame}
+
+\begin{frame}
+  \frametitle{Projets BTS SN}
+  \begin{center}
+    \begin{itemize}
+\item Les branches (\textit{feature}, \textit{release} et \textit{hotfix}) seront créées dans \ip{Jira à partir d'un ticket}.
+\iis
+\item Les fusions seront réalisées lors d'une revue de code en utilisant les \ip{\textit{Pull Requests} dans GitHub ou Bitbucket}.
+\iis
+    \end{itemize}
+  \end{center}
+\begin{center}
+  \vspace{-0.5em}
+  \setbeamercolor{block body alerted}{fg=black,bg=gris25}  
+  \begin{minipage}{110mm}
+      \begin{alertblock}{}
+            \begin{center}
+                  \begin{small}Lorsqu'elle désigne un travail bien identifié du projet (une fonctionnalité, une \textit{release} ou un correctif), il est préférable (obligatoire) que cela reste visible dans le graphe d'historique, même lorsque la branche est supprimée. Pour éviter que Git utilise par défaut une avance rapide (\textit{Fast Forward}) si c'est possible, il faudra réaliser un \textit{commit} de fusion avec l'option \verb!---no-ff!.  \end{small}
+            \end{center}
+      \end{alertblock}
+  \end{minipage}
+\end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Jira / GitHub}
+  \begin{center}
+    \includegraphics[width=12cm]{images/jira-github-creer-branche.png}
+  \end{center}   
+\end{frame}
+
+\begin{frame}
+  \frametitle{Jira / Bitbucket}
+  \begin{center}
+    \includegraphics[width=12cm]{images/jira-bitbucket-creer-branche.png}
+  \end{center}   
+\end{frame}
+
+\begin{frame}
+  \frametitle{Choisir \textit{commit} de fusion (\textit{Pull Request})}
+  \begin{center}
+    \includegraphics[width=12cm]{images/merge-strategy.png}
+  \end{center}   
+\end{frame}
+
+\section[CLI vs IDE]{CLI vs IDE}
+
+\begin{frame}
+  \frametitle{Environnement de développement intégré (EDI ou IDE)}
+La plupart des environnements de développement intégre Git ou propose des extensions pour le faire. Le contrôle de source (SCM) dans VS Code :
+  \begin{center}
+    \includegraphics[width=5.5cm]{images/vscode-scm.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Les outils graphiques}
+Il existe de nombreuses interfaces graphiques permettant de gérer des projets Git :
+
+\begin{itemize}
+\item une interface web avec GitWeb
+\item une interface de visualisation détaillée et graphique avec \texttt{gitk}
+\end{itemize}
+Il existe également de nombreuses autres applications :
+\begin{itemize}
+\item qgit, Giggle, GitExtensions, TortoiseGit, SourceTree, GitEye, ...
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{GitEye}
+  \begin{center}
+    \includegraphics[width=12cm]{images/GitEye.png}
+  \end{center}   
+\end{frame}
+
+\begin{frame}[containsverbatim,allowframebreaks]
+  \frametitle{Les principales commandes}
+Git est un ensemble de commandes indépendantes dont les principales sont :
+  \begin{center}
+    \begin{itemize}
+\item \texttt{git init} crée un nouveau dépôt ;
+\item \texttt{git clone} clone un dépôt distant ;
+\item \texttt{git add} ajoute le contenu du répertoire de travail dans la zone d'index pour le prochain \textit{commit} ;
+\item \texttt{git status} montre les différents états des fichiers du répertoire de travail et de l'index ;
+\item \texttt{git diff} montre les différences ;
+\item \texttt{git commit} enregistre dans la base de données (le dépôt) un nouvel instantané avec le contenu des fichiers qui ont été indexés puis fait pointer la branche courante dessus ;
+\item \texttt{git branch} liste les branches ou crée une nouvelle branche ;
+\item \texttt{git checkout} permet de basculer de branche et d'en extraire le contenu dans le répertoire de travail ;
+\item \texttt{git merge} fusionne une branche dans une autre ;
+\item \texttt{git log} affiche la liste des \textit{commits} effectués sur une branche ;
+\item \texttt{git fetch} récupère toutes les informations du dépôt distant et les stocke dans le dépôt local ;
+\item \texttt{git push} publie les nouvelles révisions sur le dépôt distant ;
+\item \texttt{git pull} récupère les dernières modifications distantes du projet et les fusionne dans la branche courante ;
+\item \texttt{git tag} liste ou crée des \textit{tags} ;
+\item \texttt{git stash} stocke de côté un état non commité afin d'effectuer d'autres tâches.
+    \end{itemize}
+  \end{center}   
+\end{frame}
+
+\end{document}

@@ -183,7 +183,7 @@ Il existe quatre types d'objets :
 
 - l'objet *blob* (_binary large object_), qui représente le contenu d'un fichier ;
 - l'objet *tree* (arbre), qui décrit une arborescence de fichiers. Il est constitué d'une liste d'objets de type _blobs_ et des informations qui leur sont associées, tel que le nom du fichier et les permissions. Il peut contenir récursivement d'autres _trees_ pour représenter les sous-répertoires ;
-- l'objet *commit* (résultat de l'opération du même nom signifiant « valider une transaction »), qui correspond à une arborescence de fichiers (_tree_) enrichie de métadonnées comme un message de description, le nom de l'auteur, etc. Il pointe également vers un ou plusieurs objets _commit_ parents pour former un graphe d'historiques ;
+- l'objet *commit* (résultat de l'opération du même nom signifiant « valider une transaction »), qui correspond à une arborescence de fichiers (_tree_) enrichie de métadonnées comme un message de description, le nom de l'auteur, etc. Il pointe également vers un ou plusieurs objets _commits_ parents pour former un graphe d'historiques ;
 - l'objet *tag* (étiquette) qui est une manière de nommer arbitrairement un _commit_ spécifique pour l'identifier plus facilement. Il est en général utilisé pour marquer certains _commits_, par exemple par un numéro ou un nom de version.
 
 La base des objets peut contenir n'importe quel type d'objets.
@@ -914,11 +914,11 @@ int main()
 `--staged` est un synonyme de `--cached`.
 ====
 
-La commande `git diff <commit>` sert à visualiser les modifications présentes dans le répertoire de travail par rapport au `<commit>` indiqué. On peut aussi utiliser la référence `HEAD` pour le comparer au commit le plus récent.
+La commande `git diff <commit>` sert à visualiser les modifications présentes dans le répertoire de travail par rapport au `<commit>` indiqué. On peut aussi utiliser la référence `HEAD` pour le comparer au _commit_ le plus récent.
 
 [NOTE]
 ====
-`HEAD` est une référence symbolique pointant vers l'endroit où l'on se trouve dans l'historique. Si on fait un _commit_, `HEAD` se déplacera. `HEAD^` signifie le premier parent immédiat de la pointe de la branche actuelle. `HEAD^` est l'abréviation de `HEAD^1`. Pour un _commit_ avec un seul parent, `HEAD~` et `HEAD^` signifient la même chose. cf. xref:ancre-head-parents[Exemple de déplacement avec HEAD]
+`HEAD` est une référence symbolique pointant vers l'endroit (un _commit_) où l'on se trouve dans l'historique. Si on fait un _commit_, `HEAD` se déplacera. `HEAD~` désigne le premier ancêtre de la pointe de la branche actuelle. `HEAD~` est l'abréviation de `HEAD~1`. `HEAD~<n>` désigne le n-ième ancêtre. `HEAD^` désigne le premier parent immédiat de la pointe de la branche actuelle. `HEAD^` est l'abréviation de `HEAD^1`. `HEAD^2` désigne le deuxième parent lorsqu'il y a un _commit_ de fusion. Pour un _commit_ avec un seul parent, `HEAD~` et `HEAD^` signifient la même chose. cf. xref:ancre-head-parents[Exemple de déplacement avec HEAD]
 ====
 
 image:git-head.png[]
@@ -1569,7 +1569,7 @@ bb344f4 Ajout du fichier bienvenue.cpp
 
 [NOTE]
 ====
-Rappel : `HEAD` est une référence symbolique pointant vers l'endroit où l'on se trouve dans l'historique. Si on fait un _commit_, `HEAD` se déplacera. `HEAD^` signifie le premier parent immédiat de la pointe de la branche actuelle. `HEAD^` est l'abréviation de `HEAD^1`. Pour un _commit_ avec un seul parent, `HEAD~` et `HEAD^` signifient la même chose. cf. xref:ancre-head-parents[Exemple de déplacement avec HEAD]
+`HEAD` est une référence symbolique pointant vers l'endroit (un _commit_) où l'on se trouve dans l'historique. Si on fait un _commit_, `HEAD` se déplacera. `HEAD~` désigne le premier ancêtre de la pointe de la branche actuelle. `HEAD~` est l'abréviation de `HEAD~1`. `HEAD~<n>` désigne le n-ième ancêtre. `HEAD^` désigne le premier parent immédiat de la pointe de la branche actuelle. `HEAD^` est l'abréviation de `HEAD^1`. `HEAD^2` désigne le deuxième parent lorsqu'il y a un _commit_ de fusion. Pour un _commit_ avec un seul parent, `HEAD~` et `HEAD^` signifient la même chose. cf. xref:ancre-head-parents[Exemple de déplacement avec HEAD]
 ====
 
 .Rebasage des 6 derniers commits :
@@ -2055,7 +2055,7 @@ af1dcc8 Ajout du fichier .gitignore
 bb344f4 Ajout du fichier bienvenue.cpp
 ----
 
-Le dépôt local contient l'historique des instantanés (_commits_). C'est une base de "données" (d'objets) qui peut contenir n'importe quel type d'objets (_commit_, _tree_, _blob_ et _tag_). Git utilise des index (somme de contrôle calculée avec la https://fr.wikipedia.org/wiki/Fonction_de_hachage[fonction de hachage] https://fr.wikipedia.org/wiki/SHA-1[SHA-1]) pour référncer les objets de la base.
+Le dépôt local contient l'historique des instantanés (_commits_). C'est une base de "données" (d'objets) qui peut contenir n'importe quel type d'objets (_commit_, _tree_, _blob_ et _tag_). Git utilise des index (somme de contrôle calculée avec la https://fr.wikipedia.org/wiki/Fonction_de_hachage[fonction de hachage] https://fr.wikipedia.org/wiki/SHA-1[SHA-1]) pour référencer les objets de la base.
 
 L'objet *commit* correspond à une arborescence de fichiers (_tree_) enrichie de métadonnées comme un message de description, le nom de l'auteur, etc.
 
@@ -2070,7 +2070,7 @@ committer tvaira <tvaira@free.fr> 1627497186 +0200
     Ajout du fichier bienvenue.cpp
 ----
 
-Il pointe également vers un ou plusieurs objets _commit_ parents pour former un graphe d'historiques :
+Il pointe également vers un ou plusieurs objets _commits_ parents pour former un graphe :
 
 .Son objet commit parent :
 ----
@@ -2151,7 +2151,7 @@ De nombreux développeurs travaillent avec Git en utilisant une méthode de dév
 
 .Cycle de travail
 ****
-- Créer une branche thématique et basculer dessus (`get branch <branche>` puis `git checkout <branche>` ou `git checkout -b <branche>`)
+- Créer une branche thématique et basculer dessus (`git branch <branche>` puis `git checkout <branche>` ou `git checkout -b <branche>`)
   * Éditer des fichiers (`vim` ou un xref:ancre-edi[EDI])
   * Ajouter les changement (`git add <fichier>`)
   * Valider les changements (`git commit -m "Message"`)
@@ -2292,7 +2292,7 @@ Il est possible d'interagir avec le dépôt sur https://github.com/[GitHub] de p
 
 - https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/connecting-to-github-with-ssh[SSH]
 
-L'URL d'accès au dépôt en SSH sera de la forme : `https://github.com/user/repo.git`
+L'URL d'accès au dépôt en SSH sera de la forme : `git@github.com:user/repo.git`
 
 image:git-clone-ssh.png[]
 
@@ -2359,7 +2359,7 @@ La commande `gh` permet l'utilisation de GitHub en la ligne de commande (CLI).
 
 image:git-clone-cli.png[]
 
-Liens : https://cli.github.com/
+Lien : https://cli.github.com/
 
 Sous GNU/Linux Ubuntu, on put installer `gh` avec la commande `sudo snap install gh`
 
@@ -3154,7 +3154,7 @@ Liens :
 [[rebasage-interactif]]
 1 . Nettoyer son historique local avant de publier
 
-Avant de faire un `git push` sur une branche de suivi, il faut eut être nettoyer son historique local (une série de _commits_ dans la branche) afin de pouvoir proposer quelque chose de propre et d'utilisable. Avant de publier la branche, il est conseillé d'effectuer une rebasage interactif avec `git rebase -i`. On a alors une totale liberté pour nettoyer, réécrire, annuler, regrouper les _commits_ locaux avant de les partager (`git push`) sur le dépôt distant.
+Avant de faire un `git push` sur une branche de suivi, il faut peut être nettoyer son historique local (une série de _commits_ dans la branche) afin de pouvoir proposer quelque chose de propre et d'utilisable. Avant de publier la branche, il est conseillé d'effectuer un rebasage interactif avec `git rebase -i`. On a alors une totale liberté pour nettoyer, réécrire, annuler, regrouper les _commits_ locaux avant de les partager (`git push`) sur le dépôt distant.
 
 Sur la branche actuelle depuis la dernière synchronisation : `git rebase -i @{upstream}` (ou `git rebase -i origin/feature` ou `git rebase -i HEAD~n`).
 
@@ -3524,7 +3524,7 @@ Thierry Vaira <tvaira@free.fr>
 
 [NOTE]
 ====
-Lorsque Git rencontre un conflit au cours d'une fusion, il l'indique dans les fichiers avec des délimiteurs (`<<<<<<<`, `=======` et `>>>>>>>`) qui marquent les deux côtés du conflit.
+Lorsque Git rencontre un conflit au cours d'une fusion, il l'indique dans les fichiers concernés avec des délimiteurs (`<<<<<<<`, `=======` et `>>>>>>>`) qui marquent les deux côtés du conflit.
 ====
 
 Pour résoudre le conflit, il faut choisir une partie ou l’autre ou bien fusionner les deux contenus "à la main" :
