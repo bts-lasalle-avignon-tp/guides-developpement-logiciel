@@ -1,6 +1,6 @@
 # Les guides de développement logiciel utilisés en BTS SN à LaSalle Avignon
 
-Les documents ont été rédigés au format [Asciidoc](https://asciidoc.org/). Ils sont disponibles ici sous les formats HTML et PDF.
+Les [documents](https://github.com/btssn-lasalle84/guides-developpement-logiciel) ont été rédigés au format [Asciidoc](https://asciidoc.org/). Ils sont disponibles ici sous les formats HTML et PDF.
 
 ## Sommaire
 
