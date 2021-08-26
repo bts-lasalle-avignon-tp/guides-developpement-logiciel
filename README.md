@@ -1,6 +1,6 @@
 # Les guides de développement logiciel utilisés en BTS SN à LaSalle Avignon
 
-Les documents sont fournis au format [Asciidoc](https://asciidoc.org/).
+Les documents sont fournis au format [Asciidoc](https://asciidoc.org/). Ils sont aussi disponibles aux formats [HTML](https://btssn-lasalle84.github.io/guides-developpement-logiciel/) et [PDF](https://btssn-lasalle84.github.io/guides-developpement-logiciel/).
 
 ## Sommaire
 
@@ -15,6 +15,7 @@ Les documents sont fournis au format [Asciidoc](https://asciidoc.org/).
 	- [Un guide sur l'utilisation de git](#un-guide-sur-lutilisation-de-git)
 	- [Un guide sur la gestion de projet logiciel avec Jira](#un-guide-sur-la-gestion-de-projet-logiciel-avec-jira)
 	- [Contact](#contact)
+	- [Site web](#site-web)
 	- [Licence](#licence)
 
 ## Le guide de programmation
@@ -51,6 +52,10 @@ Ce guide présente Jira, Bitbucket et GitHub.
 
 - Thierry Vaira : **[tvaira(at)free(dot)fr](mailto:tvaira@free.fr)**
 
+## Site web
+
+- [btssn-lasalle84.github.io](https://btssn-lasalle84.github.io/guides-developpement-logiciel/)
+- [tvaira.free.fr](http://tvaira.free.fr/)
 ## Licence
 
 Les documents produits sont sous Licence **BSD 3-Clause License**.
