@@ -28,10 +28,10 @@ endif::[]
 
 :icons: font
 
-:home: http://tvaira.free.fr/
+:home: https://btssn-lasalle84.github.io/guides-developpement-logiciel/
 
 ifdef::backend-pdf[]
-{author} - <{email}> - version {revnumber} - {revdate} - {home}[tvaira.free.fr]
+{author} - <{email}> - version {revnumber} - {revdate} - {home}[btssn-lasalle84.github.io]
 endif::[]
 
 == Doxygen
@@ -759,11 +759,11 @@ Lien : https://github.com/agateau/doxyqml
 ***
 
 ifdef::backend-html5[]
-Site : {home}[tvaira.free.fr]
+Site : {home}[btssn-lasalle84.github.io]
 endif::[]
 
 ifdef::backend-pdf[]
-{author} - <{email}> - version {revnumber} - {revdate} - {home}[tvaira.free.fr]
+{author} - <{email}> - version {revnumber} - {revdate} - {home}[btssn-lasalle84.github.io]
 endif::[]
 
 

@@ -1449,8 +1449,8 @@ L&#8217;option <code>-b html5 -a data-uri</code> permet de produire un fichier H
 <div class="listingblock">
 <div class="title">Exemple de Makefile</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-makefile hljs" data-lang="makefile">TARGETDIR_PDF = ../guides-pdf
-TARGETDIR_HTML = ../guides-html
+<pre class="highlightjs highlight"><code class="language-makefile hljs" data-lang="makefile">TARGETDIR_HTML = ../docs
+TARGETDIR_PDF = $(TARGETDIR_HTML)/guides-pdf
 PDF := $(patsubst %.adoc,%.pdf,$(wildcard *.adoc))
 HTML := $(patsubst %.adoc,%.html,$(wildcard *.adoc))
 HTMLOPTIONS=-b html5 -a data-uri
@@ -1459,9 +1459,7 @@ PDFOPTIONS=-r asciidoctor-mathematical -a source-highlighter=pygments -a pygment
 $(info Fabrication des guides PDF : $(PDF))
 $(info Fabrication des guides HTML : $(HTML))
 
-#all : $(TARGETDIR) $(HTML)
-#all : $(TARGETDIR) $(PDF)
-all : $(TARGETDIR) $(HTML) $(PDF)
+all : $(HTML) $(PDF)
 
 %.html: %.adoc
 	asciidoctor $&lt; $(HTMLOPTIONS) -o $(TARGETDIR_HTML)/$@
@@ -1469,16 +1467,10 @@ all : $(TARGETDIR) $(HTML) $(PDF)
 %.pdf: %.adoc
 	asciidoctor-pdf $&lt; $(PDFOPTIONS) -o $(TARGETDIR_PDF)/$@
 
-$(TARGETDIR_PDF):
-	mkdir $(TARGETDIR_PDF)
-
-$(TARGETDIR_HTML):
-	mkdir $(TARGETDIR_HTML)
-
 .PHONY: clean
 
 clean:
-	rm -f $(TARGETDIR_HTML)/*.html $(TARGETDIR_PDF)/*.pdf
+	rm -f *.html *.pdf
 
 rebuild: clean all</code></pre>
 </div>
@@ -1721,7 +1713,7 @@ asciimath (2.0.2)
 </div>
 <hr>
 <div class="paragraph">
-<p>Site : <a href="http://tvaira.free.fr/">tvaira.free.fr</a></p>
+<p>Site : <a href="https://btssn-lasalle84.github.io/guides-developpement-logiciel/">btssn-lasalle84.github.io</a></p>
 </div>
 </div>
 </div>
@@ -1729,7 +1721,7 @@ asciimath (2.0.2)
 <div id="footer">
 <div id="footer-text">
 Version v0.3<br>
-Last updated 2021-08-23 11:12:29 +0200
+Last updated 2021-08-26 18:17:57 +0200
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
