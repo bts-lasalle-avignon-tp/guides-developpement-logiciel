@@ -1,8 +1,7 @@
 \documentclass{beamer}
 \usepackage[T1]{fontenc}       
-\usepackage[latin1]{inputenc}    % pour les accents (mettre latin1 pour windows au lieu de utf8)
+\usepackage[latin1]{inputenc}  % pour les accents (mettre latin1 pour windows au lieu de utf8)
 \usepackage[frenchb]{babel}    % le documents est en français
-% \usepackage{amssymb}
 \usepackage{amsmath}           % un packages mathématiques
 \usepackage{xcolor}            % pour définir plus de couleurs 
 \usepackage{graphicx}          % pour insérer des figures
@@ -10,12 +9,10 @@
 \usepackage{pifont}
 \usepackage{lmodern}
 
+% Diaporama
 \mode<beamer>
 {
   \usetheme{Frankfurt}
-%   \usetheme{Warsaw}
-%   \usetheme{Goettingen}
-%   \usecolortheme{seagull}
   \useoutertheme{infolines}
   \usepackage{pgfpages} 
   \pgfpagesuselayout{resize to}[a4paper, landscape]
@@ -31,19 +28,15 @@
 }
 
 \newcommand{\cbold}[2]{\textbf{\textcolor{#1}{#2}}}
-\definecolor{MyLightBlue}{rgb}{0.705,0.956,0.99}
-\definecolor{MyBlue}{rgb}{0.705,0.8,0.95}
-\definecolor{Bblue}{rgb}{0.0,0.0,0.6}
-\definecolor{BDef}{rgb}{0.26,0.06,0.86}
-\definecolor{BApi}{rgb}{0.4,0.0,1.0}
-\definecolor{BAppli}{rgb}{0.0,0.2,0.4}
-\definecolor{Bred}{rgb}{0.5,0.0,0.0}
-\newcommand{\ip}[1]{\cbold{Bblue}{#1}}
-\newcommand{\vip}[1]{\cbold{Bred}{#1}}
+\definecolor{MonBleu}{rgb}{0.0,0.0,0.6}
+\definecolor{MonRouge}{rgb}{0.5,0.0,0.0}
+\newcommand{\ip}[1]{\cbold{MonBleu}{#1}}    % important
+\newcommand{\vip}[1]{\cbold{MonRouge}{#1}}  % très important
 \newcommand{\iis}[0]{\vspace{5pt}}
 
+% PDF
 \hypersetup{
-  pdfpagemode = ,%FullScreen,% afficher le pdf en plein écran
+  pdfpagemode = ,%FullScreen,               % afficher le pdf en plein écran
   pdfauthor   = {tv},%
   pdftitle    = {Cours Git},%
   pdfsubject  = {gestion de versions},%
@@ -52,6 +45,7 @@
   pdfproducer = {PDFLaTeX}%
 }
 
+% Pour le code
 \RequirePackage{listings}
 \definecolor{gris65}{gray}{0.35}
 \definecolor{gris50}{gray}{0.5}
@@ -116,7 +110,7 @@
 
 \def\lstlistingname{}
 
-
+% Cours Git par Thierry VAIRA
 \logo{\includegraphics[width=3cm]{images/logo.png}} 
 \title[Cours Git]{Cours Git\\Gestion de versions}
 \author[tv]{Thierry Vaira}
@@ -124,7 +118,6 @@
 \date{{\tiny \texttt{tvaira@free.fr}~ \textcopyleft ~v0.1}} 
 
 % \addto\captionsfrench{\def\figurename{{Exemple~}}}
-
 
 \begin{document}
 
@@ -134,11 +127,6 @@
 }
 \logo{\includegraphics[width=1cm]{images/logo.png}} 
 \date{{\tiny \texttt{tvaira@free.fr}~\textcopyleft ~v0.1}} 
-
-% \begin{frame} 
-%   \begin{center}{\Large Sommaire }\end{center}
-%   \begin{footnotesize}\tableofcontents[hideallsubsections]\end{footnotesize}
-% \end{frame}
 
 \begin{frame}{Sommaire} 
   \begin{columns}[t]
@@ -273,6 +261,34 @@ Le \ip{dépôt Git} contient l'historique des instantanés (\textit{commits}). C'es
       \item L'objet \vip{tag} est une manière de nommer arbitrairement un \textit{commit} spécifique pour l'identifier plus facilement.
     \end{itemize}
 Git utilise des \ip{index} (une somme de contrôle calculée avec la fonction de hachage \ip{SHA-1}) pour référencer les objets de la base.    
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Empreinte SHA-1}
+\begin{itemize}
+      \item Une empreinte SHA-1 est une chaîne de caractères composée de 40 caractères hexadécimaux (un « \textit{hash} » de 160 bits) calculée en fonction du contenu du fichier. Dans Git :
+    \iis
+      \item C'est une signature unique qui sert de référence (une clé, un index).
+    \iis
+      \item Il est possible d'utiliser une empreinte SHA-1 courte (au moins 4 caractères) lorsqu'elle ne correspond pas à plusieurs \textit{commits}.
+    \iis
+      \item En règle générale, entre 8 et 10 caractères sont largement suffisants pour assurer l'unicité dans un projet.
+\end{itemize}
+\vspace{-0.8em}
+\begin{center}
+      \begin{exampleblock}{}
+            \begin{code}[language=c++,style=cpp,basicstyle=\scriptsize\ttfamily]
+$ sha1sum toto-1.txt
+b6c3339dcaa25beabff0af919a49e8c44d800dab  toto-1.txt
+
+$ echo "Fin" >> toto-1.txt
+
+$ sha1sum toto-1.txt
+0610e586db143df27558d98a5bd4c2c792b0bf28  toto-1.txt
+            \end{code}
+      \end{exampleblock}
+\end{center}      
+
 \end{frame}
 
 \begin{frame}
