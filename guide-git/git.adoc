@@ -65,6 +65,17 @@ Site officiel : https://git-scm.com/
 - https://fr.wikipedia.org/wiki/Git[Wikipedia Git]
 - https://guides.github.com/introduction/git-handbook/[Git Handbook sur Github]
 
+== Simulateurs
+
+*ExplainGit* est un *simulateur* permettant d'expérimenter visuellement le résultat des commandes qui agissent directement sur le dépôt Git. Il ne simule ni le répertoire de travail ni l'espace d'index, mais uniquement le dépôt.
+
+- (fr) : https://gauthier.frama.io/explain-git-with-d3/
+- (en) : https://onlywei.github.io/explain-git-with-d3/
+
+image:explain-git.png[]
+
+Il existe aussi https://learngitbranching.js.org/?locale=fr_FR[Learn Git Branching (fr)].
+
 == Gestion de versions (VCS)
 
 La https://fr.wikipedia.org/wiki/Gestion_de_versions[gestion de version] (_Version Control_ ou _Revision Control_) consiste à gérer l'ensemble des versions d'un ou plusieurs fichiers (généralement en texte).
@@ -2028,6 +2039,24 @@ af1dcc8 Ajout du fichier .gitignore
 973e4f7 Création du programme principal
 bb344f4 Ajout du fichier bienvenue.cpp
 ----
+
+=== Rebaser
+
+En utilisant le rebasage, il est possible de conserver un historique linéaire après une fusion.
+
+La commande `git rebase` permet de changer la « base » (le _commit_ de départ) de la branche courante. La nouvelle « base » devient le dernier _commit_ de la branche passée en argument de la commande.
+
+image:rebase-1.png[]
+
+image:rebase-2.png[]
+
+Git a « rejoué » chacun des _commits_ de la branche `dev` sur la tête de la branche `master`.
+
+On termine en fusionnant la branche `dev` dans la branche `master` :
+
+image:rebase-3.png[]
+
+image:rebase-4.png[]
 
 === Retour sur le fonctionnement interne
 

@@ -173,11 +173,22 @@
   \frametitle{Quelques ressources}
   \begin{center}
     \begin{itemize}
-      \item Manuel de référence : \url{http://book.git-scm.com/docs}
+      \item \vip{Manuel de référence} : \url{http://book.git-scm.com/docs}
 \iis
-      \item Pro Git (fr) : \url{http://git-scm.com/book/fr/v2}
+      \item \vip{Pro Git} (fr) : \url{http://git-scm.com/book/fr/v2}
 \iis
-      \item Git Community Book (fr) : \url{https://alexgirard.com/git-book/}
+      \item \vip{Git Community Book} (fr) : \url{https://alexgirard.com/git-book/}
+    \end{itemize}
+  \end{center}
+\iis
+  \begin{center}
+    \begin{itemize}
+      \item \ip{ExplainGit} est un \textbf{simulateur} permettant d'expérimenter visuellement le résultat des commandes qui agissent directement sur le dépôt Git. Il ne simule ni le répertoire de travail ni l'espace d'index, mais uniquement le dépôt.
+\begin{itemize}
+      \item (fr) : \url{https://gauthier.frama.io/explain-git-with-d3/}
+      \item (en) : \url{https://onlywei.github.io/explain-git-with-d3/}
+\end{itemize}
+      \item \ip{Learn Git Branching} (fr) : \url{https://learngitbranching.js.org/?locale=fr_FR}
     \end{itemize}
   \end{center}   
 \end{frame}
@@ -681,6 +692,18 @@ Les commandes que l'on utilise tout le temps :
     \includegraphics[width=9cm]{images/branche.png}
 \end{center}   
 \item À présent que le travail a été fusionné, on n'a plus besoin de la branche. On peut la supprimer avec la commande \texttt{git branch -d <nom-branche>}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Rebaser}
+\begin{itemize}
+\item En utilisant le rebasage, il est possible de conserver un historique linéaire après une fusion.
+\item La commande \texttt{git rebase} permet de changer la \og base \fg ~(le \textit{commit} de départ) de la branche courante. La nouvelle \og base \fg ~devient le dernier \textit{commit} de la branche passée en argument de la commande.
+\begin{center}
+    \includegraphics[width=6cm]{images/rebase-4.png}
+\end{center}   
+\item Git a \og rejoué \fg ~chacun des \textit{commits} de la branche \texttt{dev} sur la tête de la branche \texttt{master}.
 \end{itemize}
 \end{frame}
 
