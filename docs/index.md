@@ -1,22 +1,21 @@
-# Les guides de développement logiciel utilisés en BTS SN à LaSalle Avignon
+Ces guides sont utilisés en BTS SN à LaSalle Avignon.
 
 Les [documents](https://github.com/btssn-lasalle84/guides-developpement-logiciel) ont été rédigés au format [Asciidoc](https://asciidoc.org/). Ils sont disponibles ici aux formats HTML et PDF.
 
 ## Sommaire
 
-- [Les guides de développement logiciel utilisés en BTS SN à LaSalle Avignon](#les-guides-de-développement-logiciel-utilisés-en-bts-sn-à-lasalle-avignon)
-	- [Sommaire](#sommaire)
-	- [Le guide de programmation](#le-guide-de-programmation)
-	- [Le guide de rédaction de documents techniques](#le-guide-de-rédaction-de-documents-techniques)
-	- [Le guide de documentation logicielle](#le-guide-de-documentation-logicielle)
-	- [Le guide de rendu de documents](#le-guide-de-rendu-de-documents)
-		- [1°année BTS SN](#1année-bts-sn)
-		- [2°année BTS SN](#2année-bts-sn)
-	- [Un guide sur l'utilisation de git](#un-guide-sur-lutilisation-de-git)
-	- [Un guide sur la gestion de projet logiciel avec Jira](#un-guide-sur-la-gestion-de-projet-logiciel-avec-jira)
-	- [Contact](#contact)
-	- [Site web](#site-web)
-	- [Licence](#licence)
+- [Sommaire](#sommaire)
+- [Le guide de programmation](#le-guide-de-programmation)
+- [Le guide de rédaction de documents techniques](#le-guide-de-rédaction-de-documents-techniques)
+- [Le guide de documentation logicielle](#le-guide-de-documentation-logicielle)
+- [Le guide de rendu de documents](#le-guide-de-rendu-de-documents)
+	- [1°année BTS SN](#1année-bts-sn)
+	- [2°année BTS SN](#2année-bts-sn)
+- [Un guide sur l'utilisation de git](#un-guide-sur-lutilisation-de-git)
+- [Un guide sur la gestion de projet logiciel avec Jira](#un-guide-sur-la-gestion-de-projet-logiciel-avec-jira)
+- [Contact](#contact)
+- [Site web](#site-web)
+- [Licence](#licence)
 
 ## Le guide de programmation
 
