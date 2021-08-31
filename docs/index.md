@@ -12,6 +12,7 @@ Les [documents](https://github.com/btssn-lasalle84/guides-developpement-logiciel
 	- [1°année BTS SN](#1année-bts-sn)
 	- [2°année BTS SN](#2année-bts-sn)
 - [Un guide sur l'utilisation de git](#un-guide-sur-lutilisation-de-git)
+- [Un guide sur l'utilisation de GitHub Classroom](#un-guide-sur-lutilisation-de-github-classroom)
 - [Un guide sur la gestion de projet logiciel avec Jira](#un-guide-sur-la-gestion-de-projet-logiciel-avec-jira)
 - [Contact](#contact)
 - [Site web](#site-web)
@@ -54,6 +55,12 @@ Formats : [HTML](https://btssn-lasalle84.github.io/guides-developpement-logiciel
 Ce [guide](https://btssn-lasalle84.github.io/guides-developpement-logiciel/git.html) présente [git](https://git-scm.com/) et [GitHub](https://github.com/). Ce [guide](https://btssn-lasalle84.github.io/guides-developpement-logiciel/git.html) est complété par un [cours sur Git](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/cours-git.pdf).
 
 Formats : [HTML](https://btssn-lasalle84.github.io/guides-developpement-logiciel/git.html) | [PDF](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/git.pdf)
+
+## Un guide sur l'utilisation de GitHub Classroom
+
+Ce [guide](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guide-classroom.html) présente https://classroom.github.com/[GitHub Classroom] dans le cadre de la réalisation des TP de programmation.
+
+Formats : [HTML](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guide-classroom.html) | [PDF](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/guide-classroom.pdf)
 
 ## Un guide sur la gestion de projet logiciel avec Jira
 

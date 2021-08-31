@@ -40,6 +40,8 @@ Ce guide présente la convention de nommage à respecter pour effectuer les rend
 
 Ce guide précise l’organisation et les exigences pour la production des documents dans le cadre des Travaux pratiques et Projets de BTS SNIR à LaSalle Avignon.
 
+Les TP de programmation sont réalisés à partir de https://classroom.github.com/[GitHub Classroom]. Il y a donc un guide spécifique pour cela.
+
 ## Un guide sur l'utilisation de git
 
 Ce guide présente git et GitHub.
