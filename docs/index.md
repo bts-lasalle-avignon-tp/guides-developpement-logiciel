@@ -4,7 +4,6 @@ Les [documents](https://github.com/btssn-lasalle84/guides-developpement-logiciel
 
 ## Sommaire
 
-- [Sommaire](#sommaire)
 - [Le guide de programmation](#le-guide-de-programmation)
 - [Le guide de rédaction de documents techniques](#le-guide-de-rédaction-de-documents-techniques)
 - [Le guide de documentation logicielle](#le-guide-de-documentation-logicielle)
