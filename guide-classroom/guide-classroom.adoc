@@ -1,0 +1,266 @@
+= Guide d'utilisation de GitHub Classroom
+:author: Thierry Vaira
+:email: tvaira@free.fr
+:revnumber: v0.1
+:revdate: 28/08/2021
+:revremark:
+:sectnums:
+:toc: left
+:toclevels: 4
+:toc-title: Sommaire
+:description: Guide d'utilisation de GitHub Classroom
+:keywords: git github
+:imagesdir: ./images/
+:source-highlighter: highlightjs
+:highlightjs-theme: rainbow
+:stem:
+
+ifdef::backend-html5[]
+++++
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+++++
+:html:
+endif::[]
+
+:icons: font
+:home: http://tvaira.free.fr/
+
+ifdef::backend-pdf[]
+{author} - <{email}> - version {revnumber} - {revdate} - {home}[tvaira.free.fr]
+endif::[]
+
+== GitHub Classroom
+
+https://classroom.github.com/[GitHub Classroom] automatise la création et le contrôle d'accès de dépôts https://github.com/[GitHub] pour l'enseignement. https://classroom.github.com/[GitHub Classroom] s'adresse aux étudiants pour récupérer un code de démarrage et aux enseignants pour la collecte des devoirs.
+
+image:classroom-logo.png[title="Le logo Classroom"]
+
+https://classroom.github.com/[GitHub Classroom] est gratuit pour tous. Il est possible aussi de profiter des avantages de https://education.github.com/[GitHub Education] (étudiants et enseignants).
+
+image:classroom-education.png[title="GitHub Education"]
+
+https://fr.wikipedia.org/wiki/GitHub[GitHub] est un service web d'hébergement et de gestion de développement de logiciels, utilisant le logiciel de gestion de versions Git.
+
+image:github-logo.png[title="Le logo GitHub"]
+
+https://fr.wikipedia.org/wiki/Git[Git] est un logiciel de *gestion de versions décentralisé* (DVCS). C'est un logiciel libre créé par *Linus Torvalds* en 2005. Il s'agit maintenant du logiciel de gestion de versions le plus populaire devant https://fr.wikipedia.org/wiki/Apache_Subversion[Subversion] (`svn`) qu'il a remplacé avantageusement.
+
+//.Le logo Git
+image:git-logo.png[title="Le logo Git"]
+
+Sites officiels :
+
+- https://classroom.github.com/[GitHub Classroom]
+- https://docs.github.com/en/education[GitHub Education]
+- https://github.com/[GitHub]
+- https://git-scm.com/[Git]
+
+Documentation : https://docs.github.com/en/education/manage-coursework-with-github-classroom[Manage coursework with GitHub Classroom]
+
+=== Créer un modèle de dépôt
+
+Il faut créer préalablement un dépôt (_repository_) dans https://github.com/[GitHub] :
+
+image:classroom-create-repository.png[]
+
+Puis le paramètrer en "modèle" (_template_):
+
+image:classroom-template-repository.png[]
+
+=== Créer une classe
+
+On commence par créer une nouvelle classe (_classroom_) :
+
+image:classroom-new.png[]
+
+Exemple :
+
+image:classroom-github.png[]
+
+[NOTE]
+====
+On pourra ensuite créer des devoirs (_assignments_) pour cette classe.
+====
+
+Les étudiants de cette classe :
+
+image:classroom-students.png[]
+
+On peut connecter un système de gestion de cours comme https://classroom.google.com/[Google Classroom] ou importer une liste des étudiants au format CSV.
+
+Et les enseignants et administrateurs :
+
+image:classroom-tas-and-admins.png[]
+
+L'onglet _Settings_ permet notamment de connecter un système de gestion de cours comme https://classroom.google.com/[Google Classroom] (afin de récupèrer la liste des étudiants) :
+
+image:classroom-settings.png[]
+
+On se connecte à https://classroom.google.com/[Google Classroom] :
+
+image:classroom-connect-lms.png[]
+
+Et on sélectionne un cours :
+
+image:classroom-connect-google.png[]
+
+https://classroom.github.com/[GitHub Classroom] récupère la liste des étudiants ce qui facilitera l'attibution des devoirs par la suite.
+
+=== Créer un devoir
+
+On peut créer des devoirs (_assignments_) individuels ou de groupe :
+
+image:classroom-new-assignement-1.png[]
+
+[NOTE]
+====
+Pour un devoir individuel, GitHub Classroom nomme les dépôts par le préfixe du dépôt du devoir et le nom d'utilisateur GitHub de l'étudiant. Un devoir de groupe est un travail de cours collaboratif pour des groupes d'étudiants sur GitHub Classroom. Les étudiants pourront travailler ensemble sur un devoir de groupe dans un dépôt partagé, comme une équipe de développeurs professionnels.
+====
+
+On sélectionne ensuite le modèle de dépôt :
+
+image:classroom-new-assignement-2.png[]
+
+On termine la création :
+
+image:classroom-new-assignement-3.png[]
+
+On obtient une invitation que l'on peut partager avec les étudiants concernés :
+
+image:classroom-new-assignement-4.png[]
+
+=== Le devoir
+
+L'étudiant accepte le devoir :
+
+image:classroom-accepted-assignment.png[]
+
+Et il est prêt à "travailler" sur le dépôt :
+
+image:classroom-student-ready.png[]
+
+GitHub a créé un dépôt privé dans l'organisation :
+
+image:classroom-etudiant-organisation.png[]
+
+Le nom du dépôt possède en suffixe le nom du compte GitHub de l'étudiant :
+
+image:classroom-repository-etudiant.png[]
+
+Le dépôt contient une copie du dépôt "modèle" :
+
+image:classroom-repository-etudiant-vue.png[]
+
+L'enseignant reçoit un email confirmant l'inscription de l'étudiant au devoir :
+
+image:classroom-email-teacher.png[]
+
+L'enseignant "voit" (et peut accèder à) l'ensemble des devoirs étudiants (et l'évolution des _commits_) et peut récupérer l'ensemble des dépôts (_Download Repositories_) :
+
+image:classroom-assignement-etudiant.png[]
+
+Pour récupérer les travaux, https://classroom.github.com/[GitHub Classroom] fournit un https://classroom.github.com/assistant[assistant] pour Windows(C), MacOS(C) et Linux.
+
+image:classroom-assistant-0.png[]
+
+Ou directement à partir de l'outil :
+
+image:classroom-assistant-1.png[]
+
+On sélectionne ensuite les travaux à récupérer :
+
+image:classroom-assistant-2.png[]
+
+On peut préciser le chemin de stockage de l'archive :
+
+image:classroom-assistant-3.png[]
+
+On obtient :
+
+image:classroom-assistant-archive.png[]
+
+=== _Feedback_
+
+Lors de la création du devoir, il est possible d'y associer une _Pull Request_ pour assurer une communication Étudiant/Enseignant sur ce devoir :
+
+image:classroom-new-assignement-pull-request.png[]
+
+On reçoit alors un email :
+
+image:classroom-email-student.png[]
+
+La _Pull Request_ dans GitHub :
+
+image:classroom-pr.png[]
+
+Elle permet :
+
+image:classroom-pr-feedback.png[]
+
+=== Extension Visual Studio Code
+
+https://code.visualstudio.com/[Visual Studio Code] possède une extension dédiée à https://marketplace.visualstudio.com/items?itemName=GitHub.classroom[GitHub Classroom].
+
+image:classroom-vscode-extension.png[]
+
+Elle permet de parcourir les devoirs et de commencer à travailler dessus. Elle apparaît dans l'onglet de l'extension https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github[GitHub] et il faut commencer par s'authentifier. La liste des devoirs apparaît alors dans l'arborescence.
+
+=== Un devoir avec auto-test
+
+Il est possible de configurer un devoir avec des tests exécutés automatiquement pour chaque soumission (`push`) de code dans le dépôt.
+
+GitHub Actions exécutera les commandes pour le test automatique dans un environnement Linux contenant le code le plus récent de l'étudiant. Il est possible d'y associer des points pour obtenir une note finale pour le devoir.
+
+Lien : https://docs.github.com/en/education/manage-coursework-with-github-classroom/teach-with-github-classroom/use-autograding[Use autograding]
+
+Il est possible d'ajouter des tests à la création du devoir ou plus tard en l'éditant :
+
+image:classroom-add-test.png[]
+
+Il existe deux méthodes distinctes : les tests d'entrée/sortie et les tests de commande d'exécution.
+
+image:classroom-choix-test.png[]
+
+Un test de commande d'exécution :
+
+image:classroom-test-run.png[]
+
+Un test d'entrée/sortie :
+
+image:classroom-test-io.png[]
+
+On peut suivre l'exécution du test dans GitHub Actions :
+
+//image:classroom-result-commit-fail.png[]
+
+image:classroom-result-actions-success.png[]
+
+Et dans Classroom :
+
+image:classroom-result-student-success.png[]
+
+Ici, le test n'est pas passé :
+
+image:classroom-result-student-fail.png[]
+
+Les détails dans GitHub Actions :
+
+image:classroom-result-actions-fail.png[]
+
+Pour les tests de commande d'exécution, il est intéressant d'y associer des *tests unitaires*.
+
+Il y a une exemple fourni pour C++ avec make et https://github.com/catchorg/Catch2[Catch2].
+
+https://github.com/education/autograding-example-cpp[Autograding Example C++]
+
+image:classroom-autograding.png[]
+
+***
+
+ifdef::backend-html5[]
+Site : {home}[tvaira.free.fr]
+endif::[]
+
+ifdef::backend-pdf[]
+{author} - <{email}> - version {revnumber} - {revdate} - {home}[tvaira.free.fr]
+endif::[]
