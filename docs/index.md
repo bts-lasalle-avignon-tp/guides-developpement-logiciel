@@ -58,7 +58,7 @@ Formats : [HTML](https://btssn-lasalle84.github.io/guides-developpement-logiciel
 
 ## Un guide sur l'utilisation de GitHub Classroom
 
-Ce [guide](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guide-classroom.html) présente https://classroom.github.com/[GitHub Classroom] dans le cadre de la réalisation des TP de programmation.
+Ce [guide](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guide-classroom.html) présente [GitHub Classroom](https://classroom.github.com/) dans le cadre de la réalisation des TP de programmation.
 
 Formats : [HTML](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guide-classroom.html) | [PDF](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/guide-classroom.pdf)
 
