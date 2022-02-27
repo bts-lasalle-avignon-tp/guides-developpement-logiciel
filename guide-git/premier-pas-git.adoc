@@ -1,0 +1,618 @@
+= Premiers pas avec git et Github
+:author: Thierry Vaira
+:email: tvaira@free.fr
+:revnumber: v0.1
+:revdate: 27/02/2022
+:revremark:
+:sectnums:
+:toc: left
+:toclevels: 4
+:toc-title: Sommaire
+:description: Premiers pas avec git et Github
+:keywords: git github
+:imagesdir: ./images/
+:source-highlighter: highlightjs
+:highlightjs-theme: rainbow
+:stem:
+
+////
+:highlightjs-theme: xcode
+:highlightjs-theme: androidstudio
+:highlightjs-theme: googlecode
+:highlightjs-theme: github
+:highlightjs-theme: foundation
+:highlightjs-theme: idea
+:highlightjs-theme: rainbow
+:highlightjs-theme: vs
+:highlightjs-theme: sunburst
+:highlightjs-theme: tomorrow
+:highlightjs-theme: railscasts
+:highlightjs-theme: zenburn
+////
+
+ifdef::backend-html5[]
+++++
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+++++
+:html:
+endif::[]
+
+:icons: font
+
+:home: https://btssn-lasalle84.github.io/guides-developpement-logiciel/
+
+ifdef::backend-pdf[]
+{author} - <{email}> - version {revnumber} - {revdate} - {home}[btssn-lasalle84.github.io]
+endif::[]
+
+Objectif : Utiliser git et GitHub en mini-projet.
+
+== Présentation
+
+=== Gestion de versions (VCS)
+
+La https://fr.wikipedia.org/wiki/Gestion_de_versions[gestion de version] (_Version Control_ ou _Revision Control_) consiste à gérer l'ensemble des versions d'un ou plusieurs fichiers (généralement en texte).
+
+[IMPORTANT]
+====
+On préfère parfois le terme « révision » (une modification) afin [.underline]#de ne pas confondre# la version d'un fichier et la version d'un logiciel, qui est une étape de distribution sous forme « finie » (_release_).
+====
+
+Un gestionnaire de version est donc un système (un outil logiciel) qui enregistre l’évolution d’un fichier (ou d’un ensemble de fichiers) au cours du temps dans un **historique**.
+
+[TIP]
+====
+Un gestionnaire de version permet de ramener un fichier à un état précédent, de ramener le projet complet à un état précédent, de visualiser les changements au cours du temps, de voir qui a modifié quelque chose et quand, et plus encore ...
+====
+
+Les fichiers ainsi versionnés sont mis à dispositions sur un **dépôt** (_repository_). C'est un espace de stockage géré par un logiciel de gestion de versions.
+
+Essentiellement utilisée dans le développement logiciel, elle concerne surtout la gestion des codes sources.
+
+=== Git
+
+https://fr.wikipedia.org/wiki/Git[Git] est un logiciel de *gestion de versions décentralisé* (DVCS). C'est un logiciel libre créé par *Linus Torvalds* en 2005.
+
+[TIP]
+====
+Il s'agit maintenant du logiciel de gestion de versions le plus populaire devant https://fr.wikipedia.org/wiki/Apache_Subversion[Subversion] (`svn`) qu'il a remplacé avantageusement.
+====
+
+Site officiel : https://git-scm.com/
+
+Ressources :
+
+- http://book.git-scm.com/docs[Manuel de référence]
+- http://git-scm.com/book/fr/v2[Livre Pro Git en français]
+- https://alexgirard.com/git-book/[Livre Git Community Book en français]
+- https://fr.wikibooks.org/wiki/Git[Wikilivre Git en français]
+- https://guides.github.com/introduction/git-handbook/[Git Handbook sur Github]
+
+Git est un ensemble de commandes indépendantes dont les principales sont :
+
+- `git init` crée un nouveau dépôt ;
+- `git clone` clone un dépôt distant ;
+- `git add` ajoute le contenu du répertoire de travail dans la zone d’index pour le prochain _commit_ ;
+- `git status` montre les différents états des fichiers du répertoire de travail et de l’index ;
+- `git diff` montre les différences ;
+- `git commit` enregistre dans la base de données (le dépôt) un nouvel instantané avec le contenu des fichiers qui ont été indexés puis fait pointer la branche courante dessus ;
+- `git branch` liste les branches ou crée une nouvelle branche ;
+- `git checkout` permet de basculer de branche et d'en extraire le contenu dans le répertoire de travail ;
+- `git merge` fusionne une branche dans une autre ;
+- `git log` affiche la liste des _commits_ effectués sur une branche ;
+- `git fetch` récupère toutes les informations du dépôt distant et les stocke dans le dépôt local ;
+- `git push` publie les nouvelles révisions sur le dépôt distant ;
+- `git pull` récupère les dernières modifications distantes du projet et les fusionne dans la branche courante ;
+- `git tag` liste ou crée des _tags_ ;
+- `git stash` stocke de côté un état non commité afin d'effectuer d'autres tâches.
+
+.Obtenir de l'aide :
+----
+$ git help
+$ git --help
+$ man git
+
+$ git help <commande>
+$ git <commande> --help
+$ man git-<commande>
+----
+
+
+Aide-mémoire :
+
+- https://training.github.com/downloads/fr/github-git-cheat-sheet/[AIDE MÉMOIRE GITHUB GIT] (Version https://training.github.com/downloads/fr/github-git-cheat-sheet.pdf[PDF])
+- https://ndpsoftware.com/git-cheatsheet.html[Git CHEATSHEET]
+- https://www.julienkrier.fr/articles/git-cheat-sheet[Git Cheat Sheet]
+
+Simulateurs :
+
+*ExplainGit* est un *simulateur* permettant d'expérimenter visuellement le résultat des commandes qui agissent directement sur le dépôt Git. Il ne simule ni le répertoire de travail ni l'espace d'index, mais uniquement le dépôt.
+
+- (fr) : https://gauthier.frama.io/explain-git-with-d3/
+- (en) : https://onlywei.github.io/explain-git-with-d3/
+
+Il existe aussi https://learngitbranching.js.org/?locale=fr_FR[Learn Git Branching (fr)].
+
+=== Github
+
+https://github.com/[GitHub] est un service web d’hébergement et de gestion de développement de logiciels, utilisant le logiciel de gestion de versions Git.
+
+****
+D'autres hébergeurs de dépôts git : https://git.wiki.kernel.org/index.php/GitHosting
+****
+
+Ressources :
+
+- https://guides.github.com/introduction/git-handbook/[Git Handbook sur Github]
+- https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/git-and-github-learning-resources[Git and GitHub learning resources]
+- https://guides.github.com/activities/hello-world/[Hello World]
+
+== Mini-projet
+
+La section de **BTS SN Lasalle Avignon** dispose d'une organisation (`btssn-lasalle-84`) sur Github qui permet d'héberger les dépôts pour les projets et mini-projets.
+
+Lien : https://github.com/btssn-lasalle-84
+
+Chaque mini-projet dispose de son propre dépôt sur Github, par exemple : https://github.com/btssn-lasalle-84/mp12-meteo-2022
+
+=== Visibilité et droits d'accès
+
+Seuls les membres d'un mini-projet ont un droit d'accès en **écriture** sur le dépôt.
+
+[NOTE]
+====
+Les enseignants de la section ont un droit d'administration sur l'ensemble des dépôts.
+====
+
+L'ensemble des dépôts sont en visibilité **privée** pendant toute la durée du mini-projet.
+
+[TIP]
+====
+Si le travail final réalisé est de qualité, le dépôt basculera en visibilité publique.
+====
+
+=== Démarrer
+
+[NOTE]
+====
+On "travaille" rarement directement sur l'interface web du dépôt hébergé sur Github.
+====
+
+Pour démarrer, il faut tout d'abord récupérer localement le dépôt distant.
+
+Il faut le copier (cloner) avec la commande `git clone`` pour obtenir un dépôt local :
+
+----
+$ git clone <depot>
+----
+
+[IMPORTANT]
+====
+Il est possible de cloner le dépôt GitHub de plusieurs manières, notamment :
+
+- en SSH : en utilisant des clés, https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/connecting-to-github-with-ssh
+- en HTTPS : en utilisant un jeton d'accès personnel (à utiliser à la place du mot de passe), https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token
+====
+
+La commande `git clone` effectue les actions suivantes :
+
+- crée un répertoire du nom du dépôt existant, initialisé avec un répertoire `.git` à l'intérieur,
+- nomme automatiquement le serveur distant (_remote_) `origin`,
+- tire l'historique,
+- crée un pointeur sur l’état actuel de la branche `main` et l’appelle localement `origin/main`
+- crée également une branche locale `main` qui démarre au même endroit que la branche `main` distante
+
+[NOTE]
+====
+`main` (ou `master`) et `origin` sont des noms donnés par défaut.
+====
+
+----
+$ cd <depot>
+
+$ ls -al
+drwxrwxr-x 8 tv tv 4096 févr. 27 11:25 .git
+-rw-rw-r-- 1 tv tv   17 févr. 27 11:25 README.md
+----
+
+[NOTE]
+====
+Pour l’instant, seul le fichier `README.md` est versionné.
+====
+
+----
+$ tree -L 1 .git
+.git
+├── config        # configuration des préférences
+├── description   # description du projet
+├── HEAD          # pointeur vers la branche courante
+├── hooks         # pre/post actions hooks
+├── index         # l'index
+├── logs          # historique
+├── objects       # les objets (commits, trees, blobs, tags)
+└── refs          # pointeurs vers les branches
+...
+----
+
+[IMPORTANT]
+====
+Ne pas "toucher" au répertoire `.git` car il est géré directement par l'outil `git`.
+====
+
+=== L'espace de travail git
+
+On distingue trois zones :
+
+- le **répertoire de travail** (_working directory_) : il contient une extraction unique d’une version du projet pour pouvoir travailler
+- l'**index** ou zone de transit (_staging area_) : un simple fichier (ici `.git/index`) qui stocke les informations concernant ce qui fera partie du prochain instantané (_commit_)
+- le **dépôt local** (_local repository_) : le répertoire `.git` qui stocke tout l’historique des instantannés (_commits_) et les méta-données du projet
+
+ifdef::backend-html5[]
+image:git-zones.png[]
+endif::[]
+
+ifdef::backend-pdf[]
+image::git-zones.png[,480,200,align="center"]
+endif::[]
+
+[NOTE]
+====
+On peut considérer qu'il existe une quatrième zone nommée "remise" qui s'utilise avec la commande `git stash`.
+====
+
+L’utilisation standard de Git se passe comme ceci :
+
+- on édite des fichiers dans le répertoire de travail (_working directory_) ;
+- on indexe les fichiers modifiés avec la commande `git add`, ce qui ajoute des instantanés de ces fichiers dans la zone d’index (_staging area_) ;
+- on valide les modifications avec la commande `git commit`, ce qui a pour effet de basculer les instantanés des fichiers de l’index dans le dépôt local (_local repository_).
+
+image:git-travail.png[]
+
+Lien : https://ndpsoftware.com/git-cheatsheet.html
+
+[IMPORTANT]
+====
+Une fois des changements validés avec la commande `git commit`, le dépôt local n'est plus synchronisé avec le dépôt distant ! Voir xref:ancre-synchro[Dépôt local vs dépot distant]
+====
+
+Les différents états d'un fichier :
+
+- non suivi ou non versionné (_untracked_) : aucun instantané existe pour ce fichier
+- non modifié (_unmodified_) : non modifié depuis le dernier instantané
+- modifié (_modified_) : modifié depuis le dernier instantané mais n’a pas été indexé
+- indexé (_staged_) : modifié et ajouté dans la zone d’index
+- validé : une version particulière d’un fichier
+
+image:git-fichier.png[]
+
+Pour obtenir l'état des fichiers, on utilise (très souvent) la commande `git status`.
+
+[[ancre-synchro]]
+=== Dépôt local vs dépot distant
+
+image:git-depot-distant.png[]
+
+Au fur et à mesure de l'évolution du projet, il est normal que les dépôts local et distant ne soient plus synchronisés. Des commandes spécifiques seront utilisées pour gérer cela :
+
+- `git push` publie ("pousse") les nouvelles révisions du dépôt local sur le dépôt distant ;
+
+- `git fetch` récupère l’ensemble des changements (qui n’ont pas déjà été rapatriés localement) présents sur le serveur et met à jour la base de donnée locale (le dépôt local). Elle ne modifie pas le répertoire de travail.
+
+- `git pull` récupère ("tire") le dépôt distant en effectuant essentiellement un `git fetch` immédiatement suivi par un `git merge` dans la plupart des cas. Le répertoire de travail peut donc être modifié.
+
+
+=== A quoi sert le dépôt local ?
+
+Cela permet d'avancer le développement d'un projet de manière décentralisée ("hors connexion") car on dispose de l'ensemble du projet dans son dépôt local.
+
+=== A quoi sert le dépôt distant hébergé ?
+
+Il centralise l'ensemble des fichiers d'un projet sur Internet.
+
+Cela permet essentiellement :
+
+- de sauvegarder le projet et le rendre accessible depuis Internet
+- de partager le projet et donc de travailler collaborativement
+
+=== Configuration de git
+
+Avant de commencer à "travailler" sur le dépôt, il est préférable de configurer l'outil `git` :
+
+.Configuration du compte :
+----
+$ git config --global user.name "<votre nom>"
+$ git config --global user.email "<votre email>"
+----
+
+.Choix de l'éditeur de texte :
+----
+$ git config --global core.editor vim
+----
+
+.Activation de la coloration :
+----
+$ git config --global color.diff auto
+$ git config --global color.status auto
+$ git config --global color.branch auto
+----
+
+etc ...
+
+[NOTE]
+====
+Le fichier de configuration `.gitconfig` est situé à la racine de votre répertoire personnel. Il peut exister un fichier `/etc/gitconfig` qui contient les valeurs pour tous les utilisateurs et tous les dépôts du système. Sinon la configuration sera complétée par le fichier `.git/config` du dépôt en cours d'utilisation. On peut alors utiliser la commande `git config --local`.
+====
+
+.Visualiser le fichier de configuration
+----
+$ cat $HOME/.gitconfig
+----
+
+[source,ini]
+----
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+[user]
+	name = tvaira
+	email = tvaira@free.fr
+----
+
+.Visualiser la configuration
+----
+$ git config --list
+
+$ git config user.name
+tvaira
+----
+
+Stockage des identifiants : https://git-scm.com/book/fr/v2/Utilitaires-Git-Stockage-des-identifiants
+
+Le mode « cache » conserve en mémoire les identifiants pendant un certain temps. Aucun mot de passe n’est stocké sur le disque et les identifiants sont oubliés après 15 minutes par défaut.
+
+----
+$ git config --global credential.helper cache
+----
+
+L’assistant `cache` accepte une option `--timeout <secondes>` qui modifie la période de maintien en mémoire (par défaut, 900, soit 15 minutes).
+
+.Exemple pour 8 heures :
+----
+$ git config --global credential.helper 'cache --timeout 28800'
+----
+
+=== Cycle de travail
+
+[NOTE]
+====
+Il faut utiliser régulièrement la commande `git status` qui fournit un guide précieux pour l'utilisation des fonctionnalités de git.
+====
+
+.Sur le dépôt local
+****
+- Éditer des fichiers (`vim` ou un EDI)
+- Ajouter les changement (`git add <fichier>`)
+- Valider les changements (`git commit -m "Message"`)
+****
+
+[IMPORTANT]
+====
+Il est essentiel de garder en tête que le message de _commit_ doit répondre aux questions “Quoi ?” et “Pourquoi ?”, mais surtout pas à la question “Comment ?”. Comme l’objet d’un courriel, (la première ligne d’)un message de _commit_ doit donc décrire brièvement (en 50 caractères max) **ce qui a été fait** (un résumé des changements introduits). Utiliser uniquement le présent des verbes et l’impératif. Commencer par une majuscule et pas de point final.
+====
+
+.Vers le dépôt distant
+****
+- Envoyer les changements (`git push`)
+****
+
+=== Étiqueter des versions
+
+Git donne la possibilité d’étiqueter un certain état dans l’historique. On l'utilise pour marquer (_tag_) les états de publication comme des **versions** (1.0 par exemple).
+
+[NOTE]
+====
+Git utilise deux types principaux d’étiquettes : légères et annotées (avec l'option `-a`). Une étiquette légère est considérée comme un pointeur sur un _commit_ spécifique. Par contre, les étiquettes annotées sont stockées en tant qu’objets à part entière dans la base de données de Git.
+====
+
+Pour les versions, on utilisera des étiquettes annotées.
+
+.Étiqueter une version :
+----
+$ git tag -a 1.0 -m 'La version 1.0'
+
+$ git tag
+1.0
+
+$ git show 1.0
+tag 1.0
+Tagger: tvaira <tvaira@free.fr>
+Date:   Wed Aug 11 15:40:13 2021 +0200
+
+La version 1.0
+...
+----
+
+[NOTE]
+====
+Il est possible d'étiqueter après coup. Pour cela, il faut spécifier le _commit_ en fin de commande : `git tag -a v1.2 <commit>`
+====
+
+=== Travailler avec des branches
+
+****
+**Créer une branche** signifie diverger de la ligne principale de développement et continuer à travailler sans impacter cette ligne.
+****
+
+La branche par défaut s’appelle `master` (dans Git) ou `main` (sur Github). Au fur et à mesure des validations, la branche pointe vers le dernier des _commits_ réalisés. À chaque validation, le pointeur de branche avance automatiquement.
+
+[NOTE]
+====
+La branche `master` ou `main` n’est pas une branche spéciale. Elle est identique à toutes les autres branches.
+====
+
+D'un point de vue technique, une branche dans Git est simplement un pointeur déplaçable vers un _commit_.
+
+Pour créer une nouvelle branche, on utilise la commande `git branch <nom-branche>`. Cela crée simplement un nouveau pointeur vers le _commit_ courant.
+
+Git connaît la branche actuelle avec le pointeur spécial appelé `HEAD`. Dans Git, il s’agit simplement d’un pointeur sur la branche locale où l'on se trouve.
+
+La commande `git branch` n’a fait que créer une nouvelle branche et elle n’a pas fait basculer la copie de travail vers cette branche.
+
+Pour basculer sur une branche existante, il suffit d'exécuter la commande `git checkout <nom-branche>`. Cela déplace `HEAD` pour le faire pointer vers la branche `<nom-branche>`.
+
+Il est habituel de créer une nouvelle branche et de vouloir basculer sur cette nouvelle branche en même temps : pour cela on exécutera la commande `git checkout -b <nouvelle-branche>`.
+
+[NOTE]
+====
+Il est important de noter que lorsque l'on change de branche avec Git, les fichiers du répertoire de travail sont modifiés. Si la copie de travail ou la zone d’index contiennent des modifications non validées qui sont en conflit avec la branche à extraire, Git n'autorisera pas le changement de branche. Le mieux est donc d’avoir une copie de travail propre au moment de changer de branche.
+====
+
+.En résumé
+****
+On crée des nouvelles branches à chaque nouvelle fonctionnalité ou nouvelle modification qu'il faut apporter au projet. Git permet de gérer plusieurs branches en parallèle et ainsi de cloisonner les travaux et d'éviter ainsi de mélanger des modifications du code source qui n'ont rien à voir entre elles.
+****
+
+Une **branche de suivi** (_tracking branch_) est une branche locale qui est en relation directe avec une branche distante (_upstream branch_).
+
+Les branches de suivi peuvent servir :
+
+- à sauvegarder son travail sur la branche dans un dépôt distant
+- partager son travail sur la branche avec d'autres développeurs
+
+[NOTE]
+====
+Dans le cadre d'un travail collaboratif, on pourra aussi décider d'utiliser des branches locales privées que l'on ne souhaite pas partager.
+====
+
+L’extraction d’une branche locale à partir d’une branche distante crée automatiquement une branche de suivi (c'est l'option par défaut `--track` de la commande `git checkout`). Si la branche locale existe avant la branche distante, il faudra utiliser l'option `-u` ou `--set-upstream-to` de `git push` pour créer le suivi.
+
+Si on se trouve sur une branche de suivi :
+
+- `git push` sélectionne automatiquement le serveur vers lequel pousser les modifications.
+- `git pull` récupère toutes les références distantes et fusionne automatiquement la branche distante correspondante dans la branche actuelle.
+
+=== Fusion de branche
+
+Une fois le travail réalisé (terminé et testé) dans la branche, il est prêt à être fusionné dans la branche principale.
+
+****
+La fusion permet d’implémenter les modifications apportées à la branche dans une autre branche (souvent la branche principale).
+****
+
+On réalise ceci au moyen de la commande `git merge` qui gère la fusion des changements.
+
+image:branche.png[]
+
+[NOTE]
+====
+Généralement une fois le travail fusionné, on n’a plus besoin de cette branche locale. On peut la supprimer avec l’option `-d` de la commande `git branch`.
+
+Pour supprimer une branche distante :
+
+----
+$ git push origin --delete <branche>
+----
+====
+
+.En résumé
+****
+En gardant une branche principale saine, on conserve ainsi une version du logiciel prête à être livrée à tout instant puisqu'on ne fusionne (`merge`) dedans que lorsque le développement d'une branche est bien terminé.
+****
+
+=== Cycle de travail avec une branche
+
+****
+- Créer une branche thématique et basculer dessus (`git branch <branche>` puis `git checkout <branche>` ou `git checkout -b <branche>`)
+  * Éditer des fichiers
+  * Ajouter les changement (`git add <fichier>`)
+  * Valider les changements (`git commit -m "Message"`)
+- Basculer sur la branche principale et fusionner la branche thématique (`git checkout master` puis `git merge <branche>`)
+- Supprimer la branche thématique (`get branch -d <branche>`)
+****
+
+Les commandes complémentaires à utiliser :
+
+- `git status`
+- `git log ...`
+- `git branch --all -vv`
+
+=== Conflit de fusion
+
+Il est possible qu'une fusion (_merge_) ne puisse pas être réalisée automatiquement par Git. Cela arrive lorsqu'une même partie d'un fichier a été modifiée dans deux branches distinctes.
+
+Lorsque Git rencontre un conflit au cours d'une fusion, il l'indique dans les fichiers concernés avec des délimiteurs (`<<<<<<<`, `=======` et `>>>>>>>`) qui marquent les deux côtés du conflit.
+
+Pour résoudre le conflit, il faut choisir une partie ou l’autre ou bien fusionner les deux contenus "à la main".
+
+On peut ensuite terminer la fusion en faisant un `git commit` ou en suivant les indications de `git status`.
+
+=== Cycle de travail collaboratif
+
+Un développement collaboratif avec Github et git s'appuie sur la notion de _Pull Request_ et l'utilisation des branches.
+
+[TIP]
+====
+GitHub a popularisé le principe de _Pull Request_ et les autres système Git hébergés l'utilisent aussi : Bitbucket Cloud, GitLab (_Merge Request_), ...
+====
+
+****
+Les _Pull Requests_ sont une fonctionnalité facilitant la collaboration des développeurs sur un projet.
+
+Les _Pull Requests_ sont un mécanisme permettant à un développeur d'informer les membres de l'équipe qu'il a terminé un « travail » (une fonctionnalité, une version livrable, un correctif, ...) et de proposer sa contribution au dépôt central.
+****
+
+[NOTE]
+====
+_Pull Request_ peut être traduit par « Proposition de révision » (PR) : c'est-à-dire une demande de modification ou de contribution.
+====
+
+Lien : https://docs.github.com/en/github/collaborating-with-pull-requests[Collaborating with pull requests]
+
+.Principe
+****
+Une fois que sa branche de suivi est prête, le développeur crée ou ouvre (_Open_) une _Pull Request_.
+
+Tous les développeurs du projet seront informées du fait qu'ils doivent *réviser le code* puis le *fusionner* (_merge_) dans la branche principale (`main` ou `master`) ou dans une branche de développement (`develop` par exemple).
+
+Pendant cette révision de code, les développeurs peuvent discuter de la fonctionnalité (commenter le code, poser des questions, ...) et proposer des adaptations de la fonctionnalité en publiant des _commits_ de suivi.
+****
+
+image:pull-request.png[]
+
+Les _Pull Requests_ offrent cette fonctionnalité dans une interface Web à côté des dépôts GitHub. Cette interface affiche une comparaison des changements, permet l'échange entre développeurs et fournit une méthode simple pour réaliser la fusion (_merge_) du code quand il est prêt.
+
+[NOTE]
+====
+Généralement une fois le travail fusionné, on n’a plus besoin des branches locale et distante. 
+
+- Pour supprimer une branche locale :
+
+----
+$ git branch --delete <branche>
+----
+
+- Pour supprimer une branche distante :
+
+----
+$ git push origin --delete <branche>
+----
+====
+
+== Voir aussi
+
+Liens :
+
+- https://btssn-lasalle84.github.io/guides-developpement-logiciel/git.html (Version https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/git.pdf[PDF])
+- https://btssn-lasalle84.github.io/guides-developpement-logiciel/jira.html (Version https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/jira.pdf[PDF])
+
+
+***
+
+ifdef::backend-html5[]
+Site : {home}[btssn-lasalle84.github.io]
+endif::[]
+
+ifdef::backend-pdf[]
+{author} - <{email}> - version {revnumber} - {revdate} - {home}[btssn-lasalle84.github.io]
+endif::[]

@@ -4,6 +4,7 @@ Les [documents](https://github.com/btssn-lasalle84/guides-developpement-logiciel
 
 ## Sommaire
 
+- [Sommaire](#sommaire)
 - [Le guide de programmation](#le-guide-de-programmation)
 - [Le guide de rédaction de documents techniques](#le-guide-de-rédaction-de-documents-techniques)
 - [Le guide de documentation logicielle](#le-guide-de-documentation-logicielle)
@@ -54,6 +55,10 @@ Formats : [HTML](https://btssn-lasalle84.github.io/guides-developpement-logiciel
 Ce [guide](https://btssn-lasalle84.github.io/guides-developpement-logiciel/git.html) présente [git](https://git-scm.com/) et [GitHub](https://github.com/). Ce [guide](https://btssn-lasalle84.github.io/guides-developpement-logiciel/git.html) est complété par un [cours sur Git](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/cours-git.pdf).
 
 Formats : [HTML](https://btssn-lasalle84.github.io/guides-developpement-logiciel/git.html) | [PDF](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/git.pdf)
+
+Ce [guide](https://btssn-lasalle84.github.io/guides-developpement-logiciel/premier-pas-git.html) présente l'utilisation de [git](https://git-scm.com/) et [GitHub](https://github.com/) en mini-projets.
+
+Formats : [HTML](https://btssn-lasalle84.github.io/guides-developpement-logiciel/premier-pas-git.html) | [PDF](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/premier-pas-git.pdf)
 
 ## Un guide sur l'utilisation de GitHub Classroom
 
