@@ -246,14 +246,14 @@ Bien évidemment, les variables métasyntaxiques ne doivent jamais apparaître d
 
 === Environnements de développement intégré
 
-Un environnements de développement intégré (https://fr.wikipedia.org/wiki/Environnement_de_d%C3%A9veloppement[IDE] ou EDI en français) est un ensemble d'outils qui permet d'augmenter la productivité des programmeurs qui conçoivent des logiciels. En aucun cas, ils doivent être considérés comme des outils indispensables ou obligatoires.
+Un environnement de développement intégré (https://fr.wikipedia.org/wiki/Environnement_de_d%C3%A9veloppement[IDE] ou EDI en français) est un ensemble d'outils qui permet d'augmenter la productivité des programmeurs qui conçoivent des logiciels. En aucun cas, ils doivent être considérés comme des outils indispensables ou obligatoires.
 
 [quote, ]
 ____
 Le marteau ne fait pas l'architecte !
 ____
 
-Un EDI comporte généralement un *éditeur de texte* destiné à la programmation, des fonctions qui permettent, par pression sur un bouton, de démarrer le *compilateur* ou l'*éditeur de liens*, d'*exécuter* le programme ainsi qu'un *débogueur* en ligne, de consulter la *documentation*, etc ... Certains environnements sont dédiés à un langage de programmation (IDLE pour Python par exemple), un _framework_ (Qt Creator pour Qt par exemple) ou une architecture (Xcode pour Mac OS X et iOS par exemple) en particulier. 
+Un EDI comporte généralement un *éditeur de texte* destiné à la programmation, des fonctions qui permettent, par pression sur un bouton, de démarrer le *compilateur* ou l'*éditeur de liens*, d'*exécuter* le programme ainsi qu'un *débogueur* en ligne, de consulter la *documentation*, etc ... Certains environnements sont dédiés à un langage de programmation (IDLE pour Python par exemple), un _framework_ (Qt Creator pour Qt par exemple) ou une architecture (Xcode pour Mac OS X et iOS par exemple) en particulier.
 
 == Guide de programmation en BTS SN (LaSalle Avignon)
 
