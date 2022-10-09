@@ -15,6 +15,7 @@ Les documents sont fournis au format [Asciidoc](https://asciidoc.org/). Ils sont
 		- [2°année BTS SN](#2année-bts-sn)
 	- [Un guide sur l'utilisation de git](#un-guide-sur-lutilisation-de-git)
 	- [Un guide sur la gestion de projet logiciel avec Jira](#un-guide-sur-la-gestion-de-projet-logiciel-avec-jira)
+	- [Un guide sur les outils logiciels](#un-guide-sur-les-outils-logiciels)
 	- [Contact](#contact)
 	- [Site web](#site-web)
 	- [Licence](#licence)
@@ -54,6 +55,12 @@ Ce guide présente git et GitHub.
 ## Un guide sur la gestion de projet logiciel avec Jira
 
 Ce guide présente Jira, Bitbucket et GitHub.
+
+## Un guide sur les outils logiciels
+
+Ce présente les outils logiciels utilisés pour exercer le métier de développeur.
+
+Documents complémentaires : GCC, GDB, MAKE (et CMAKE) et VSCODE
 
 ## Contact
 
