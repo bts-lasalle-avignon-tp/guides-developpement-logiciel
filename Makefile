@@ -1,6 +1,6 @@
 MAKE = make
 
-SUBDIRS = guide-doxygen guide-jira guide-redaction guide-rendu-document-2btssnir guide-git guide-programmation guide-rendu-document-1btssn
+SUBDIRS = guide-doxygen guide-jira guide-redaction guide-rendu-document-2btssnir guide-git guide-programmation guide-rendu-document-1btssn guide-outils
 
 all:
 	list='$(SUBDIRS)'; for subdir in $$list; do \

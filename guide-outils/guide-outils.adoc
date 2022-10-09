@@ -1,0 +1,451 @@
+= Guide des outils
+:author: Thierry Vaira
+:email: tvaira@free.fr
+:revnumber: v0.3
+:revdate: 23/08/2021
+:revremark: 
+:sectnums:
+:toc: left
+:toclevels: 4
+:toc-title: Sommaire
+:description: les outils utilisés dans le développement logiciel
+:keywords: 
+:imagesdir: ./images/
+:sourcedir: ./src/
+:source-highlighter: highlightjs
+:highlightjs-theme: rainbow
+:stem:
+
+ifdef::backend-html5[]
+++++
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+++++
+endif::[]
+
+:icons: font
+
+:home: https://btssn-lasalle84.github.io/guides-developpement-logiciel/
+
+ifdef::backend-pdf[]
+{author} - <{email}> - version {revnumber} - {revdate} - {home}[btssn-lasalle84.github.io]
+endif::[]
+
+== Le métier de développeur logiciel
+
+On nomme « développeurs » les personnes qui conçoivent et mettent à jour les logiciels informatiques. Pour cela, le développeur met en œuvre des langages de programmation et travaille souvent en communautés avec d'autres développeurs.
+
+[NOTE]
+====
+Un développeur _full stack_ est un développeur web capable de réaliser la programmation d’un site ou d'une application web à la fois en _front-end_ et _back-end_. Le développement _front-end_ correspond à l'interface d’une application qu’un utilisateur peut voir et avec lesquelles il peut interagir directement (par exemple, HTML, CSS et JavaScript pour une page web). Par opposition, le développement _back-end_ (la partie cachée de l'iceberg) désigne l'ensemble du code devant produire un résultat (par exemple, PHP pour un serveur produisant une page web).
+====
+
+Comme dans tout métier, le développeur utilise des outils pour l'aider à produire un logiciel de manière efficace. Les outils cités ci-dessous sont plutôt réservés à des experts du domaine et ne conviennent pas à des débutants effectuant leurs premiers apprentissages.
+
+[quote, ]
+____
+Le marteau ne fait pas l'architecte !
+____
+
+== Environnement de développement minimal
+
+=== L'éditeur de texte
+
+Au minimum, le développeur utilisera un *éditeur de texte*. Ce logiciel lui permettra de produire du *code source*.
+
+[IMPORTANT]
+====
+Un éditeur de texte est un logiciel destiné à la création et l'édition de *fichiers textes*. Les fichiers texte sont des fichiers qui contiennent les séquences brutes d'octets qui encodent simplement les caractères. On parle aussi de « texte brut » (_plain text_), par opposition aux logiciels de traitement de texte qui produisent des « documents » texte (contenant par exemple des élements de mise en forme).
+====
+
+La recherche d'un « bon » éditeur de texte est important pour le développeur. Il devra par exemple posséder au minimum ces fonctionnalités :
+
+- le copier/coller
+- l'ouverture simultanée de plusieurs fichiers
+- la recherche et remplacement de texte ou motifs (notamment leses expressions rationnelles)
+- l'indentation automatique
+- le complètement automatique (autocomplétion)
+- la coloration syntaxique
+- des raccourcis clavier, des macros
+- la gestion de différents encodages de caractères (unicode ...)
+
+Sous Windows :
+
+- Bloc-notes (Notepad) l'éditeur standard de Windows
+- Notepad++, UltraEdit, Sublime Text, ...
+
+Sous UNIX - GNU/Linux :
+
+- Vi, Vim
+- Emacs
+- nano, ...
+
+Sous Mac OS, Mac OS X et macOS :
+
+- SimpleText, TextEdit, ...
+
+À lire : https://fr.wikipedia.org/wiki/Guerre_d%27%C3%A9diteurs[Guerre d'éditeurs]
+
+Pour le respect des règles de codage et bonnes pratiques en C++ : https://github.com/btssn-lasalle84/github-actions-cpp
+
+=== Le compilateur
+
+Dans le cas de langages compilés, le développeur aura besoin d'une chaîne de fabrication comprenant notamment un **compilateur**.
+
+Support de cours : https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/gcc.pdf[gcc/g++]
+
+=== Le moteur de production
+
+Les étapes de fabrication d'un exécutable peuvent être automatisées en utilisant un outil, comme `make`.
+
+`make` est un logiciel traditionnel d'UNIX. C'est un "**moteur de production**" : il sert à appeler des commandes créant des fichiers.
+
+Liens : https://www.gnu.org/software/make/ et https://www.gnu.org/software/make/manual/html_node/index.html
+
+Support de cours : http://tvaira.free.fr/dev/cours/cours-c-programmation-modulaire.pdf[cours-c-programmation-modulaire.pdf] et https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/make.pdf[make]
+
+À la différence d'un simple script _shell_, `make` exécute les commandes seulement si elles sont nécessaires. Le but est d'arriver à un résultat (logiciel compilé ou installé, documentation créée, etc.) sans nécessairement refaire toutes les étapes.
+
+`make` est un outil indispensable aux développeurs car :
+
+- `make` assure la compilation séparée automatisée : plus besoin de saisir une série de commandes
+- `make` permet de ne recompiler que le code modifié : optimisation du temps et des ressources
+- `make` utilise un fichier distinct contenant les règles de fabrication (`Makefile`) :  mémorisation de règles spécifiques longues et complexes
+- `make` permet d'utiliser des commandes (ce qui permet d'assurer des tâches de nettoyage, d'installation, d'archivage, etc ...)  : une seule commande pour différentes tâches
+- `make` utilise des variables, des directives, ... : facilite la souplesse, le portage et la réutilisation
+
+De nos jours, les fichiers `Makefile` sont de plus en plus rarement générés à la main par le développeur mais construit à partir d'outils automatiques tels qu' `autoconf`, `cmake`, `qmake`, etc. qui facilitent la génération de `Makefile` complexes et spécifiquement adaptés à l'environnement dans lequel les actions de production sont censées se réaliser.
+
+Liens :
+
+- https://fr.wikipedia.org/wiki/Autoconf
+- https://fr.wikipedia.org/wiki/CMake
+- http://tvaira.free.fr/dev/cours/cmake.pdf ou https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/cmake.pdf
+- https://doc.qt.io/qt-6/qmake-manual.html
+
+Voir aussi : https://fr.wikipedia.org/wiki/Gradle[Gradle] est un moteur de production fonctionnant sur la plateforme Java. Il permet de construire des projets en Java, Scala, Groovy voire C++.
+
+=== Le débogueur
+
+Le débogage est un processus de diagnostic, de localisation et d’élimination des erreurs des programmes informatiques. Le débogage permet d'obtenir des programmes qui donnent des résultats corrects.
+
+On utilise un https://fr.wikipedia.org/wiki/D%C3%A9bogueur[débugueur] (de l'anglais _debugger_) ou https://fr.wikipedia.org/wiki/D%C3%A9bogueur[débogueur] (de la francisation bogue).
+
+Un débogueur est un logiciel qui aide un développeur à analyser les _bugs_ (bogues) d'un programme. Pour cela, il permet d'exécuter le programme en pas-à-pas, d'afficher la valeur des variables à tout moment, de mettre en place des points d'arrêt sur des conditions ou sur des lignes du programme ...
+
+Le programme à débuguer est exécuté à travers le débogueur et s'exécute normalement. Le débogueur offre alors au programmeur la possibilité d'observer et de contrôler l'exécution du programme.
+
+****
+https://fr.wikipedia.org/wiki/GNU_Debugger[GNU Debugger], également appelé `gdb`, est le débogueur standard du projet GNU. Il est portable sur de nombreux systèmes type Unix et fonctionne pour plusieurs langages de programmation, comme le C et le C++. Il fut écrit par Richard Stallman en 1988. `gdb` est un logiciel libre, distribué sous la licence GNU GPL. L’interface de `gdb` est une simple ligne de commande, mais il existe des applications qui lui offrent une interface graphique beaucoup plus conviviale.
+
+Pour débuguer un programme avec `gdb`, il faut l'avoir compilé avec l'option `-g` de `gcc/g++`.
+
+Notons également que `gdb` est souvent invoqué en arrière-plan par les environnements de développement intégré (IDE).
+****
+
+Support de cours : https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/gdb.pdf[gdb] et https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/gdb-diapos.pdf[version diapos]
+
+****
+Pour le débogage d'application Web, il faut utiliser les **outils de développement** fournis par certains navigateurs comme Chrome DevTools et Firefox DevTools. Et les systèmes de validation du W3C : http://validator.w3.org/
+****
+
+=== La documentation
+
+L'accès à la documentation (des langages informatiques, API, bibliothèques, _framework_, ...) est probablement la pierre angulaire du travail d'un développeur.
+
+On peut citer :
+
+- Les pages `man` : `man` est une commande disponible sur les systèmes d'exploitation de type Unix. Elle permet de visionner les contenus d'une documentation. À l'origine, elle sert à accéder aux manuels des commandes d'un _shell_ Unix et à la description des fonctions du langage C. Voir aussi : http://tvaira.free.fr/dev/methodologie/creation_pages_man.pdf
+
+- Le service MSDN et **MSDN Library** : C'est la référence incontournable (car officielle) pour tout développement logiciel sur Windows. Elle regroupe l'intégralité des API Windows, du plus bas niveau (écriture de drivers) au plus haut (développement de modules pour les produits Microsoft).
+
+- Les sites web : les éditeurs fournissant généralement un site web pour la documentation, par exemple : https://developer.mozilla.org/fr/docs/Web/JavaScript[JavaScript], https://api.jquery.com/[jQuery API], https://www.php.net/manual/fr/[PHP], ...
+
+Quelques outils :
+
+Un navigateur (_offline_) de documentation API et un gestionnaire d'extraits de code (_snippet_) :
+
+- Windows et GNU/Linux : https://zealdocs.org/[Zeal]
+- macOS : https://kapeli.com/dash[Dash]
+
+****
+Un _snippet_ est un terme de programmation informatique désignant une petite portion réutilisable de code source ou de texte. La gestion de snippets est une fonctionnalité de certains éditeurs de texte et des IDE.
+
+Par exemple : https://gist.github.com/[GitHub Gist]
+****
+
+Un moteur de recherche :
+
+- https://beta.sayhello.so/[hello] : un moteur de recherche pour développeurs
+- http://searchco.de/[searchcode], https://www.krugle.com/[Krugle], https://www.codegravity.com/[CodeGravity], https://snipplr.com/[snipplr], https://publicwww.com/[PublicWWW]
+
+Un forum pour développeurs :
+
+- https://stackoverflow.com/[Stack Overflow], https://www.developpez.net/forums/[Developpez.com], ...
+
+== Environnements de développement intégré
+
+Un environnement de développement intégré (https://fr.wikipedia.org/wiki/Environnement_de_d%C3%A9veloppement[IDE] ou EDI en français) est un ensemble d'outils qui permet d'augmenter la productivité des programmeurs qui conçoivent des logiciels. En aucun cas, ils doivent être considérés comme des outils indispensables ou obligatoires.
+
+Un EDI comporte généralement un *éditeur de texte* destiné à la programmation, des fonctions qui permettent, par pression sur un bouton, de démarrer le *compilateur* ou l'*éditeur de liens*, d'*exécuter* le programme ainsi qu'un *débogueur* en ligne, de consulter la *documentation*, etc ...
+
+****
+Certains environnements sont dédiés à un langage de programmation (IDLE pour Python par exemple), un _framework_ (Qt Creator pour Qt par exemple, Android Studio pour Android) ou une architecture (Xcode pour Mac OS X et iOS par exemple) en particulier.
+****
+
+Exemple : Visual Studio Code (VSCode)
+
+VSCode est un « éditeur de code » développé par Microsoft sous licence open source (MIT) et disponible pour Windows (7, 8 et 10), macOS (10.10 et supérieur) et GNU/Linux. Il utilise des extensions pour devenir pleinement un EDI ou IDE.
+
+****
+Dans le sondage auprès des développeurs réalisé par Stack Overflow en 2021, Visual Studio Code a été classé comme l'outil d'environnement de développement le plus populaire, avec 71,06 % des 82 277 répondants déclarant l'utiliser.
+****
+
+Les fonctionnalités incluent la prise en charge du débogage, la mise en évidence de la syntaxe, la complétion intelligente du code, les _snippets_, la refactorisation du code et Git intégré.
+
+Liens:
+
+- https://code.visualstudio.com/
+- https://marketplace.visualstudio.com/vscode
+- https://code.visualstudio.com/docs/getstarted/keybindings
+- https://code.visualstudio.com/docs/getstarted/tips-and-tricks
+
+Notions à approfondir :
+
+- Espace de travail (_workspace_)
+- Paramètres
+- Palette de commandes
+- Les extensions
+
+Liens :
+
+- Premiers pas avec http://tvaira.free.fr/projets/activites/activite-visualcode.html[Visual Studio Code (VSCode)] ou http://tvaira.free.fr/dev/tutoriel/vscode.pdf[vscode.pdf]
+- Guide https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/vscode.pdf[Visual Studio Code (VSCode)]
+- https://btssn-lasalle84.github.io/guides-developpement-logiciel/git.html#ancre-vscode[VSCode et Git]
+- L'extension http://tvaira.free.fr/dev/tutoriel/platformio.html[PlatformIO] pour le développement sur systèmes embarqués (Arduino, ESP32, ...)
+
+== Environnements de développement en ligne
+
+Il existe de nombreux sites web qui fournissent des EDI (Environnement de Développement Intégré) en ligne pour tester du code ou des services : un espace d'apprentissage séparé. Ils permettent aussi d'échanger des exemples.
+
+Quelques sites :
+
+- Coding Ground For Developers : https://www.tutorialspoint.com/codingground.htm pour tout !
+- JSFiddle : https://jsfiddle.net/ pour HTML, CSS et JavaScript
+- Codeply : https://www.codeply.com/ pour les frameworks JavaScript
+- C++ Shell : https://cpp.sh/
+- ...
+- Visual Studio Code Online : https://vscode.dev/
+- Gitpod : https://www.gitpod.io/
+- Codeanywhere (Cloud IDE) : https://codeanywhere.com/
+- ...
+- Wokwi (Simulateur en ligne Arduino et ESP32) : https://wokwi.com/
+
+****
+En informatique, le bac à sable (_sandbox_) est une zone d'essai permettant d'exécuter des programmes en phase de test ou dans lesquels la confiance est incertaine. C'est notamment très utilisé en sécurité informatique pour sa notion d'isolation.
+****
+
+== Autres outils
+
+=== Rédaction de documents
+
+Cet aspect est déjà abordé dans ce guide https://btssn-lasalle84.github.io/guides-developpement-logiciel/guide-redaction-btssn.html[HTML] (https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/guide-programmation-btssn.pdf[PDF]).
+
+=== Gestion de versions
+
+Un logiciel de gestion de versions (VCS pour _version control system_) est un logiciel qui permet de stocker un ensemble de fichiers en conservant l'historique de toutes les modifications effectuées, y compris par plusieurs personnes.
+
+Il permet de retrouver le code source dans l'état où il était à une date donnée, à une version donnée.
+
+Les fichiers versionnés sont mis à dispositions sur un dépôt (_repository_), qui est un espace de stockage géré par un logiciel de gestion de versions.
+
+[NOTE]
+====
+Les différentes versions (ou révision) sont nécessairement liées à travers des modifications : une modification est un ensemble d’ajouts, de modifications, et de suppressions de données.
+====
+
+Essentiellement utilisée dans le développement logiciel, elle concerne surtout la gestion des codes source.
+
+On distingue :
+
+- la gestion de versions *centralisée* (comme CVS et Subversion (SVN)) : il n'existe qu'un seul dépôt (_repository_) des versions qui fait référence.
+
+- la gestion de versions *décentralisée* (comme https://fr.wikipedia.org/wiki/Git[Git] et Mercurial) : il existe plusieurs dépôts pour un même logiciel. Un DVCS offre les mêmes services qu’un VCS sur une architecture décentralisée (ou distribuée).
+
+****
+L'auteur de développement logiciel Joel Spolsky, ancien chef de projet de Microsoft Excel et co-créateur du site Stack Overflow, décrit la gestion de version décentralisée comme « probablement la plus grande avancée dans les technologies de développement logiciel dans les 10 [dernières] années. ».
+****
+
+Depuis les années 2010, https://fr.wikipedia.org/wiki/Git[Git] est le logiciel de gestion de versions le plus populaire dans le développement logiciel et web, qui est utilisé par des dizaines de millions de personnes, sur tous les environnements (Windows, Mac, Linux). https://fr.wikipedia.org/wiki/Git[Git] est aussi le système à la base du célèbre site web https://fr.wikipedia.org/wiki/GitHub[GitHub], le plus important hébergeur de code informatique.
+
+Liens :
+
+- Guide Git : https://btssn-lasalle84.github.io/guides-developpement-logiciel/git.html[HTML] | https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/git.pdf[PDF]
+- Support de cours Git : https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/cours-git.pdf[PDF]
+
+Il est possible d’héberger des dépôts https://fr.wikipedia.org/wiki/Git[Git] sur un site externe dédié à l’hébergement : https://fr.wikipedia.org/wiki/GitHub[GitHub], https://fr.wikipedia.org/wiki/GitLab[GitLab], https://fr.wikipedia.org/wiki/Bitbucket[Bitbucket], ...
+
+=== Documentation automatique de code
+
+Le développeur aura nécessairement besoin de générer une documentation du logiciel.
+
+http://www.doxygen.nl/[Doxygen] est un système de documentation pour C, C++, Java, Python, Php et autres langages. Il permet de générer la documentation des développements :
+
+- à partir des commentaires insérés dans le code source
+- à partir de la structure du code lui même
+
+La documentation peut être produite dans des formats variés tels que du HTML, du Latex, du RTF ou du XML.
+
+Guide : https://btssn-lasalle84.github.io/guides-developpement-logiciel/guide-doxygen-btssn.html[HTML] | https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/guide-rendu-document-2btssnir.pdf[PDF]
+
+=== Tests logiciels
+
+Le test est une recherche d'anomalie (défaut, appelé souvent _bug_) dans le comportement d'un logiciel.
+
+Si les tests se déroulent parmi les activités finales du projet, ils se préparent dès le début. Il existe différentes formes de tests :
+
+- Tests de fonctionnements (unitaires et intégrations) : pour vérifier que le produit est bien fait
+- Tests de validation : permettent de vérifier que le produit réalisé est le bon
+- Tests d'architecture : pour vérifier que le produit est utilisable dans son environnement d'exploitation
+
+En détaillant ces tests dans l'ordre dans lequel ils sont effectués :
+
+- Tests unitaires : ils sont planifiés lors de la conception détaillée. Ils permettent de tester "les plus petites unités testables": méthodes, fonctions, etc.
+- Tests d'intégrations : planifiés en analyse et en conception préliminaire, ils évaluent les différentes unités intégrées, packages, groupement de classes, mais aussi les interactions matérielles - logiciel en cas de système embarqué.
+- Tests de validations : conçus dès les spécifications, ils permettent de vérifier l'adéquation du produit aux exigences fonctionnelles du client.
+
+Supports de cours :
+
+- http://tvaira.free.fr/dev/fiches/fiche-t1-tests.pdf[Tests logiciels]
+- http://tvaira.free.fr/dev/fiches/fiche-t2-autres_tests.pdf[Autres tests]
+- http://tvaira.free.fr/dev/fiches/fiche-t3-methodes_tests.pdf[Méthodes de tests]
+- http://tvaira.free.fr/dev/fiches/fiche-t4-tests_unitaires.pdf[Tests unitaires]
+- http://tvaira.free.fr/dev/fiches/fiche-a2-validation.pdf[Tests de validation]
+
+Quelques outils de tests unitaires :
+
+- http://tvaira.free.fr/dev/tutoriel/tutoriel-cppunit.pdf[CppUnit]
+- http://tvaira.free.fr/dev/methodologie/tp_acoo_up_jeu_de_des_1-cxxtest.pdf[CxxTest]
+- http://tvaira.free.fr/web/tutoriel-phpunit.pdf[PHPUnit]
+
+=== Analyse de code source
+
+Objectif : diagnostiquer et corriger les erreurs de programmation typiques, telles que les violations de style, ...
+
+****
+`lint` est une commande UNIX de préprocesseur permettant l’analyse statique de code source en langage C. L'utilitaire `lint` a été l'un des premiers outils d'analyse statique de code source.
+****
+
+Quelques outils :
+
+- `lint` : analyse statique de code source C
+- `clang-tidy` : « linter » C++ basé sur `clang`
+- `cppcheck` : analyse de code statique pour les langages C et C++
+- `gprof` : effectue du profilage de code
+- `gcov` : analyse de la couverture du code source
+- `valgrind` : mettre en évidence des fuites mémoires
+
+Exemples d'utilisation de https://github.com/btssn-lasalle84/github-actions-cpp[clang-tidy et cppcheck]
+
+=== Installateurs
+
+Exemples : http://tvaira.free.fr/dev/methodologie/deploiement_inno_setup.pdf[Inno Setup] et http://tvaira.free.fr/dev/methodologie/deploiement_qtinstaller[Qt-Installer-Framework]
+
+Les paquetages sous GNU/Linux :
+
+- http://tvaira.free.fr/projets/activites/activite-mo-paquet.html[Paquet DEB]
+- http://tvaira.free.fr/dev/methodologie/deploiement_rpm.pdf[Paquet RPM]
+
+Voir aussi : http://tvaira.free.fr/dev/methodologie/deploiement_script_autoextractible.pdf[Script autoextractible]
+
+=== Gestion de projets
+
+Pour développer un logiciel, un système de gestion de projets sera indispensable.
+
+Quelques outils :
+
+- À l’origine, https://www.atlassian.com/software/jira[Jira] est un système de suivi de bugs et de gestion des incidents (tickets). Il est maintenant un système de gestion de projets développé par Atlassian.
+
+- https://trello.com/fr/home[Trello] est un outil de gestion de projet en ligne, inspiré par la méthode Kanban de Toyota.
+
+Guides :
+
+- https://btssn-lasalle84.github.io/guides-developpement-logiciel/jira.html[Jira] (https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/jira.pdf[PDF]) et le lien avec https://fr.wikipedia.org/wiki/GitHub[GitHub], https://fr.wikipedia.org/wiki/GitLab[GitLab], https://fr.wikipedia.org/wiki/Bitbucket[Bitbucket] : https://btssn-lasalle84.github.io/guides-developpement-logiciel/annexes-jira.html[HTML] | https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/annexes-jira.pdf[PDF]
+
+- http://tvaira.free.fr/projets/gestion-projet-trello.pdf[Trello] et http://tvaira.free.fr/projets/gestion-projet-beesbusy.html[Beesbusy]
+
+- http://tvaira.free.fr/projets/gestion-projet.pdf[Gestion de projets]
+
+=== Diagrammes
+
+Les outils de dessins orientés sur les diagrammes de logiciel utilisent souvent la notation https://fr.wikipedia.org/wiki/UML_(informatique)[UML] (_Unified Modeling Language_).
+
+Il existe de nombreux logiciels de modélisation UML. On peut citer https://fr.wikipedia.org/wiki/BOUML[BOUML].
+
+Lien : https://fr.wikipedia.org/wiki/Comparaison_des_logiciels_d%27UML[Comparaison des logiciels d'UML]
+
+Les autres diagrammes seront réalisés avec tout outil de dessin assisté par ordinateur (DAO). On peut citer https://app.diagrams.net/[diagrams.net] (auparabant **draw.io**). Il existe sous forme d'https://marketplace.visualstudio.com/items?itemName=hediet.vscode-drawio[extension] pour VSCode.
+
+Voir aussi :
+
+- https://mermaid-js.github.io/mermaid/#/[Mermaid]
+- https://plantuml.com/fr/[PlantUML]
+- https://www.graphviz.org/[Graphviz] et http://magjac.com/graphviz-visual-editor/
+
+=== Prototypage IHM
+
+Il existe de très nombreux logiciels permettant de _designer_ des interfaces utilisateurs, par exemple https://balsamiq.com/[Balsamiq].
+
+Quelques liens :
+
+- https://www.figma.com/
+- https://pidoco.com/
+- https://www.invisionapp.com/inside-design/design-resources/
+- https://www.diagrams.net/
+- https://precursorapp.com/home
+
+=== Atelier de génie logiciel
+
+Un atelier de génie logiciel (AGL) permet la construction, la conception et la planification des travaux. Il comporte tous les outils présents dans un environnement de développement intégré, plus des outils de conception, de planification, de test, et des outils créant automatiquement du code source et de la documentation.
+
+=== Virtualisation et Conteneurs
+
+La virtualisation consiste à exécuter sur une machine hôte dans un environnement isolé :
+
+- des systèmes d'exploitation : virtualisation système
+- des applications : virtualisation applicative
+
+Support de cours : http://tvaira.free.fr/bts-sn/admin/Virtualisation.pdf
+
+****
+Voir aussi : http://tvaira.free.fr/bts-sn/admin/Presentation-Vagrant.pdf et http://tvaira.free.fr/bts-sn/admin/Creation-Box-Vagrant.pdf
+****
+
+https://www.docker.com/[Docker] est une plateforme permettant de lancer certaines applications dans des conteneurs logiciels. Il s'agit actuellement du moteur de conteneurisation le plus utilisé.
+
+Support de cours : http://tvaira.free.fr/bts-sn/admin/TP-Docker.pdf[Docker]
+
+https://github.com/jetpack-io/devbox[Devox] est un outil en ligne de commande qui permet de créer facilement des _shells_ et des conteneurs isolés. Devbox crée un environnement isolé uniquement pour l'application à partir d'une liste des _packages_ requis par l'environnement de développement.
+
+=== Boîte à outils
+
+Quand on est développeur, il y a parfois certains utilitaires dont on a besoin qui nécessite de chercher un site web ou un petit outil pour le faire rapidement. Cela peut-être générer un texte en _lorem ipsum_, formater un JSON, décoder un Base64, tester une regex et ...
+
+Tout cela peut être regroupé dans une boîte à outils, comme https://www.dev-box.app/[DevBox] (payant) ou https://app.dev-box.app/[version en ligne].
+
+Sous Windows : https://devtoys.app/[DevToys]
+
+Sous macOs : https://devutils.com/[DevUtils] et https://github.com/ObuchiYuki/DevToysMac[DevToysMac]
+
+== Voir aussi
+
+- https://fr.wikipedia.org/wiki/Cha%C3%AEne_d%27outils_Devops[Chaîne d'outils Devops]
+
+***
+
+ifdef::backend-html5[]
+Site : {home}[btssn-lasalle84.github.io]
+endif::[]
+
+ifdef::backend-pdf[]
+{author} - <{email}> - version {revnumber} - {revdate} - {home}[btssn-lasalle84.github.io]
+endif::[]

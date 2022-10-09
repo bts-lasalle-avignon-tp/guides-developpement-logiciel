@@ -6,6 +6,7 @@ Les [documents](https://github.com/btssn-lasalle84/guides-developpement-logiciel
 
 - [Sommaire](#sommaire)
 - [Le guide de programmation](#le-guide-de-programmation)
+- [Le guide des outils](#le-guide-des-outils)
 - [Le guide de rédaction de documents techniques](#le-guide-de-rédaction-de-documents-techniques)
 - [Le guide de documentation logicielle](#le-guide-de-documentation-logicielle)
 - [Le guide de rendu de documents](#le-guide-de-rendu-de-documents)
@@ -14,6 +15,7 @@ Les [documents](https://github.com/btssn-lasalle84/guides-developpement-logiciel
 - [Un guide sur l'utilisation de git](#un-guide-sur-lutilisation-de-git)
 - [Un guide sur l'utilisation de GitHub Classroom](#un-guide-sur-lutilisation-de-github-classroom)
 - [Un guide sur la gestion de projet logiciel avec Jira](#un-guide-sur-la-gestion-de-projet-logiciel-avec-jira)
+- [Un guide sur les outils logiciels](#un-guide-sur-les-outils-logiciels)
 - [Contact](#contact)
 - [Site web](#site-web)
 - [Licence](#licence)
@@ -23,6 +25,12 @@ Les [documents](https://github.com/btssn-lasalle84/guides-developpement-logiciel
 Ce [guide](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guide-programmation-btssn.html) précise les règles de codage, bonnes pratiques et conventions de nommage à appliquer pour les travaux pratiques, les mini-projets et les projets réalisés en [BTS SN](http://www.lasalle84.net/bts-sn.html) ([LaSalle Avignon](http://www.lasalle84.net/)). Il concerne essentiellement le développement en C / C++.
 
 Formats : [HTML](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guide-programmation-btssn.html) | [PDF](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/guide-programmation-btssn.pdf)
+
+## Le guide des outils
+
+Ce [guide](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guide-outils.html) décrit les outils utilisés dans le développement logiciel.
+
+Formats : [HTML](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guide-outils.html) | [PDF](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/guide-outils.pdf)
 
 ## Le guide de rédaction de documents techniques
 
@@ -73,6 +81,14 @@ Ce [guide](https://btssn-lasalle84.github.io/guides-developpement-logiciel/jira.
 Formats : [HTML](https://btssn-lasalle84.github.io/guides-developpement-logiciel/jira.html) | [PDF](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/jira.pdf)
 
 Annexes : [HTML](https://btssn-lasalle84.github.io/guides-developpement-logiciel/annexes-jira.html) | [PDF](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/annexes-jira.pdf)
+
+## Un guide sur les outils logiciels
+
+Ce [guide](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guide-outils.html) présente les outils logiciels utilisés pour exercer le métier de développeur.
+
+Formats : [HTML](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guide-outils.html) | [PDF](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/guide-outils.pdf)
+
+Compléments : [GCC](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/gcc.pdf) | [GDB](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/gdb.pdf) | [MAKE](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/make.pdf) | [CMAKE](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/cmake.pdf) | [VSCODE](https://btssn-lasalle84.github.io/guides-developpement-logiciel/guides-pdf/vscode.pdf)
 
 ## Contact
 

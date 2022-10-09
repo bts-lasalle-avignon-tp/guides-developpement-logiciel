@@ -7,6 +7,7 @@ Les documents sont fournis au format [Asciidoc](https://asciidoc.org/). Ils sont
 - [Les guides de développement logiciel utilisés en BTS SN à LaSalle Avignon](#les-guides-de-développement-logiciel-utilisés-en-bts-sn-à-lasalle-avignon)
 	- [Sommaire](#sommaire)
 	- [Le guide de programmation](#le-guide-de-programmation)
+	- [Le guide des outils](#le-guide-des-outils)
 	- [Le guide de rédaction de documents techniques](#le-guide-de-rédaction-de-documents-techniques)
 	- [Le guide de documentation logicielle](#le-guide-de-documentation-logicielle)
 	- [Le guide de rendu de documents](#le-guide-de-rendu-de-documents)
@@ -21,6 +22,10 @@ Les documents sont fournis au format [Asciidoc](https://asciidoc.org/). Ils sont
 ## Le guide de programmation
 
 Ce guide précise les règles de codage, bonnes pratiques et conventions de nommage à appliquer pour les travaux pratiques, les mini-projets et les projets réalisés en [BTS SN](http://www.lasalle84.net/bts-sn.html) ([LaSalle Avignon](http://www.lasalle84.net/)). Il concerne essentiellement le développement en C / C++.
+
+## Le guide des outils
+
+Ce guide décrit les outils utilisés dans le développement logiciel.
 
 ## Le guide de rédaction de documents techniques
 
