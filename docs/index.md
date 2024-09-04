@@ -1,6 +1,6 @@
-Ces guides sont utilisés en BTS SN à LaSalle Avignon.
+Ces guides sont utilisés en BTS à LaSalle Avignon.
 
-Les [documents](https://github.com/btssn-lasalle84/guides-developpement-logiciel) ont été rédigés au format [Asciidoc](https://asciidoc.org/). Ils sont disponibles ici aux formats HTML et PDF.
+Les [documents](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/guides-developpement-logiciel) ont été rédigés au format [Asciidoc](https://asciidoc.org/). Ils sont disponibles ici aux formats HTML et PDF.
 
 ## Sommaire
 
@@ -10,8 +10,6 @@ Les [documents](https://github.com/btssn-lasalle84/guides-developpement-logiciel
 - [Le guide de rédaction de documents techniques](#le-guide-de-rédaction-de-documents-techniques)
 - [Le guide de documentation logicielle](#le-guide-de-documentation-logicielle)
 - [Le guide de rendu de documents](#le-guide-de-rendu-de-documents)
-	- [1°année BTS SN](#1année-bts-sn)
-	- [2°année BTS SN](#2année-bts-sn)
 - [Un guide sur l'utilisation de git](#un-guide-sur-lutilisation-de-git)
 - [Un guide sur l'utilisation de GitHub Classroom](#un-guide-sur-lutilisation-de-github-classroom)
 - [Un guide sur la gestion de projet logiciel avec Jira](#un-guide-sur-la-gestion-de-projet-logiciel-avec-jira)
@@ -22,7 +20,7 @@ Les [documents](https://github.com/btssn-lasalle84/guides-developpement-logiciel
 
 ## Le guide de programmation
 
-Ce [guide](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/guide-programmation-btssn.html) précise les règles de codage, bonnes pratiques et conventions de nommage à appliquer pour les travaux pratiques, les mini-projets et les projets réalisés en [BTS SN](http://www.lasalle84.net/bts-sn.html) ([LaSalle Avignon](http://www.lasalle84.net/)). Il concerne essentiellement le développement en C / C++.
+Ce [guide](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/guide-programmation-btssn.html) précise les règles de codage, bonnes pratiques et conventions de nommage à appliquer pour les travaux pratiques, les mini-projets et les projets réalisés en [BTS](https://lasalle84.net/bts-systemes-numeriques/) ([LaSalle Avignon](http://www.lasalle84.net/)). Il concerne essentiellement le développement en C / C++.
 
 Formats : [HTML](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/guide-programmation-btssn.html) | [PDF](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/guides-pdf/guide-programmation-btssn.pdf)
 
@@ -34,27 +32,19 @@ Formats : [HTML](https://bts-lasalle-avignon-tp.github.io/guides-developpement-l
 
 ## Le guide de rédaction de documents techniques
 
-Ce [guide](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/guide-redaction-btssn.html) contient les formats utilisés ([Markdown](https://daringfireball.net/projects/markdown/) et/ou [Asciidoc](https://asciidoc.org/)) et les outils conseillés ([pandoc](https://pandoc.org/), [asciidoctor](https://asciidoctor.org/) et [Doxygen](https://www.doxygen.nl/index.html)) pour produire une documentation technique dans le cadre d'un développement logiciel en [BTS SN](http://www.lasalle84.net/bts-sn.html) ([LaSalle Avignon](http://www.lasalle84.net/)).
+Ce [guide](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/guide-redaction-btssn.html) contient les formats utilisés ([Markdown](https://daringfireball.net/projects/markdown/) et/ou [Asciidoc](https://asciidoc.org/)) et les outils conseillés ([pandoc](https://pandoc.org/), [asciidoctor](https://asciidoctor.org/) et [Doxygen](https://www.doxygen.nl/index.html)) pour produire une documentation technique dans le cadre d'un développement logiciel en [BTS](https://lasalle84.net/bts-systemes-numeriques/) ([LaSalle Avignon](http://www.lasalle84.net/)).
 
 Formats : [HTML](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/guide-redaction-btssn.html) | [PDF](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/guides-pdf/guide-redaction-btssn.pdf)
 
 ## Le guide de documentation logicielle
 
-Ce [guide](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/guide-doxygen-btssn.html) présente le système de documentation [Doxygen](https://www.doxygen.nl/index.html) et les règles à respecter en projet  [BTS SN](http://www.lasalle84.net/bts-sn.html) ([LaSalle Avignon](http://www.lasalle84.net/)).
+Ce [guide](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/guide-doxygen-btssn.html) présente le système de documentation [Doxygen](https://www.doxygen.nl/index.html) et les règles à respecter en projet  [BTS](https://lasalle84.net/bts-systemes-numeriques/) ([LaSalle Avignon](http://www.lasalle84.net/)).
 
 Formats : [HTML](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/guide-doxygen-btssn.html) | [PDF](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/guides-pdf/guide-doxygen-btssn.pdf)
 
 ## Le guide de rendu de documents
 
-### 1°année BTS SN
-
-Ce [guide](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/guide-rendu-document-1btssn.html) présente la convention de nommage à respecter pour effectuer les rendus sur le serveur ou par courriel.
-
-Formats : [HTML](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/guide-rendu-document-1btssn.html) | [PDF](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/guides-pdf/guide-rendu-document-1btssn.pdf)
-
-### 2°année BTS SN
-
-Ce [guide](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/guide-rendu-document-2btssnir.html) précise l’organisation et les exigences pour la production des documents dans le cadre des Travaux pratiques et Projets de BTS SNIR à LaSalle Avignon.
+Ce [guide](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/guide-rendu-document-2btssnir.html) précise l’organisation et les exigences pour la production des documents dans le cadre des Travaux pratiques et Projets de BTS IR à LaSalle Avignon.
 
 Formats : [HTML](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/guide-rendu-document-2btssnir.html) | [PDF](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/guides-pdf/guide-rendu-document-2btssnir.pdf)
 
@@ -98,6 +88,7 @@ Compléments : [GCC](https://bts-lasalle-avignon-tp.github.io/guides-developpeme
 
 - [btssn-lasalle84.github.io](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/)
 - [tvaira.free.fr](http://tvaira.free.fr/)
+- [BTS LaSalle Avignon](https://lasalle84.net/bts-systemes-numeriques/)
 
 ## Licence
 
