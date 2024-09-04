@@ -1,6 +1,6 @@
 # Les guides de développement logiciel utilisés en BTS SN à LaSalle Avignon
 
-Les documents sont fournis au format [Asciidoc](https://asciidoc.org/). Ils sont aussi disponibles aux formats [HTML](https://btssn-lasalle84.github.io/guides-developpement-logiciel/) et [PDF](https://btssn-lasalle84.github.io/guides-developpement-logiciel/).
+Les documents sont fournis au format [Asciidoc](https://asciidoc.org/). Ils sont aussi disponibles aux formats [HTML](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/) et [PDF](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/).
 
 ## Sommaire
 
@@ -68,7 +68,7 @@ Documents complémentaires : GCC, GDB, MAKE (et CMAKE) et VSCODE
 
 ## Site web
 
-- [btssn-lasalle84.github.io](https://btssn-lasalle84.github.io/guides-developpement-logiciel/)
+- [btssn-lasalle84.github.io](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/)
 - [tvaira.free.fr](http://tvaira.free.fr/)
 ## Licence
 
