@@ -38,7 +38,7 @@ Ce guide présente le système de documentation [Doxygen](https://www.doxygen.nl
 
 Ce guide précise l’organisation et les exigences pour la production des documents dans le cadre des Travaux pratiques et Projets de BTS IR à LaSalle Avignon.
 
-Les TP de programmation sont réalisés à partir de https://classroom.github.com/[GitHub Classroom]. Il y a donc un guide spécifique pour cela.
+Les TP de programmation sont réalisés à partir de [GitHub Classroom](https://classroom.github.com/). Il y a donc un guide spécifique pour cela.
 
 ## Un guide sur l'utilisation de git
 
@@ -60,7 +60,7 @@ Documents complémentaires : GCC, GDB, MAKE (et CMAKE) et VSCODE
 
 ## Site web
 
-- [btssn-lasalle84.github.io](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/)
+- [bts-lasalle-avignon-tp.github.io](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/)
 - [tvaira.free.fr](http://tvaira.free.fr/)
 - [BTS LaSalle Avignon](https://lasalle84.net/bts-systemes-numeriques/)
 

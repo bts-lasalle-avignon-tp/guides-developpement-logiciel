@@ -86,7 +86,7 @@ Compléments : [GCC](https://bts-lasalle-avignon-tp.github.io/guides-developpeme
 
 ## Site web
 
-- [btssn-lasalle84.github.io](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/)
+- [bts-lasalle-avignon-tp.github.io](https://bts-lasalle-avignon-tp.github.io/guides-developpement-logiciel/)
 - [tvaira.free.fr](http://tvaira.free.fr/)
 - [BTS LaSalle Avignon](https://lasalle84.net/bts-systemes-numeriques/)
 

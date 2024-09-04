@@ -151,30 +151,22 @@ Le format HTML est adapté à la navigation et le format PDF est notamment recom
 
 Quelques options de configuration :
 
-[.center.text-center]
 image:doxygen-1.png[float="center",align="center"]
 
-[.center.text-center]
 image:doxygen-2.png[float="center",align="center"]
 
-[.center.text-center]
 image:doxygen-3.png[float="center",align="center"]
 
-[.center.text-center]
 image:doxygen-5.png[float="center",align="center"]
 
-[.center.text-center]
 image:doxygen-6.png[float="center",align="center"]
 
-[.center.text-center]
 image:doxygen-7.png[float="center",align="center"]
 
-[.center.text-center]
 image:doxygen-8.png[float="center",align="center"]
 
 Ensuite, il faut indiquer les chemins vers les fichiers sources à inclure (et/ou à exclure) :
 
-[.center.text-center]
 image:doxygen-11.png[float="center",align="center"]
 
 [IMPORTANT]
@@ -186,12 +178,10 @@ Il est peut être intéressant de générer aussi des *diagrammes*. Pour cela, o
 
 - Dans *Source Browser* :
 
-[.center.text-center]
 image:doxygen-10.png[float="center",align="center"]
 
 Pour obtenir un document PDF `refman.pdf` :
 
-[.center.text-center]
 image:doxygen-12.png[float="center",align="center"]
 
 Ensuite :
@@ -221,7 +211,6 @@ HTML_STYLESHEET        = ./custom/customdoxygen.css
 HTML_EXTRA_FILES       = lasalle-logo.png
 ----
 
-[.center.text-center]
 image:doxygen-9.png[float="center",align="center"]
 
 - *PDF* :
@@ -241,7 +230,6 @@ LATEX_FOOTER           =
 LATEX_EXTRA_STYLESHEET = 
 ----
 
-[.center.text-center]
 image:doxygen-13.png[float="center",align="center"]
 
 Il est aussi possible d'ajouter son _package_ personnalisé :
@@ -710,7 +698,6 @@ Il est possible intégrer des diagrammes https://plantuml.com/fr/[PlantUML] dans
  */
 ----
 
-[.center.text-center]
 image:doxygen-plantuml.png[float="center",align="center"]
 
 [TIP]
@@ -724,17 +711,14 @@ Il existe un plugin http://www.doxygen.nl/[Doxygen] pour Qt Creator qui permet d
 
 Aller dans *Aide* → *À propos des plug-ins...* :
 
-[.center.text-center]
 image:plugin-qt-creator-doxygen.png[float="center",align="center"]
 
 Vous obtenez un nouveau sous-menu *Doxygen* dans le menu *Outils* :
 
-[.center.text-center]
 image:qt-creator-doxygen.png[float="center",align="center"]
 
 D'autre part, vous aurez accès à la complétion pour les commandes http://www.doxygen.nl/[Doxygen] à partir de `@` ou `\` :
 
-[.center.text-center]
 image:screenshot-qt-doxygen-1.png[float="center",align="center"]
 
 Lien : https://github.com/fpoussin/qtcreator-doxygen
